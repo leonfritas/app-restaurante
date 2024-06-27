@@ -1,0 +1,24 @@
+.card-container{
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 500px;
+}
+
+.item{
+    border-right: 1ps solid blue;
+}
+
+td{
+    border: 1px solid black;
+    width: 100px;
+}
+
+.card-title{
+    width: 495px;
+}
+
+.card-cost, .card-category, .card-quantidade{
+    width: 100px;
+}
