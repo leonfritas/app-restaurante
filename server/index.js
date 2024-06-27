@@ -26,7 +26,7 @@ app.post("/register", (req, res) => {
     })
 })
 
-app.get("/getCards", (req, res) => {
+app.get("/getProduto", (req, res) => {
     let sql = "select * from produto";
 
     db.query(sql, (err, result) => {

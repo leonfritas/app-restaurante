@@ -4,12 +4,12 @@ import Itens from './homeNovoPedidoItem.jsx';
 import './css/homeNovoPedido.css'
 
 export default function NovoPedido(){
-    const [listGames, setListGames] = useState();
+    const [listProduto, setListProduto] = useState();
     // console.log(values)
 
     useEffect(() => {
-      Axios.get("http://localhost:3001/getCards").then((response) => {
-        setListGames(response.data)
+      Axios.get("http://localhost:3001/getProduto").then((response) => {
+        setListProduto(response.data)
         console.log(response.data)
       })
     }, [])
@@ -24,13 +24,13 @@ export default function NovoPedido(){
                         <td>categoria</td> 
                         <td>preco</td>
                     </tr>
-                    {typeof listGames !== "undefined" && 
-                        listGames.map((value) => {
+                    {typeof listProduto !== "undefined" && 
+                        listProduto.map((value) => {
                         return(
                         <>
                         <Itens key={value.idProduto}
-                            listCard={listGames}
-                            setListCard={setListGames}
+                            listCard={listProduto}
+                            setListCard={setListProduto}
                             id={value.idProduto}
                             name={value.nomeProduto}
                             cost={value.preco}
