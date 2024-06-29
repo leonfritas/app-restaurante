@@ -1,10 +1,11 @@
-import React, { useContext, useState } from 'react';
+// import { useContext, useState } from 'react';
+import {  useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
-import { RegisterContext } from '../../context/RegisterContext.jsx';
+// import { RegisterContext } from '../../context/RegisterContext.jsx';
 
 export default function Register() {
-    const { setIsCreated } = useContext(RegisterContext);
+    // const { setIsCreated } = useContext(RegisterContext);
     const [realName, setName] = useState('');
     const [user, setUsuario] = useState('');
     const [senha, setSenha] = useState('');
@@ -23,17 +24,12 @@ export default function Register() {
                     alert('Erro ao tentar cadastrar. Resposta vazia do servidor.');
                     return;
                 }
-
+                console.log(response.data)
                 // Verifica se há dados na resposta
-                if (response.data[0] && response.data[0][0]) {
-                    let ativoFuncionario = response.data[0][0].ativoFuncionario;
-
-                    if (ativoFuncionario === 1) {
-                        setIsCreated(true);
+                if (response.data [0][0].idFuncionario > 0) {
+                                                        
+                        alert('Funcionário: ' + response.data[0][0].nomeFuncionario + ' cadastrado com sucesso.');
                         navigate('/');
-                    } else if (ativoFuncionario === 0) {
-                        alert('Acesso Negado');
-                    }
                 } else {
                     console.error('Resposta de cadastro inválida:', response);
                     alert('Erro ao tentar cadastrar. Resposta inválida do servidor.');

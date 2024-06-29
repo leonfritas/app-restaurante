@@ -85,12 +85,13 @@ app.post("/cadastrar", (req, res) => {
     const { realName } = req.body
     const { user } = req.body;
     const { senha } = req.body;
-    let sql = "INSERT INTO funcionario(`nomeFuncionario`, `nomeUsuario`, `nomeSenha`) VALUES (?, ?, ?)";
+    let sql = "call sp_Funcionario_Inserir (?, ?, ?)";
     
     db.query(sql, [realName, user, senha], (err, result) => {
         if (err) console.log(err)
         else res.send(result)        
     })    
+    console.log(sql)
 })
 
 
