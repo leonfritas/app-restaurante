@@ -1,7 +1,9 @@
 const express = require("express");
 const app = express();
 const mysql = require("mysql");
-const cors = require("cors")
+const cors = require("cors");
+const jwt = require('jsonwebtoken');
+
 
 const db = mysql.createPool({
     host: "localhost",
@@ -34,6 +36,54 @@ app.get("/getProduto", (req, res) => {
         else res.send(result)
     })
 })
+
+app.get("/listar", (req, res) => {
+
+    let sql = "select * from funcionario"
+
+    db.query(sql, (err, result) => {
+        if(err) console.log(err)
+        else res.send(result)
+    })
+})
+
+app.post("/cadastrar", (req, res) => {
+    const { id, nome, usuario, senha, ativoAdministrador } = req.body;
+
+    if (!nome || !usuario || !senha) {
+        return res.status(400).send("Todos os campos são obrigatórios.");
+    }
+
+    let sql = "INSERT INTO funcionario(`idFuncionario`, `nomeFuncionario`, `nomeUsuario`, `nomeSenha`, `ativoAdministrador`) VALUES (?, ?, ?, ?, ?)";
+
+    db.query(sql, [id, nome, usuario, senha, ativoAdministrador], (err, result) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send("Erro ao inserir dados no banco de dados.");
+        } else {
+            res.status(200).send("Dados inseridos com sucesso.");
+        }
+    });
+});
+
+app.get("/login", (req, res) => {
+        const { name } = req.body;
+        const { senha } = req.body;
+    
+    
+        let sql = "call sp_funcionario_verificar(?,?)";
+    
+        db.query(sql, [name, senha], (err, result) => {
+            if (err) console.log(err)
+            else res.send(result)
+        })
+    })
+
+
+
+
+
+
 
 app.listen(3001, ()=>{
     console.log('RODANDO SERVIDOR')
