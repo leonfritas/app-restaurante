@@ -28,6 +28,19 @@ app.post("/register", (req, res) => {
     })
 })
 
+app.post("/login", (req, res) => {
+    const { name } = req.body;
+    const { senha } = req.body;
+    console.log(res.body)
+    let sql = "call sp_funcionario_verificar(?,?)";
+    
+    db.query(sql, [name, senha], (err, result) => {
+        if (err) console.log(err)
+        else res.send(result)        
+    })
+    
+})
+
 app.get("/getProduto", (req, res) => {
     let sql = "select * from produto";
 
@@ -65,19 +78,6 @@ app.post("/cadastrar", (req, res) => {
         }
     });
 });
-
-app.get("/login", (req, res) => {
-        const { name } = req.body;
-        const { senha } = req.body;
-    
-    
-        let sql = "call sp_funcionario_verificar(?,?)";
-    
-        db.query(sql, [name, senha], (err, result) => {
-            if (err) console.log(err)
-            else res.send(result)
-        })
-    })
 
 
 
