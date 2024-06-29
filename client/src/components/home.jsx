@@ -15,11 +15,24 @@ export default function Home(){
               console.log(response.data[0][0].idGrupoPedido)
             })          
     }
-    return(
-        <>        
-            <Link to='/novopedido'><button onClick={CriarNovoPedido} className="homeNovoPedido container" >Novo Pedido</button></Link>
-            <Link to='/lista'><button onClick={CriarNovoPedido} className="homeNovoPedido container" >Lista de usuários</button></Link>
-
-        </>
-    )
+    return (
+        <nav className="flex items-center justify-between bg-gray-800 p-6">
+          <div className="flex items-center flex-shrink-0 text-white mr-6">
+            <span className="font-semibold text-xl tracking-tight">app-restaurante</span>
+          </div>
+          <div className="flex">
+            <Link to='/novopedido'>
+              <button className="mr-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Novo Pedido
+              </button>
+            </Link>
+            <Link to='/lista'>
+              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Lista de usuários
+              </button>
+            </Link>
+          </div>
+        </nav>
+      );
+      
 }
