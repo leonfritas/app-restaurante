@@ -31,14 +31,35 @@ app.post("/register", (req, res) => {
 app.post("/login", (req, res) => {
     const { name } = req.body;
     const { senha } = req.body;
-    console.log(res.body)
     let sql = "call sp_funcionario_verificar(?,?)";
     
     db.query(sql, [name, senha], (err, result) => {
         if (err) console.log(err)
         else res.send(result)        
-    })
+    })    
+})
+
+app.post("/pedidoinserir", (req, res) => {
+    const { idGrupoPedido } = req.body;
+    const { idProduto } = req.body;
+    const { quantidade } = req.body;
+    const { preco } = req.body;    
+
+    let sql = "call sp_pedido_inserir(?,?,?,?)";
     
+    db.query(sql, [idGrupoPedido, idProduto, quantidade, preco ], (err, result) => {
+        if (err) console.log(err)
+        else res.send(result)        
+    })    
+})
+
+
+app.get("/grupopedidoinserir", (req, res) => {
+    let sql = "call sp_GrupoPedido_Inserir";
+    db.query(sql, (err, result) => {
+        if(err) console.log(err)
+        else res.send(result)
+    })
 })
 
 app.get("/getProduto", (req, res) => {
@@ -83,8 +104,8 @@ app.post("/cadastrar", (req, res) => {
 
 
 
+/*----------------------------------------------------*/ 
 
+app.listen(3001, () => console.log('RODANDO SERVIDOR'))
 
-app.listen(3001, ()=>{
-    console.log('RODANDO SERVIDOR')
-})
+/*----------------------------------------------------*/ 

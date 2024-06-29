@@ -11,9 +11,10 @@ import NovoPedido from './components/homeNovoPedido'
 export default function AppRoutes(){
 
     const [isLogged, setIsLogged] = useState(false);
+    const [idGrupoPedido, setIdGrupoPedido] = useState();
 
     return(
-        <LoginContext.Provider value={ {isLogged, setIsLogged} }>
+        <LoginContext.Provider value={ {isLogged, setIsLogged, idGrupoPedido, setIdGrupoPedido} }>
             <BrowserRouter>
                 <Routes>                
                     <Route exact path="/" element={<Login />} />
