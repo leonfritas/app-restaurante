@@ -82,23 +82,16 @@ app.get("/listar", (req, res) => {
 })
 
 app.post("/cadastrar", (req, res) => {
-    const { id, nome, usuario, senha, ativoAdministrador } = req.body;
-
-    if (!nome || !usuario || !senha) {
-        return res.status(400).send("Todos os campos são obrigatórios.");
-    }
-
-    let sql = "INSERT INTO funcionario(`idFuncionario`, `nomeFuncionario`, `nomeUsuario`, `nomeSenha`, `ativoAdministrador`) VALUES (?, ?, ?, ?, ?)";
-
-    db.query(sql, [id, nome, usuario, senha, ativoAdministrador], (err, result) => {
-        if (err) {
-            console.error(err);
-            res.status(500).send("Erro ao inserir dados no banco de dados.");
-        } else {
-            res.status(200).send("Dados inseridos com sucesso.");
-        }
-    });
-});
+    const { realName } = req.body
+    const { user } = req.body;
+    const { senha } = req.body;
+    let sql = "INSERT INTO funcionario(`nomeFuncionario`, `nomeUsuario`, `nomeSenha`) VALUES (?, ?, ?)";
+    
+    db.query(sql, [realName, user, senha], (err, result) => {
+        if (err) console.log(err)
+        else res.send(result)        
+    })    
+})
 
 
 
