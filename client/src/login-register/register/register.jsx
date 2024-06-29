@@ -1,11 +1,8 @@
-// import { useContext, useState } from 'react';
 import {  useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
-// import { RegisterContext } from '../../context/RegisterContext.jsx';
 
 export default function Register() {
-    // const { setIsCreated } = useContext(RegisterContext);
     const [realName, setName] = useState('');
     const [user, setUsuario] = useState('');
     const [senha, setSenha] = useState('');
@@ -18,18 +15,16 @@ export default function Register() {
                 user: user,
                 senha: senha
             }).then((response) => {
-                // Verifica se a resposta está vazia
                 if (!response.data) {
                     console.error('Resposta vazia ao cadastrar:', response);
                     alert('Erro ao tentar cadastrar. Resposta vazia do servidor.');
                     return;
                 }
                 console.log(response.data)
-                // Verifica se há dados na resposta
                 if (response.data [0][0].idFuncionario > 0) {
                                                         
                         alert('Funcionário: ' + response.data[0][0].nomeFuncionario + ' cadastrado com sucesso.');
-                        navigate('/');
+                        navigate('/lista');
                 } else {
                     console.error('Resposta de cadastro inválida:', response);
                     alert('Erro ao tentar cadastrar. Resposta inválida do servidor.');
@@ -47,8 +42,7 @@ export default function Register() {
         <div className="min-h-screen flex flex-col justify-center bg-indigo-600">
             <div className="bg-white mx-auto max-w-md py-8 px-10 shadow rounded-lg">
                 <div className="mb-4">
-                    {/* Se você deseja adicionar algum título ou cabeçalho, pode ser colocado aqui */}
-                </div>
+                     </div>
 
                 <div className="mb-4">
                     <input

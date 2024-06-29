@@ -61,8 +61,6 @@ export default function Login() {
                     <button onClick={logar} className="inline-block w-full px-8 py-4 leading-none text-white bg-indigo-600 hover:bg-indigo-700 font-semibold rounded shadow"  >Entrar</button>
                 </div>
                 <div className="nb-4">
-                    <p><a href="#" className="text-indigo-600">Esqueceu sua senha?</a></p>
-                    <p>Não tem uma conta? <a href="/cadastro" className="text-indigo-600">Registre-se</a></p>
                 </div>            
         </div>
     </div>

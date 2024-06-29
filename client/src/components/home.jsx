@@ -18,6 +18,8 @@ export default function Home(){
     return(
         <>        
             <Link to='/novopedido'><button onClick={CriarNovoPedido} className="homeNovoPedido container" >Novo Pedido</button></Link>
+            <Link to='/lista'><button onClick={CriarNovoPedido} className="homeNovoPedido container" >Lista de usuários</button></Link>
+
         </>
     )
 }
