@@ -129,6 +129,53 @@ app.post("/cadastrar", (req, res) => {
     console.log(sql)
 })
 
+app.post("/grupopedidolistar", (req, res) => {
+    const {dataEntrada} = req.body;
+    let sql = "call sp_GrupoPedido_Listar(?)";
+
+    db.query(sql,[dataEntrada], (err, result) => {
+        if (err) console.log(err)
+        else res.send(result)
+    })
+})
+
+app.post("/grupopedidofinalizar", (req, res) => {
+    const { idGrupoPedido } = req.body;
+
+    let sql = "call sp_grupoPedido_finalizar(?)";
+    
+    db.query(sql, [idGrupoPedido], (err, result) => {
+        if (err) console.log(err)
+        else res.send(result)        
+    })    
+    console.log(sql)
+})
+
+app.post("/realizarbaixa", (req, res) => {
+    const { idGrupoPedido } = req.body;
+
+    let sql = "call sp_FinanceiroMovimento_RealizarBaixa(?)";
+    
+    db.query(sql, [idGrupoPedido], (err, result) => {
+        if (err) console.log(err)
+        else res.send(result)        
+    })    
+    console.log(sql)
+})
+
+app.post("/realizarbaixa", (req, res) => {
+    const { idGrupoPedido } = req.body;
+
+    let sql = "call sp_FinanceiroMovimento_RealizarBaixa(?)";
+    
+    db.query(sql, [idGrupoPedido], (err, result) => {
+        if (err) console.log(err)
+        else res.send(result)        
+    })    
+    console.log(sql)
+})
+
+
 
 
 /*----------------------------------------------------*/ 

@@ -7,7 +7,7 @@ import { mensagem } from '../geral.jsx';
 import { useNavigate } from "react-router-dom";
 import './css/ApagarDepois.css'
 
-export default function NovoPedido(){
+export default function EditarPedido(){
     const [listProduto, setListProduto] = useState(); 
     const [nomeGrupoPedido, setNomeGrupoPedido] = useState();      
     const { idGrupoPedido } = useContext(LoginContext); 
@@ -15,7 +15,10 @@ export default function NovoPedido(){
     const [quantidades, setQuantidades] = useState({});
 
     useEffect(() => {
-      Axios.get("http://localhost:3001/getProduto").then((response) => {
+      Axios.post("http://localhost:3001/editarproduto",{
+        idGrupoPedido: idGrupoPedido
+      }        
+      ).then((response) => {
         setListProduto(response.data)        
       })
     }, [])
@@ -90,7 +93,8 @@ export default function NovoPedido(){
 
     return(
         <div className='NovoPedidoContainer'>
-            <div className='botoesPedido'>
+            <h2>Editar pedido</h2>
+            <div className='botoesPedido'>                
                 <button className='apagarDepois' onClick={() => salvarGrupoPedido()}>Salvar Pedido</button>             
                 <button className='apagarDepois' onClick={() => cancelarGrupoPedido()}>Cancelar Pedido</button>                                              
             </div> 

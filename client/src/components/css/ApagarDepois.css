@@ -55,3 +55,81 @@
     align-items: center;
     
 }
+
+.listaGrupoPedido{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin: 50px;
+}
+
+.listaPedido{
+    width: 80%;
+}
+
+.listaPedidos{
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+    justify-content: space-between;
+    padding: 20px;
+    border: 2px solid black;
+}
+
+.cardPedido{
+    background-color: rgb(23, 23, 104);
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.buttonFinalizarPedido{
+    border: 2px solid black;
+    padding: 5px;
+    background-color: rgb(69, 69, 252);
+    color: white;    
+}
+
+.buttonFinalizarPedido:hover{
+    background-color: rgb(163, 163, 238);
+    color: black;
+}
+
+.buttonEditarPedido{
+    border: 2px solid black;
+    padding: 5px;
+    background-color: rgb(92, 97, 24);
+    color: white;     
+}
+
+.buttonEditarPedido:hover{
+    background-color: rgb(241, 241, 195);
+    color: black;
+}
+
+.buttonRealizarBaixa{
+    border: 2px solid black;
+    padding: 5px;
+    background-color: rgb(16, 107, 39);
+    color: white;
+    
+}
+
+.buttonRealizarBaixa:hover{
+    background-color: rgb(163, 163, 238);
+    color: black;
+}
+
+.buttonCancelarPedido{
+    border: 2px solid black;
+    background-color: rgb(238, 5, 56);
+    padding: 5px;
+    color: white;
+    
+}
+
+.buttonCancelarPedido:hover{
+    background-color: rgb(243, 145, 166);
+    color: black;
+}

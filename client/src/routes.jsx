@@ -8,6 +8,7 @@ import NovoPedido from './components/homeNovoPedido';
 import Register from './login-register/register/register';
 import { RegisterContext } from './context/RegisterContext.jsx';
 import ListUser from './components/ListUsers.jsx';
+import EditarPedido from './components/homeEditarPedido.jsx';
 
 export default function AppRoutes() {
     const [isLogged, setIsLogged] = useState(false);
@@ -23,6 +24,7 @@ export default function AppRoutes() {
                         <Route exact path="/" element={<Login />} />
                         {isLogged ? <Route exact path="/home" element={<Home />} /> : <Route exact path="/home" element={<Err />} />}
                         <Route exact path="/novopedido" element={<NovoPedido />} />
+                        <Route exact path="/editarpedido" element={<EditarPedido />} />
                         <Route exact path="/cadastro" element={<Register />} />
                         {isCreated ? <Route exact path="/" element={<Home />} /> : <Route exact path="/" element={<Err />} />}
                         <Route exact path='/lista' element={<ListUser/>}></Route>

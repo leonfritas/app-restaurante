@@ -3,7 +3,7 @@ import {LoginContext} from '../../context/LoginContext'
 import { useNavigate } from "react-router-dom";
 import "./login.css"
 import Axios from 'axios';
-import { mensagemErro } from '../../geral';
+import { mensagem } from '../../geral';
 
 export default function Login() {
     const { setIsLogged, setAtivoAdm } = useContext(LoginContext);
@@ -19,19 +19,18 @@ export default function Login() {
                 name: usuario,
                 senha: senha
             }).then((response) => {
-                let ativoFuncionario = response.data[0][0].ativoFuncionario;
-                let ativoAdm = response.data[0][0].ativoAdm.data[0];                              
+                let ativoFuncionario = response.data[0][0].ativoFuncionario;                                                   
                 if (ativoFuncionario == 1) {
+                    let ativoAdm = response.data[0][0].ativoAdm.data[0]; 
                     setAtivoAdm(ativoAdm)
                     setIsLogged(true);
-                    navigate('/home');
-                } else if (ativoFuncionario == 0) {
-                    mensagemErro('Acesso negado');
-                    
+                    navigate('/home');                    
+                } else if(ativoFuncionario !== 1){
+                    mensagem('Acesso negado');                    
                 }
             });
         } else {
-            mensagemErro('Preencha seu usuário e senha para continuar.');
+            mensagem('Preencha seu usuário e senha para continuar.');
         }
     }
     

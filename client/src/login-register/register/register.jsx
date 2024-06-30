@@ -1,7 +1,7 @@
 import {  useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
-import { mensagemErro } from '../../geral';
+import { mensagem } from '../../geral';
 
 export default function Register() {
     const [realName, setName] = useState('');
@@ -17,21 +17,21 @@ export default function Register() {
                 senha: senha
             }).then((response) => {
                 if (!response.data) {                    
-                    mensagemErro('Erro ao tentar cadastrar. Resposta vazia do servidor.');
+                    mensagem('Erro ao tentar cadastrar. Resposta vazia do servidor.');
                     return;
                 }
                 console.log(response.data)
                 if (response.data [0][0].idFuncionario > 0) {                                                        
-                    mensagemErro('Funcionário: ' + response.data[0][0].nomeFuncionario + ' cadastrado com sucesso.');
+                    mensagem('Funcionário: ' + response.data[0][0].nomeFuncionario + ' cadastrado com sucesso.');
                     navigate('/lista');
                 } else {                    
-                    mensagemErro('Erro ao tentar cadastrar. Resposta inválida do servidor.');
+                    mensagem('Erro ao tentar cadastrar. Resposta inválida do servidor.');
                 }
             }).catch(() => {                
-                mensagemErro('Erro ao tentar cadastrar. Por favor, tente novamente mais tarde.');
+                mensagem('Erro ao tentar cadastrar. Por favor, tente novamente mais tarde.');
             });
         } else {
-            mensagemErro('Preencha seu nome, usuário e senha para continuar.');
+            mensagem('Preencha seu nome, usuário e senha para continuar.');
         }
     };
 
