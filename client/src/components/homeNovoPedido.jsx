@@ -82,7 +82,7 @@ export default function NovoPedido(){
             })
             navigate('/home')
         }else{
-            mensagemErro('Informe o código do pedido.')
+            navigate('/home')
         }  
     }
 
