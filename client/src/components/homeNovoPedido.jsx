@@ -60,6 +60,7 @@ export default function NovoPedido(){
 
     function salvarGrupoPedido(){        
         if (nomeGrupoPedido == '' || nomeGrupoPedido == undefined) return mensagemErro('Digite o nome do pedido.');
+
         if (idGrupoPedido > 0){
             Axios.post("http://localhost:3001/grupopedidosalvar", {                
                 idGrupoPedido: idGrupoPedido,
@@ -101,24 +102,26 @@ export default function NovoPedido(){
                     <li>categoria</li> 
                     <li>preco</li>
                 </ul>
-                <div className='listaProdutos'>
+                <div >
                 {typeof listProduto !== "undefined" && 
                     listProduto.map((value) => {
                     return(
                     < >
-                        <Itens  key={value.idProduto}
-                            listCard={listProduto}
-                            setListCard={setListProduto}
-                            id={value.idProduto}
-                            name={value.nomeProduto}
-                            cost={value.preco}
-                            category={value.idCategoria}
-                            quantidade={value.quantidade} /> 
-                            <div className='adicionaERemoveProduto'>
-                                <button className='buttonApagarDepois' onClick={() => pedidoInserir(value.idProduto, value.preco, value.quantidade)}>+</button>   
-                                <p>{quantidades[value.idProduto] || 0}</p> 
-                                <button className='buttonApagarDepois' onClick={() => pedidoExcluir(value.idProduto)}>-</button>
-                            </div>                  
+                        <div className='listaProdutos'>
+                            <Itens  key={value.idProduto}
+                                listCard={listProduto}
+                                setListCard={setListProduto}
+                                id={value.idProduto}
+                                name={value.nomeProduto}
+                                cost={value.preco}
+                                category={value.idCategoria}
+                                quantidade={value.quantidade} /> 
+                                <div className='adicionaERemoveProduto'>
+                                    <button className='buttonApagarDepois' onClick={() => pedidoInserir(value.idProduto, value.preco, value.quantidade)}>+</button>   
+                                    <p>{quantidades[value.idProduto] || 0}</p> 
+                                    <button className='buttonApagarDepois' onClick={() => pedidoExcluir(value.idProduto)}>-</button>
+                                </div>   
+                        </div>                    
                     </>
                     )
                 })}     
