@@ -1,6 +1,7 @@
 import {  useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
+import { mensagemErro } from '../../geral';
 
 export default function Register() {
     const [realName, setName] = useState('');
@@ -15,26 +16,22 @@ export default function Register() {
                 user: user,
                 senha: senha
             }).then((response) => {
-                if (!response.data) {
-                    console.error('Resposta vazia ao cadastrar:', response);
-                    alert('Erro ao tentar cadastrar. Resposta vazia do servidor.');
+                if (!response.data) {                    
+                    mensagemErro('Erro ao tentar cadastrar. Resposta vazia do servidor.');
                     return;
                 }
                 console.log(response.data)
-                if (response.data [0][0].idFuncionario > 0) {
-                                                        
-                        alert('Funcionário: ' + response.data[0][0].nomeFuncionario + ' cadastrado com sucesso.');
-                        navigate('/lista');
-                } else {
-                    console.error('Resposta de cadastro inválida:', response);
-                    alert('Erro ao tentar cadastrar. Resposta inválida do servidor.');
+                if (response.data [0][0].idFuncionario > 0) {                                                        
+                    mensagemErro('Funcionário: ' + response.data[0][0].nomeFuncionario + ' cadastrado com sucesso.');
+                    navigate('/lista');
+                } else {                    
+                    mensagemErro('Erro ao tentar cadastrar. Resposta inválida do servidor.');
                 }
-            }).catch((error) => {
-                console.error('Erro ao cadastrar:', error);
-                alert('Erro ao tentar cadastrar. Por favor, tente novamente mais tarde.');
+            }).catch(() => {                
+                mensagemErro('Erro ao tentar cadastrar. Por favor, tente novamente mais tarde.');
             });
         } else {
-            alert('Preencha seu nome, usuário e senha para continuar.');
+            mensagemErro('Preencha seu nome, usuário e senha para continuar.');
         }
     };
 

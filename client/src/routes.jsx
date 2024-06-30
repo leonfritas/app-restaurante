@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { LoginContext } from './context/LoginContext';
 import Login from './login-register/login/login';
@@ -12,10 +12,11 @@ import ListUser from './components/ListUsers.jsx';
 export default function AppRoutes() {
     const [isLogged, setIsLogged] = useState(false);
     const [idGrupoPedido, setIdGrupoPedido] = useState();
+    const [ativoAdm, setAtivoAdm] = useState();
     const [isCreated, setIsCreated] = useState(false); // Inicializando como false
 
     return (
-        <LoginContext.Provider value={{ isLogged, setIsLogged, idGrupoPedido, setIdGrupoPedido }}>
+        <LoginContext.Provider value={{ isLogged, setIsLogged, idGrupoPedido, setIdGrupoPedido, ativoAdm, setAtivoAdm }}>
             <RegisterContext.Provider value={{ isCreated, setIsCreated }}>
                 <BrowserRouter>
                     <Routes>

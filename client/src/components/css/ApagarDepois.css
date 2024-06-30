@@ -1,0 +1,55 @@
+.NovoPedidoContainer{
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.buttonApagarDepois{
+    width: 50px;
+    height: 50px;
+    margin: 10px;
+    font-size: 30px;
+    border: 1px solid black;
+}
+
+.botoesPedido{
+    display: flex;
+    flex-direction: row;
+
+}
+
+.apagarDepois{
+    width: 100px;
+    border: 2px solid black;
+    margin: 10px;
+    padding: 5px;
+}
+
+
+.NovoPedidoContainerLista{
+
+    width: 500px;
+}
+
+.listaProdutos{
+    display: flex;
+    flex-direction: column;
+    border: 2px solid green;
+}
+
+.NovoPedidoContainerLista{
+    display: flex;
+    flex-direction: row;
+
+}
+
+
+.adicionaERemoveProduto{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    
+}

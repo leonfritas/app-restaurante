@@ -39,6 +39,30 @@ app.post("/login", (req, res) => {
     })    
 })
 
+app.post("/grupopedidosalvar", (req, res) => {
+    const { idGrupoPedido } = req.body;
+    const { nomeGrupoPedido } = req.body;
+    let sql = "call sp_grupoPedido_salvar(?,?)";
+    
+    db.query(sql, [idGrupoPedido, nomeGrupoPedido], (err, result) => {
+        if (err) console.log(err)
+        else res.send(result)        
+    })    
+    console.log(sql)
+});
+
+app.post("/grupopedidocancelar", (req, res) => {
+    const { idGrupoPedido } = req.body;
+
+    let sql = "call sp_grupoPedido_cancelar(?)";
+    
+    db.query(sql, [idGrupoPedido], (err, result) => {
+        if (err) console.log(err)
+        else res.send(result)        
+    })    
+    console.log(sql)
+})
+
 app.post("/pedidoinserir", (req, res) => {
     const { idGrupoPedido } = req.body;
     const { idProduto } = req.body;
@@ -53,6 +77,17 @@ app.post("/pedidoinserir", (req, res) => {
     })    
 })
 
+app.post("/pedidoexcluir", (req, res) => {
+    const { idGrupoPedido } = req.body;
+    const { idProduto } = req.body; 
+
+    let sql = "call sp_pedido_excluir(?,?)";
+    
+    db.query(sql, [idGrupoPedido, idProduto], (err, result) => {
+        if (err) console.log(err)
+        else res.send(result)        
+    })    
+})
 
 app.get("/grupopedidoinserir", (req, res) => {
     let sql = "call sp_GrupoPedido_Inserir";
@@ -93,8 +128,6 @@ app.post("/cadastrar", (req, res) => {
     })    
     console.log(sql)
 })
-
-
 
 
 

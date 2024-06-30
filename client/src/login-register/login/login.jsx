@@ -3,13 +3,16 @@ import {LoginContext} from '../../context/LoginContext'
 import { useNavigate } from "react-router-dom";
 import "./login.css"
 import Axios from 'axios';
+import { mensagemErro } from '../../geral';
 
 export default function Login() {
-    const { setIsLogged } = useContext(LoginContext);
+    const { setIsLogged, setAtivoAdm } = useContext(LoginContext);
     const [usuario, setUsuario] = useState('');
-    const [senha, setSenha] = useState('');
+    const [senha, setSenha] = useState('');    
     const navigate = useNavigate();
 
+
+    
     function logar() {
         if (usuario !== '' && senha !== '') {
             Axios.post("http://localhost:3001/login", {
@@ -17,18 +20,21 @@ export default function Login() {
                 senha: senha
             }).then((response) => {
                 let ativoFuncionario = response.data[0][0].ativoFuncionario;
-
+                let ativoAdm = response.data[0][0].ativoAdm.data[0];                              
                 if (ativoFuncionario == 1) {
+                    setAtivoAdm(ativoAdm)
                     setIsLogged(true);
                     navigate('/home');
                 } else if (ativoFuncionario == 0) {
-                    alert('Acesso Negado');
+                    mensagemErro('Acesso negado');
+                    
                 }
             });
         } else {
-            alert('Preencha seu usuário e senha para continuar.');
+            mensagemErro('Preencha seu usuário e senha para continuar.');
         }
     }
+    
     useEffect(() => {
         const handleKeyDown = (event) => {
             if (event.key === "Enter") {
@@ -62,7 +68,7 @@ export default function Login() {
                 </div>
                 <div className="nb-4">
                 </div>            
-        </div>
+        </div> 
     </div>
     </>
   );
