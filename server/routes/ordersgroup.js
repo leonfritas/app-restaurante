@@ -7,7 +7,7 @@ const orderGroupRoute = express.Router()
 orderGroupRoute.get('/orderGroupInsert', grupoPedidoInserir)
 orderGroupRoute.post('/orderGroupCancel', grupoPedidoCancelar)
 orderGroupRoute.post('/orderGroupSave', grupoPedidoSalvar)
-orderGroupRoute.post('orderGroupFinalize', grupoPedidoFinalizar)
-orderGroupRoute.post('orderGroupList', grupoPedidoListar)
+orderGroupRoute.post('/orderGroupFinalize', grupoPedidoFinalizar)
+orderGroupRoute.post('/orderGroupList', grupoPedidoListar)
 
 export default orderGroupRoute

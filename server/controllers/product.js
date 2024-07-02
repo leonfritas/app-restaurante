@@ -2,8 +2,6 @@ import { response } from 'express'
 
 import { db } from '../db.js'
 
-
-
 export const productRegister = (req, res) => {
     const { name } = req.body;
     const { cost } = req.body;

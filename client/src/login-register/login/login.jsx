@@ -19,10 +19,10 @@ export default function Login() {
             Axios.post("http://localhost:3001/users/login", {
                 name: usuario,
                 senha: senha
-            }).then((response) => {
-                let ativoFuncionario = response.data[0][0].ativoFuncionario;                                                   
+            }).then((response) => {            
+                let ativoFuncionario = response.data[0][0].ativoFuncionario;                                                             
                 if (ativoFuncionario == 1) {
-                    let ativoAdm = response.data[0][0].ativoAdm.data[0]; 
+                    let ativoAdm = response.data[0][0].ativoAdm; 
                     setAtivoAdm(ativoAdm)
                     setIsLogged(true);
                     navigate('/home');                    

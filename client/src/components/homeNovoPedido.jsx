@@ -15,7 +15,7 @@ export default function NovoPedido(){
     const [quantidades, setQuantidades] = useState({});
 
     useEffect(() => {
-      Axios.get("http://localhost:3001/getProduto").then((response) => {
+      Axios.get("http://localhost:3001/products/listProduct").then((response) => {
         setListProduto(response.data)        
       })
     }, [])
