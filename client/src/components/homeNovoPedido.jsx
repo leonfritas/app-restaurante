@@ -23,7 +23,7 @@ export default function NovoPedido(){
 
     function pedidoInserir(idProduto, preco, quantidade){         
         if (idGrupoPedido > 0){
-            Axios.post("http://localhost:3001/pedidoinserir", {                
+            Axios.post("http://localhost:3001/requested/requestInsert", {                
                 idGrupoPedido: idGrupoPedido,
                 idProduto: idProduto,   
                 quantidade: quantidade,             
@@ -42,7 +42,7 @@ export default function NovoPedido(){
 
     function pedidoExcluir(idProduto){         
         if (idGrupoPedido > 0){
-            Axios.post("http://localhost:3001/pedidoexcluir", {                
+            Axios.post("http://localhost:3001/requested/requestDelete", {                
                 idGrupoPedido: idGrupoPedido,
                 idProduto: idProduto         
             }).then((response) => {                              
@@ -61,7 +61,7 @@ export default function NovoPedido(){
         if (nomeGrupoPedido == '' || nomeGrupoPedido == undefined) return mensagem('Digite o nome do pedido.');
 
         if (idGrupoPedido > 0){
-            Axios.post("http://localhost:3001/grupopedidosalvar", {                
+            Axios.post("http://localhost:3001/orderGroup/orderGroupSave", {                
                 idGrupoPedido: idGrupoPedido,
                 nomeGrupoPedido: nomeGrupoPedido          
             }).then((response) => {                              
@@ -76,7 +76,7 @@ export default function NovoPedido(){
 
     function cancelarGrupoPedido(){
         if (idGrupoPedido > 0){
-            Axios.post("http://localhost:3001/grupopedidocancelar", {                
+            Axios.post("http://localhost:3001/orderGroup/orderGroupCancel", {                
                 idGrupoPedido: idGrupoPedido                         
             }).then((response) => {                              
                 console.log(response)                                       

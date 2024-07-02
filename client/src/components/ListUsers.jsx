@@ -7,7 +7,7 @@ export default function ListUser() {
     const [listUser, setListUser] = useState([]);
 
     useEffect(() => {
-        Axios.get("http://localhost:3001/listar")
+        Axios.get("http://localhost:3001/users/userList")
             .then((response) => {
                 console.log("Dados recebidos:", response.data);
                 setListUser(response.data);
@@ -19,7 +19,7 @@ export default function ListUser() {
 
     function CriarNovoPedido(){
         
-        Axios.get("http://localhost:3001/grupopedidoinserir").then((response) => {          
+        Axios.get("http://localhost:3001/orderGroup/orderGroupInsert").then((response) => {          
           setIdGrupoPedido(response.data[0][0].idGrupoPedido);
           console.log(response.data[0][0].idGrupoPedido)
         })          

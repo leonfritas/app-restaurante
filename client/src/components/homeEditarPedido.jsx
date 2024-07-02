@@ -26,7 +26,7 @@ export default function EditarPedido(){
 
     function pedidoInserir(idProduto, preco, quantidade){         
         if (idGrupoPedido > 0){
-            Axios.post("http://localhost:3001/pedidoinserir", {                
+            Axios.post("http://localhost:3001/requested/requestInsert", {                
                 idGrupoPedido: idGrupoPedido,
                 idProduto: idProduto,   
                 quantidade: quantidade,             

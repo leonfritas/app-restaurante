@@ -5,6 +5,7 @@ import "./login.css"
 import Axios from 'axios';
 import { mensagem } from '../../geral';
 
+
 export default function Login() {
     const { setIsLogged, setAtivoAdm } = useContext(LoginContext);
     const [usuario, setUsuario] = useState('');
@@ -15,7 +16,7 @@ export default function Login() {
     
     function logar() {
         if (usuario !== '' && senha !== '') {
-            Axios.post("http://localhost:3001/login", {
+            Axios.post("http://localhost:3001/users/login", {
                 name: usuario,
                 senha: senha
             }).then((response) => {
@@ -64,9 +65,7 @@ export default function Login() {
                 </div>
                 <div className="mb-4">
                     <button onClick={logar} className="inline-block w-full px-8 py-4 leading-none text-white bg-indigo-600 hover:bg-indigo-700 font-semibold rounded shadow"  >Entrar</button>
-                </div>
-                <div className="nb-4">
-                </div>            
+                </div>        
         </div> 
     </div>
     </>
