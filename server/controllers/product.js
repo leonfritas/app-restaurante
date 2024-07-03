@@ -17,7 +17,7 @@ export const productRegister = (req, res) => {
 
 export const listaProduto = (req, res) => {
 
-    let sql = "select * from produto"
+    let sql = "select * from Produto"
 
     db.query(sql, (err, result) => {
         if(err) console.log(err)

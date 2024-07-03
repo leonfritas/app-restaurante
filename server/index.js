@@ -7,7 +7,7 @@ import userRoute from './routes/users.js'
 import productRoute from "./routes/products.js";
 import orderRoute from "./routes/requests.js";
 import orderGroupRoute from "./routes/ordersgroup.js";
-import realizarBaixaRouter from "./routes/realizarBaixa.js";
+import FinancierRouter from "./routes/Financiers.js";
 
 
 
@@ -22,7 +22,7 @@ app.use('/users', userRoute)
 app.use('/products', productRoute)
 app.use('/requested', orderRoute)
 app.use('/orderGroup', orderGroupRoute)
-app.use('/realizarBaixa', realizarBaixaRouter)
+app.use('/financier', FinancierRouter)
 ''
 
 

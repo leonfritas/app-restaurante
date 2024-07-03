@@ -3,7 +3,7 @@ import { db } from '../db.js'
 
 export const listar = (req, res) => {
 
-    let sql = "select * from funcionario"
+    let sql = "select * from Funcionario"
 
     db.query(sql, (err, result) => {
         if(err) console.log(err)

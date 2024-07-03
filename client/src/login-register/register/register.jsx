@@ -11,7 +11,7 @@ export default function Register() {
 
     const register = () => {
         if (realName !== '' && user !== '' && senha !== '') {
-            Axios.post("http://localhost:3001/users/cadastrar", {
+            Axios.post("http://localhost:3001/users/register", {
                 realName: realName,
                 user: user,
                 senha: senha

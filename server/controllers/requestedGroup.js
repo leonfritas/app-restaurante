@@ -16,7 +16,7 @@ export const grupoPedidoSalvar = (req, res) => {
 export const grupoPedidoCancelar =  (req, res) => {
     const { idGrupoPedido } = req.body;
 
-    let sql = "call sp_grupoPedido_cancelar(?)";
+    let sql = "call sp_GrupoPedido_Cancelar(?)";
     
     db.query(sql, [idGrupoPedido], (err, result) => {
         if (err) console.log(err)
@@ -46,7 +46,7 @@ export const grupoPedidoListar = (req, res) => {
 export const grupoPedidoFinalizar = (req, res) => {
     const { idGrupoPedido } = req.body;
 
-    let sql = "call sp_grupoPedido_finalizar(?)";
+    let sql = "call sp_GrupoPedido_Finalizar(?)";
     
     db.query(sql, [idGrupoPedido], (err, result) => {
         if (err) console.log(err)
