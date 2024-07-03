@@ -34,8 +34,7 @@ export default function Home() {
   function CriarNovoPedido(){
         
     Axios.get("http://localhost:3001/orderGroup/orderGroupInsert").then((response) => {          
-      setIdGrupoPedido(response.data[0][0].idGrupoPedido);
-      console.log(response.data[0][0].idGrupoPedido)
+      setIdGrupoPedido(response.data[0][0].idGrupoPedido);      
     })          
 }
 

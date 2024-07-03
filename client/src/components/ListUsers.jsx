@@ -8,8 +8,7 @@ export default function ListUser() {
 
     useEffect(() => {
         Axios.get("http://localhost:3001/users/userList")
-            .then((response) => {
-                console.log("Dados recebidos:", response.data);
+            .then((response) => {                
                 setListUser(response.data);
             })
             .catch((error) => {
@@ -17,18 +16,12 @@ export default function ListUser() {
             });
     }, []);
 
-    function CriarNovoPedido(){
-        
-        Axios.get("http://localhost:3001/orderGroup/orderGroupInsert").then((response) => {          
-          setIdGrupoPedido(response.data[0][0].idGrupoPedido);
-          console.log(response.data[0][0].idGrupoPedido)
-        })          
-}
+
 
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
             <h1 className="text-3xl font-bold mb-6 text-center text-blue-600">Lista de Usuários</h1>
-            <Link to='/cadastro'><button onClick={CriarNovoPedido} className="text-white w-60 py-3 my-2 leading-none bg-indigo-600 hover:bg-indigo-700 font-semibold rounded shadow" >Cadastrar novos usuários!</button></Link>
+            <Link to='/cadastro'><button className="text-white w-60 py-3 my-2 leading-none bg-indigo-600 hover:bg-indigo-700 font-semibold rounded shadow" >Cadastrar novos usuários!</button></Link>
 
 
             <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
