@@ -10,4 +10,4 @@ export const realizarBaixa = (req, res) => {
         if(err) return console.log(err);
         if (result) return console.log(result)
     })
-} 
+}

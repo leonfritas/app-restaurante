@@ -22,7 +22,6 @@ export default function AppRoutes() {
                 <BrowserRouter>
                     <Routes>
                         <Route exact path="/" element={<Login />} />
-                        {isLogged ? <Route exact path="/home" element={<Home />} /> : <Route exact path="/home" element={<Err />} />}
                         <Route exact path='/home' element={<Home />} />
                         <Route exact path="/novopedido" element={<NovoPedido />} />
                         <Route exact path="/editarpedido" element={<EditarPedido />} />
