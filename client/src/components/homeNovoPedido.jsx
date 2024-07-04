@@ -3,7 +3,7 @@ import {LoginContext} from '../context/LoginContext.jsx'
 import Axios from "axios"
 import Itens from './homeNovoPedidoItem.jsx';
 import './css/homeNovoPedido.css'
-import { mensagem, mensagemPergunta } from '../geral.jsx';
+import { mensagem } from '../geral.jsx';
 import { useNavigate } from "react-router-dom";
 import './css/ApagarDepois.css'
 
@@ -13,8 +13,9 @@ export default function NovoPedido(){
     const { idGrupoPedido } = useContext(LoginContext); 
     const navigate = useNavigate(); 
     const [quantidades, setQuantidades] = useState({});
-    const [salvarPedido, setSalvarPedido] = useState(false);
+    const [mostrarListaMesa, setMostrarListaMesa] = useState(true);
     const [table, setTable] = useState();
+    const [idMesa, setIdMesa] = useState()
 
     useEffect(() => {
       Axios.get("http://localhost:3001/products/listProduct").then((response) => {
@@ -61,8 +62,7 @@ export default function NovoPedido(){
 
      function getTable(){
          Axios.get("http://localhost:3001/table/getTable").then((response) => {
-          setTable(response.data[0])    
-        //   console.log(table)    
+          setTable(response.data[0])            
         })    
       }
 
@@ -71,32 +71,27 @@ export default function NovoPedido(){
       }, [])
 
      function selecionarMesa(idMesa){
-        setSalvarPedido(false)  
-        salvarGrupoPedido(idMesa)
-        
-
+        setIdMesa(idMesa)
+        setMostrarListaMesa(false)  
     }
 
-     function salvarGrupoPedido(idMesaSelecionada){        
+     function salvarGrupoPedido(){        
         if (nomeGrupoPedido == '' || nomeGrupoPedido == undefined) return mensagem('Digite o nome do pedido.');
         
-        if (idGrupoPedido > 0){     
-            alert(idMesaSelecionada)       
-            idMesaSelecionada !== 0 ? setSalvarPedido(true) : '';
-            idMesaSelecionada !== 0 ? getTable() : '';
-                         
-            if (idMesaSelecionada > 0){
-                setSalvarPedido(false)
+        if (idGrupoPedido > 0){ 
+            if (idMesa == undefined) setIdMesa(0);
+            if (idMesa !== undefined){
+                setMostrarListaMesa(false)
                 Axios.post("http://localhost:3001/orderGroup/orderGroupSave", {                
                     idGrupoPedido: idGrupoPedido,
                     nomeGrupoPedido: nomeGrupoPedido,
-                    idMesa: idMesaSelecionada     
+                    idMesa: idMesa     
                 }).then((response) => {                              
                     console.log(response)                                       
                 })
                 mensagem('Pedido salvo com sucesso.')
                 navigate('/home')
-            }//else mensagem('Selecione uma mesa.')    
+            }  
         }else{
             mensagem('Informe o código do pedido.')
         }  
@@ -118,12 +113,16 @@ export default function NovoPedido(){
 
     return(               
         <div className='NovoPedidoContainer'>
+            {mostrarListaMesa == false ?
             <div className='botoesPedido'>
                 <button className='apagarDepois' onClick={() => salvarGrupoPedido()}>Salvar Pedido</button>             
                 <button className='apagarDepois' onClick={() => cancelarGrupoPedido()}>Cancelar Pedido</button>                                              
             </div> 
-            <input  className='inputNomeGrupoPedido' placeholder='Digite aqui o nome do pedido' type="text"  onChange={(e) => setNomeGrupoPedido(e.target.value)}/> 
-            <h2>Selecione os items do pedido:</h2>
+            : ''}
+            {mostrarListaMesa == false ? <input  className='inputNomeGrupoPedido' placeholder='Digite aqui o nome do pedido' type="text"  onChange={(e) => setNomeGrupoPedido(e.target.value)}/> : ''}
+            {mostrarListaMesa == false ? <h2>Selecione os items do pedido:</h2> : ''}
+            
+            {mostrarListaMesa == false ?
             <div >                    
                 <ul className='NovoPedidoContainerLista'>
                     <li>Item</li>
@@ -156,10 +155,11 @@ export default function NovoPedido(){
                 })}     
                 </div>               
             </div>
-            {salvarPedido === true ?
+            : ''}
+            {mostrarListaMesa === true ?
             <div id="divSalvarPedido">              
                {typeof table !== "undefined" &&
-                    table.map((value) => {
+                    table.map((value) => {                        
                     return (
                         <>              
                             <div  className='listaMesa'>                                                                                      
