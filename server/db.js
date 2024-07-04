@@ -1,8 +1,9 @@
 import mysql from 'mysql'
 
 export const db = mysql.createPool({
-    host: process.env.DB_HOST,
-    user: process.env.USER,
-    password: process.env.PASSWORD,
-    database: process.env.DATABASE
+    host: 'apprestaurante.cno0wseamf91.us-east-2.rds.amazonaws.com',
+    user: 'admin',
+    password: '2Cerva1camarao.',
+    database: 'AppDeskRestaurante'
 });
+
