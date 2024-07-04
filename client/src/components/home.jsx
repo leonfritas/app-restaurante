@@ -86,7 +86,7 @@ export default function Home() {
       <main className="listaGrupoPedido">
         <div className="listaPedido">
         {typeof grupoPedido !== "undefined" &&
-          grupoPedido.map((value) => {
+          grupoPedido.map((value) => {            
             return (
               <>              
                 <div  className='listaPedidos'>                      
