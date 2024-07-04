@@ -2,8 +2,8 @@
 import { Link } from "react-router-dom"
 import "./css/homeNovoPedido.css"
 import Axios from "axios";
-import { useContext, useState, useEffect } from "react";
-import { LoginContext } from '../context/LoginContext'
+import {  useState, useEffect } from "react";
+
 import { mensagem, mensagemPergunta } from "../geral";
 import './css/ApagarDepois.css'
 import Navbar from "./navbar.jsx";
@@ -11,7 +11,7 @@ import Navbar from "./navbar.jsx";
 
 
 export default function Home() {
-  const { setIdGrupoPedido, ativoAdm } = useContext(LoginContext)
+
   const [grupoPedido, setGrupoPedido] = useState();
   
 
@@ -22,6 +22,7 @@ export default function Home() {
       }
     ).then((response) => {
       setGrupoPedido(response.data[0])  
+      // console.log(grupoPedido)
     })    
   }
 
@@ -32,12 +33,7 @@ export default function Home() {
 
   atualizarLista()
 
-  function CriarNovoPedido(){
-        
-    Axios.get("http://localhost:3001/orderGroup/orderGroupInsert").then((response) => {          
-      setIdGrupoPedido(response.data[0][0].idGrupoPedido);      
-    })          
-}
+
 
   function editarPedido() {    
     // Axios.get("http://localhost:3001/orderGroup/").then((response) => {
@@ -106,6 +102,7 @@ export default function Home() {
           grupoPedido.map((value) => {
             return (
               <>
+              {console.log(value)}
                 <div  className='listaPedidos'>                      
                     <ul className="cardPedido">
                       <li>Código: {value.idGrupoPedido}</li>

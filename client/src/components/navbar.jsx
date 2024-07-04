@@ -1,16 +1,15 @@
 
-import { useContext, useState, useEffect} from "react";
+import { useContext} from "react";
 import { Link } from "react-router-dom"
-
 import "./css/homeNovoPedido.css"
 import './css/ApagarDepois.css'
 import { LoginContext } from '../context/LoginContext'
+import Axios from "axios";
 
 
 
 export default function Navbar() {
-    const { setIdGrupoPedido, ativoAdm } = useContext(LoginContext)
-    const [grupoPedido, setGrupoPedido] = useState();
+    const { ativoAdm, setIdGrupoPedido } = useContext(LoginContext)    
 
     function CriarNovoPedido(){
         
