@@ -17,7 +17,6 @@ export default function ListUser() {
     }, []);
 
 
-
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
             <h1 className="text-3xl font-bold mb-6 text-center text-blue-600">Lista de Usuários</h1>
@@ -29,9 +28,11 @@ export default function ListUser() {
                     listUser.map((user, index) => (
                         <li key={index} className="bg-slate-700 p-4 rounded-lg shadow-md">
                             <p className="text-white font-semibold">ID: {user.idFuncionario}</p>
-                            <p className="text-white">Nome: {user.nomeFuncionario}</p>
-                            <p className="text-white">Senha: {user.nomeSenha}</p>
-                            <p className="text-white">Administrador {user.ativoAdministrador?.data[0]}</p>
+                            <p className="text-white font-mono">Nome: {user.nomeFuncionario}</p>
+                            <p className="text-white font-mono">CPF: {user.numeroCPF}</p>
+                            <p className="text-white font-mono">Senha: {user.nomeSenha}</p>
+                            <p className="text-white font-mono">Funcionario: {user.ativoFuncionario?.data[0]}</p>
+                            <p className="text-white font-mono">Administrador: {user.ativoAdministrador?.data[0]}</p>
                             <button type="submit" className="text-white w-full py-3 leading-none bg-indigo-600 hover:bg-indigo-700 font-semibold rounded shadow">
                                 ATUALIZAR
                             </button>

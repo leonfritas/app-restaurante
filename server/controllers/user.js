@@ -12,17 +12,25 @@ export const listar = (req, res) => {
 }
 
 export const cadastrar = (req, res) => {
-    const { realName } = req.body
-    const { user } = req.body;
-    const { senha } = req.body;
-    let sql = "call sp_Funcionario_Inserir (?, ?, ?)";
-    
-    db.query(sql, [realName, user, senha], (err, result) => {
-        if (err) console.log(err)
-        else res.send(result)        
-    })    
-    console.log(sql)
+    const { realName, userName, senha, cpf, checkAdmin, userCheck } = req.body;
+    const ativoAdminValue = checkAdmin ? 1 : 0;
+    const ativoFuncionarioValue = userCheck ? 1 : 0
+
+    let sql = "CALL sp_Funcionario_Inserir (?, ?, ?, ?, ?, ?)";
+
+    db.query(sql, [realName, userName, senha, cpf, ativoAdminValue, ativoFuncionarioValue], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send('Erro ao tentar cadastrar funcionário.');
+        } else {
+            res.status(200).json(result);
+        }
+    });
+
+    console.log(sql);
 }
+
+
 
 export const login =  (req, res) => {
     const { name } = req.body;
