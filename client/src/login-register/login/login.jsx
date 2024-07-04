@@ -20,9 +20,11 @@ export default function Login() {
                 name: usuario,
                 senha: senha
             }).then((response) => {            
-                let ativoFuncionario = response.data[0][0].ativoFuncionario;                                                             
+                let ativoFuncionario = response.data[0][0].ativoFuncionario.data;   
+                                                                         
                 if (ativoFuncionario == 1) {
-                    let ativoAdm = response.data[0][0].ativoAdm; 
+                    let ativoAdm = response.data[0][0].ativoAdm.data[0]; 
+                    console.log(ativoAdm) 
                     setAtivoAdm(ativoAdm)
                     setIsLogged(true);
                     navigate('/home');                    

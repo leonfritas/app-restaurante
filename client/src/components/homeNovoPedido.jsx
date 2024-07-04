@@ -23,7 +23,6 @@ export default function NovoPedido(){
       })
     }, [])
 
-
     function pedidoInserir(idProduto, preco, quantidade){         
         if (idGrupoPedido > 0){
             Axios.post("http://localhost:3001/requested/requestInsert", {                
@@ -60,11 +59,11 @@ export default function NovoPedido(){
         }        
     }
 
-     function getTable(){
-         Axios.get("http://localhost:3001/table/getTable").then((response) => {
+    function getTable(){
+        Axios.get("http://localhost:3001/table/getTable").then((response) => {
           setTable(response.data[0])            
         })    
-      }
+    }
 
     useEffect(() => {
         getTable()
@@ -75,12 +74,10 @@ export default function NovoPedido(){
         setMostrarListaMesa(false)  
     }
 
-     function salvarGrupoPedido(){        
+    function salvarGrupoPedido(){        
         if (nomeGrupoPedido == '' || nomeGrupoPedido == undefined) return mensagem('Digite o nome do pedido.');
         
-        if (idGrupoPedido > 0){ 
-            if (idMesa == undefined) setIdMesa(0);
-            if (idMesa !== undefined){
+        if (idGrupoPedido > 0){                                     
                 setMostrarListaMesa(false)
                 Axios.post("http://localhost:3001/orderGroup/orderGroupSave", {                
                     idGrupoPedido: idGrupoPedido,
@@ -90,8 +87,7 @@ export default function NovoPedido(){
                     console.log(response)                                       
                 })
                 mensagem('Pedido salvo com sucesso.')
-                navigate('/home')
-            }  
+                navigate('/home')            
         }else{
             mensagem('Informe o código do pedido.')
         }  
@@ -164,10 +160,13 @@ export default function NovoPedido(){
                         <>              
                             <div  className='listaMesa'>                                                                                      
                                 <button className='mesa' onClick={()  => selecionarMesa(value.idMesa)}>{value.nomeMesa}</button>                                                                                                                                                              
-                            </div>
+                            </div>                            
                         </>
-                    )
-                    })}
+                )
+                })}
+                <div>
+                    <button className='mesa' onClick={()  => selecionarMesa(null)}>Não especificar mesa</button>
+                </div>
             </div> : ''}  
         </div>
     )
