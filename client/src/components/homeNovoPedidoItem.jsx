@@ -10,9 +10,7 @@ export default function Itens(props){
             <li><p className="card-category item">{props.category}</p></li>
             <li><p className="card-quantidade item">{props.quantidade}</p></li>
         </ul>
-
-          
-        
+                
     </>
     )
 }

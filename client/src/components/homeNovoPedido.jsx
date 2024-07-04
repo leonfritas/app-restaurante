@@ -3,7 +3,7 @@ import {LoginContext} from '../context/LoginContext.jsx'
 import Axios from "axios"
 import Itens from './homeNovoPedidoItem.jsx';
 import './css/homeNovoPedido.css'
-import { mensagem } from '../geral.jsx';
+import { mensagem, mensagemPergunta } from '../geral.jsx';
 import { useNavigate } from "react-router-dom";
 import './css/ApagarDepois.css'
 
@@ -13,6 +13,8 @@ export default function NovoPedido(){
     const { idGrupoPedido } = useContext(LoginContext); 
     const navigate = useNavigate(); 
     const [quantidades, setQuantidades] = useState({});
+    const [salvarPedido, setSalvarPedido] = useState(false);
+    const [table, setTable] = useState();
 
     useEffect(() => {
       Axios.get("http://localhost:3001/products/listProduct").then((response) => {
@@ -57,18 +59,44 @@ export default function NovoPedido(){
         }        
     }
 
-    function salvarGrupoPedido(){        
-        if (nomeGrupoPedido == '' || nomeGrupoPedido == undefined) return mensagem('Digite o nome do pedido.');
+     function getTable(){
+         Axios.get("http://localhost:3001/table/getTable").then((response) => {
+          setTable(response.data[0])    
+        //   console.log(table)    
+        })    
+      }
 
-        if (idGrupoPedido > 0){
-            Axios.post("http://localhost:3001/orderGroup/orderGroupSave", {                
-                idGrupoPedido: idGrupoPedido,
-                nomeGrupoPedido: nomeGrupoPedido          
-            }).then((response) => {                              
-                console.log(response)                                       
-            })
-            mensagem('Pedido salvo com sucesso.')
-            navigate('/home')
+    useEffect(() => {
+        getTable()
+      }, [])
+
+     function selecionarMesa(idMesa){
+        setSalvarPedido(false)  
+        salvarGrupoPedido(idMesa)
+        
+
+    }
+
+     function salvarGrupoPedido(idMesaSelecionada){        
+        if (nomeGrupoPedido == '' || nomeGrupoPedido == undefined) return mensagem('Digite o nome do pedido.');
+        
+        if (idGrupoPedido > 0){     
+            alert(idMesaSelecionada)       
+            idMesaSelecionada !== 0 ? setSalvarPedido(true) : '';
+            idMesaSelecionada !== 0 ? getTable() : '';
+                         
+            if (idMesaSelecionada > 0){
+                setSalvarPedido(false)
+                Axios.post("http://localhost:3001/orderGroup/orderGroupSave", {                
+                    idGrupoPedido: idGrupoPedido,
+                    nomeGrupoPedido: nomeGrupoPedido,
+                    idMesa: idMesaSelecionada     
+                }).then((response) => {                              
+                    console.log(response)                                       
+                })
+                mensagem('Pedido salvo com sucesso.')
+                navigate('/home')
+            }//else mensagem('Selecione uma mesa.')    
         }else{
             mensagem('Informe o código do pedido.')
         }  
@@ -88,7 +116,7 @@ export default function NovoPedido(){
     }
 
 
-    return(
+    return(               
         <div className='NovoPedidoContainer'>
             <div className='botoesPedido'>
                 <button className='apagarDepois' onClick={() => salvarGrupoPedido()}>Salvar Pedido</button>             
@@ -128,7 +156,19 @@ export default function NovoPedido(){
                 })}     
                 </div>               
             </div>
-
+            {salvarPedido === true ?
+            <div id="divSalvarPedido">              
+               {typeof table !== "undefined" &&
+                    table.map((value) => {
+                    return (
+                        <>              
+                            <div  className='listaMesa'>                                                                                      
+                                <button className='mesa' onClick={()  => selecionarMesa(value.idMesa)}>{value.nomeMesa}</button>                                                                                                                                                              
+                            </div>
+                        </>
+                    )
+                    })}
+            </div> : ''}  
         </div>
     )
 }

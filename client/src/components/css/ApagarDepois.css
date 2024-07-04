@@ -133,3 +133,37 @@
     background-color: rgb(243, 145, 166);
     color: black;
 }
+
+
+#divSalvarPedido{
+    position: fixed;
+    width: 50%;
+    height: 50%;
+    top: 10px;
+    background-color: white;
+    transition: ease-in-out 1s;
+    /* border: 1px solid black; */
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    padding: 15px;
+    border-radius: 20px;
+    z-index: 5;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.listaMesa{    
+    border: 1px solid;
+    cursor: pointer;
+    width:60px;
+    height:60px;
+    border-radius: 5px;
+}
+
+.listaMesa:hover{
+    background: rgb(111, 111, 255);
+    color: white;
+    
+}

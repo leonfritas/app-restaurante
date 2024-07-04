@@ -4,9 +4,10 @@ import { db } from '../db.js'
 export const grupoPedidoSalvar = (req, res) => {
     const { idGrupoPedido } = req.body;
     const { nomeGrupoPedido } = req.body;
-    let sql = "call sp_grupoPedido_salvar(?,?)";
+    const { idMesa } = req.body;
+    let sql = "call sp_grupoPedido_salvar(?,?,?)";
     
-    db.query(sql, [idGrupoPedido, nomeGrupoPedido], (err, result) => {
+    db.query(sql, [idGrupoPedido, nomeGrupoPedido, idMesa], (err, result) => {
         if (err) console.log(err)
         else res.send(result)        
     })    
@@ -37,7 +38,7 @@ export const grupoPedidoListar = (req, res) => {
     const {dataEntrada} = req.body;
     let sql = "call sp_GrupoPedido_Listar(?)";
 
-    db.query(sql,[dataEntrada], (err, result) => {
+    db.query(sql, [dataEntrada], (err, result) => {
         if (err) console.log(err)
         else res.send(result)
     })

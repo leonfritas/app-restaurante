@@ -1,9 +1,9 @@
 import express from "express";
 import { realizarBaixa } from "../controllers/Financier.js";
 
-const FinancierRouter = express.Router()
+const financierRoute = express.Router()
 
 
-FinancierRouter.post('/realizarBaixa', realizarBaixa)
+financierRoute.post('/realizarBaixa', realizarBaixa)
 
-export default FinancierRouter
+export default financierRoute

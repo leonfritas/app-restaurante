@@ -7,7 +7,8 @@ import userRoute from './routes/users.js'
 import productRoute from "./routes/products.js";
 import orderRoute from "./routes/requests.js";
 import orderGroupRoute from "./routes/ordersgroup.js";
-import FinancierRouter from "./routes/Financiers.js";
+import financierRoute from "./routes/Financiers.js";
+import getTableRoute  from "./routes/tables.js";
 
 
 
@@ -22,7 +23,8 @@ app.use('/users', userRoute)
 app.use('/products', productRoute)
 app.use('/requested', orderRoute)
 app.use('/orderGroup', orderGroupRoute)
-app.use('/financier', FinancierRouter)
+app.use('/financier', financierRoute)
+app.use('/table', getTableRoute)
 ''
 
 

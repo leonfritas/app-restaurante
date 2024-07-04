@@ -3,7 +3,6 @@ import { Link } from "react-router-dom"
 import "./css/homeNovoPedido.css"
 import Axios from "axios";
 import {  useState, useEffect } from "react";
-
 import { mensagem, mensagemPergunta } from "../geral";
 import './css/ApagarDepois.css'
 import Navbar from "./navbar.jsx";
@@ -11,7 +10,6 @@ import Navbar from "./navbar.jsx";
 
 
 export default function Home() {
-
   const [grupoPedido, setGrupoPedido] = useState();
   
 
@@ -21,8 +19,7 @@ export default function Home() {
         dataEntrada: '2024-01-01'
       }
     ).then((response) => {
-      setGrupoPedido(response.data[0])  
-      // console.log(grupoPedido)
+      setGrupoPedido(response.data[0])        
     })    
   }
 
@@ -41,17 +38,7 @@ export default function Home() {
     console.log('1')
     // })
   }
-
-    // function editarPedido(idGrupoPedido, nomeGrupoPedido){
-  //   if (idGrupoPedido > 0) {                        
-  //       Axios.post("http://localhost:3001/realizarbaixa", {
-  //         idGrupoPedido: idGrupoPedido
-  //       })         
-  //       atualizarLista()      
-  //   } else {
-  //     mensagem('Pedido não encontrado')
-  //   }
-  // }
+   
 
   function finalizarPedido(idGrupoPedido, nomeGrupoPedido) {
     if (idGrupoPedido > 0) {
@@ -66,7 +53,7 @@ export default function Home() {
   }
 
   function cancelarPedido(idGrupoPedido) {    
-    if (idGrupoPedido > 0) {            
+    if (idGrupoPedido > 0) {                  
       if (mensagemPergunta('Deseja cancelar pedido ' + idGrupoPedido)){        
         Axios.post("http://localhost:3001/orderGroup/orderGroupCancel", {
           idGrupoPedido: idGrupoPedido
@@ -81,9 +68,9 @@ export default function Home() {
   function realizarBaixa(idGrupoPedido, nomeGrupoPedido){
     if (idGrupoPedido > 0) {            
       if (mensagemPergunta('Deseja realizar a baixa do pedido ' + nomeGrupoPedido)){        
-        Axios.post("http://localhost:3001/realizarBaixa/realizarBaixa", {
+        Axios.post("http://localhost:3001/financier/realizarBaixa", {
           idGrupoPedido: idGrupoPedido
-        })         
+        })                 
         atualizarLista()
       }
     } else {
@@ -95,20 +82,20 @@ export default function Home() {
 
   return (
     <>
-      <Navbar></Navbar>
+      <Navbar/>
       <main className="listaGrupoPedido">
         <div className="listaPedido">
         {typeof grupoPedido !== "undefined" &&
           grupoPedido.map((value) => {
             return (
-              <>
-              {console.log(value)}
+              <>              
                 <div  className='listaPedidos'>                      
                     <ul className="cardPedido">
                       <li>Código: {value.idGrupoPedido}</li>
                       <li>Nome: {value.nomeGrupoPedido}</li>                      
                       <li>Lugar: {value.nomeMesa}</li>
                       <li>Pagamento: {value.ativoBaixa}</li>
+                      <li>Valor: {value.valorPedido}</li>
                     </ul> 
                     <div className="homeBotoesPedido">   
                       {/* Se o pedido estiver pago irá mostar o botão para finalizar o pedido e ao clicar ele sumirá da tela, 
