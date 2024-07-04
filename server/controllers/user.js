@@ -42,3 +42,15 @@ export const login =  (req, res) => {
         else res.send(result)        
     })    
 }
+
+export const deleteUser = (req, res) => {
+    const idFuncionario = req.params.id
+
+    let sql = 'CALL sp_Funcionario_Cancelar(?);'
+
+    db.query(sql, [idFuncionario], (err, result) => {
+        if (err) console.log(err)
+            else res.send(result)
+    })
+
+}

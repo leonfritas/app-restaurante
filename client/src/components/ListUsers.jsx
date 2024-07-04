@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 import Axios from "axios";
 import './css/homeNovoPedido.css';
 
@@ -7,22 +7,44 @@ export default function ListUser() {
     const [listUser, setListUser] = useState([]);
 
     useEffect(() => {
+        buscarUsers();
+    }, []);
+
+    const buscarUsers = () => {
         Axios.get("http://localhost:3001/users/userList")
-            .then((response) => {                
+            .then((response) => {
                 setListUser(response.data);
             })
             .catch((error) => {
                 console.error("Erro ao buscar dados: ", error);
             });
-    }, []);
+    };
 
+    const deleteUser = (idFuncionario) => {
+        if (idFuncionario > 0) {
+            if (window.confirm(`Deseja excluir essa conta ${idFuncionario}` )) {
+                Axios.delete(`http://localhost:3001/users/deleteUser/${idFuncionario}`)
+                    .then((response) => {
+                        console.log(response.data);
+                        buscarUsers(); 
+                    })
+                    .catch((error) => {
+                        console.error("Erro ao deletar usuário: ", error);
+                    });
+            }
+        } else {
+            alert('Usuário não encontrado');
+        }
+    };
 
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
             <h1 className="text-3xl font-bold mb-6 text-center text-blue-600">Lista de Usuários</h1>
-            <Link to='/cadastro'><button className="text-white w-60 py-3 my-2 leading-none bg-indigo-600 hover:bg-indigo-700 font-semibold rounded shadow" >Cadastrar novos usuários!</button></Link>
-
-
+            <Link to='/cadastro'>
+                <button className="text-white w-60 py-3 my-2 leading-none bg-indigo-600 hover:bg-indigo-700 font-semibold rounded shadow">
+                    Cadastrar novos usuários!
+                </button>
+            </Link>
             <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {listUser.length > 0 ? (
                     listUser.map((user, index) => (
@@ -33,9 +55,7 @@ export default function ListUser() {
                             <p className="text-white font-mono">Senha: {user.nomeSenha}</p>
                             <p className="text-white font-mono">Funcionario: {user.ativoFuncionario?.data[0]}</p>
                             <p className="text-white font-mono">Administrador: {user.ativoAdministrador?.data[0]}</p>
-                            <button type="submit" className="text-white w-full py-3 leading-none bg-indigo-600 hover:bg-indigo-700 font-semibold rounded shadow">
-                                ATUALIZAR
-                            </button>
+                            <button className="buttonDeleteUser" onClick={() => deleteUser(user.idFuncionario)}>EXCLUIR FUNCIONÁRIO</button>
                         </li>
                     ))
                 ) : (
