@@ -11,7 +11,6 @@ export default function Login() {
   const [senha, setSenha] = useState("");
   const navigate = useNavigate();
 
-<<<<<<< HEAD
 
     
     function logar() {
@@ -34,28 +33,8 @@ export default function Login() {
             });
         } else {
             mensagem('Preencha seu usuário e senha para continuar.');
-=======
-  function logar() {
-    if (usuario !== "" && senha !== "") {
-      Axios.post("http://localhost:3001/users/login", {
-        name: usuario,
-        senha: senha,
-      }).then((response) => {
-        let ativoFuncionario = response.data[0][0].ativoFuncionario;
-        if (ativoFuncionario == 1) {
-          let ativoAdm = response.data[0][0].ativoAdm;
-          setAtivoAdm(ativoAdm);
-          setIsLogged(true);
-          navigate("/home");
-        } else if (ativoFuncionario !== 1) {
-          mensagem("Acesso negado");
->>>>>>> d65567425d438e252c188d8b2a017c3e38f64558
         }
-      });
-    } else {
-      mensagem("Preencha seu usuário e senha para continuar.");
     }
-  }
 
   useEffect(() => {
     const handleKeyDown = (event) => {
