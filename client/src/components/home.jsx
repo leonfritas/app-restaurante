@@ -12,20 +12,36 @@ export default function Home() {
   const [grupoPedido, setGrupoPedido] = useState([]);
   const [removeLoading, setRemoveLoading] = useState(false)
 
-  function atualizarLista() {
-    Axios.post("http://localhost:3001/orderGroup/orderGroupList", {
-      dataEntrada: '2024-01-01'
-    }).then((response) => {
+  const atualizarLista = async () => {
+    try {
+      console.log('Iniciando');
+      const response = await Axios.post('http://localhost:3001/orderGroup/orderGroupList', {
+        dataEntrada: '2024-01-01'
+      });
+      console.log('Reiniciando:', response.data);
       setGrupoPedido(response.data[0]);
-      setRemoveLoading(true)
-    });
-  }
+      setRemoveLoading(true);
+    } catch (error) {
+      console.error('Erro ao buscar dados:', error);
+      if (error.response) {
+        console.error('Erro na resposta:', error.response);
+      } else {
+        console.error('Erro desconhecido:', error.message);
+      }
+    }
+  };
+
+  console.log(atualizarLista)
 
   useEffect(() => {
     atualizarLista();
-  }, []);
 
-      atualizarLista()
+    const interval = setInterval(() => {
+      atualizarLista();
+    }, 50000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   function editarPedido() {
     console.log('1');
@@ -78,11 +94,12 @@ export default function Home() {
           {grupoPedido && grupoPedido.map((value) => (
             <div key={value.idGrupoPedido} className='listaPedidos'>
               <ul className="cardPedido">
-                <li>Código: {value.idGrupoPedido}</li>
+                <li>Código: {value.idFinanceiroPedido}</li>
                 <li>Nome: {value.nomeGrupoPedido}</li>
                 <li>Lugar: {value.nomeMesa}</li>
                 <li>Pagamento: {value.ativoBaixa}</li>
                 <li>Valor: {value.valorPedido}</li>
+                <li>Status: {value.ativoPedidoPronto}</li>
               </ul>
               <div className="homeBotoesPedido">
                 {value.ativoBaixa === 'PAGO' ? (

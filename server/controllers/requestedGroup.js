@@ -35,10 +35,10 @@ export const grupoPedidoInserir = (req, res) => {
 }
 
 export const grupoPedidoListar = (req, res) => {
-    const {dataEntrada} = req.body;
+    const {dataEntrada, ativoPedidoPronto} = req.body;
     let sql = "call sp_GrupoPedido_Listar(?)";
 
-    db.query(sql, [dataEntrada], (err, result) => {
+    db.query(sql, [dataEntrada, ativoPedidoPronto], (err, result) => {
         if (err) console.log(err)
         else res.send(result)
     })
