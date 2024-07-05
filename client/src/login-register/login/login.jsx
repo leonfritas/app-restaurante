@@ -11,26 +11,38 @@ export default function Login() {
   const [senha, setSenha] = useState("");
   const navigate = useNavigate();
 
-  function logar() {
-    if (usuario !== "" && senha !== "") {
-      Axios.post("http://localhost:3001/users/login", {
-        name: usuario,
-        senha: senha,
-      }).then((response) => {
-        let ativoFuncionario = response.data[0][0].ativoFuncionario;
-        if (ativoFuncionario == 1) {
-          let ativoAdm = response.data[0][0].ativoAdm;
-          setAtivoAdm(ativoAdm);
-          setIsLogged(true);
-          navigate("/home");
-        } else if (ativoFuncionario !== 1) {
-          mensagem("Acesso negado");
+
+    
+    function logar() {
+        if (usuario !== '' && senha !== '') {
+            Axios.post("http://localhost:3001/users/login", {
+                name: usuario,
+                senha: senha
+            }).then((response) => {            
+                let ativoFuncionario = response.data[0][0].ativoFuncionario; 
+                  
+                console.log(response.data)
+                console.log(ativoFuncionario)                                                         
+                if (ativoFuncionario == 1) {
+                    let ativoAdm = response.data[0][0].ativoAdmistrador; 
+                    console.log(ativoAdm) 
+                    setAtivoAdm(false)
+                    setIsLogged(true);
+                    navigate('/home');                    
+                  } else if (ativoFuncionario == 0) {
+                    let ativoAdm = response.data[0][0].ativoAdmistrador; 
+                    console.log(ativoAdm) 
+                    setAtivoAdm(true)
+                    setIsLogged(true);
+                    navigate('/home');
+                } else if(ativoFuncionario !== 1){
+                    mensagem('Acesso negado');                    
+                }
+            });
+        } else {
+            mensagem('Preencha seu usuário e senha para continuar.');
         }
-      });
-    } else {
-      mensagem("Preencha seu usuário e senha para continuar.");
     }
-  }
 
   useEffect(() => {
     const handleKeyDown = (event) => {
