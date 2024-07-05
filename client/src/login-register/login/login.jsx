@@ -19,10 +19,11 @@ export default function Login() {
                 name: usuario,
                 senha: senha
             }).then((response) => {            
-                let ativoFuncionario = response.data[0][0].ativoFuncionario.data;   
-                                                                         
+                let ativoFuncionario = response.data[0][0].ativoFuncionario;   
+                console.log(response.data)
+                console.log(ativoFuncionario)                                                         
                 if (ativoFuncionario == 1) {
-                    let ativoAdm = response.data[0][0].ativoAdm.data[0]; 
+                    let ativoAdm = response.data[0][0].ativoAdm; 
                     console.log(ativoAdm) 
                     setAtivoAdm(ativoAdm)
                     setIsLogged(true);
