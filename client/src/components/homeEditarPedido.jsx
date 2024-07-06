@@ -8,36 +8,50 @@ import { useNavigate } from "react-router-dom";
 import './css/ApagarDepois.css'
 
 export default function EditarPedido(){
-    const [listProduto, setListProduto] = useState(); 
-    const [nomeGrupoPedido, setNomeGrupoPedido] = useState();      
+    const [listProdutoEditar, setListProdutoEditar] = useState(); 
+    const [nomeGrupoPedido] = useState();      
     const { idGrupoPedido } = useContext(LoginContext); 
     const navigate = useNavigate(); 
     const [quantidades, setQuantidades] = useState({});
 
+
+
+    function atualizaEdicao(){
+        Axios.post("http://localhost:3001/orderGroup/orderGroupEdit",{
+            idGrupoPedido: idGrupoPedido
+          }        
+          ).then((response) => {
+            const produtos = response.data[0];
+            setListProdutoEditar(produtos);
+            const quantidadesIniciais = {};
+            produtos.forEach(produto => {
+                quantidadesIniciais[produto.idProduto] = produto.quantidade;
+            });
+            setQuantidades(quantidadesIniciais);        
+          })
+    }
+
     useEffect(() => {
-      Axios.post("http://localhost:3001/editarproduto",{
-        idGrupoPedido: idGrupoPedido
-      }        
-      ).then((response) => {
-        setListProduto(response.data)        
-      })
-    }, [])
+        atualizaEdicao();
+           
+      }, []);
 
 
     function pedidoInserir(idProduto, preco, quantidade){         
         if (idGrupoPedido > 0){
+            const novaQuantidade = (quantidades[idProduto] || 0) + 1;
             Axios.post("http://localhost:3001/requested/requestInsert", {                
                 idGrupoPedido: idGrupoPedido,
                 idProduto: idProduto,   
                 quantidade: quantidade,             
                 preco: preco,            
-            }).then((response) => {                              
-                console.log(response)  
+            }).then(() => {                                               
                 setQuantidades(prev => ({
                     ...prev,
-                    [idProduto]: (prev[idProduto] || 0) + 1
+                    [idProduto]: novaQuantidade
                 }));                                     
-            })            
+            })  
+            atualizaEdicao();          
         }else{
             mensagem('Informe o código do pedido.')
         }        
@@ -45,16 +59,19 @@ export default function EditarPedido(){
 
     function pedidoExcluir(idProduto){         
         if (idGrupoPedido > 0){
-            Axios.post("http://localhost:3001/pedidoexcluir", {                
-                idGrupoPedido: idGrupoPedido,
-                idProduto: idProduto         
-            }).then((response) => {                              
-                console.log(response)
-                setQuantidades(prev => ({
-                    ...prev,
-                    [idProduto]: (prev[idProduto] || 1) - 1
-                }));                                       
-            })
+            const novaQuantidade = (quantidades[idProduto] || 0) - 1;            
+            if (novaQuantidade >= 0) {
+                Axios.post("http://localhost:3001/requested/requestDelete", {                
+                    idGrupoPedido: idGrupoPedido,
+                    idProduto: idProduto         
+                }).then(() => {                                              
+                    setQuantidades(prev => ({
+                        ...prev,
+                        [idProduto]: novaQuantidade
+                    }));                                       
+                })
+            }    
+            atualizaEdicao(); 
         }else{
             mensagem('Informe o código do pedido.')
         }        
@@ -67,8 +84,7 @@ export default function EditarPedido(){
             Axios.post("http://localhost:3001/grupopedidosalvar", {                
                 idGrupoPedido: idGrupoPedido,
                 nomeGrupoPedido: nomeGrupoPedido          
-            }).then((response) => {                              
-                console.log(response)                                       
+            }).then(() => {                                                                                  
             })
             mensagem('Pedido salvo com sucesso.')
             navigate('/home')
@@ -81,8 +97,7 @@ export default function EditarPedido(){
         if (idGrupoPedido > 0){
             Axios.post("http://localhost:3001/grupopedidocancelar", {                
                 idGrupoPedido: idGrupoPedido                         
-            }).then((response) => {                              
-                console.log(response)                                       
+            }).then(() => {                                                                                  
             })
             navigate('/home')
         }else{
@@ -97,8 +112,8 @@ export default function EditarPedido(){
             <div className='botoesPedido'>                
                 <button className='apagarDepois' onClick={() => salvarGrupoPedido()}>Salvar Pedido</button>             
                 <button className='apagarDepois' onClick={() => cancelarGrupoPedido()}>Cancelar Pedido</button>                                              
-            </div> 
-            <input  className='inputNomeGrupoPedido' placeholder='Digite aqui o nome do pedido' type="text"  onChange={(e) => setNomeGrupoPedido(e.target.value)}/> 
+            </div>         
+            <input  className='inputNomeGrupoPedido' value={nomeGrupoPedido} type="text" /> 
             <h2>Selecione os items do pedido:</h2>
             <div >                    
                 <ul className='NovoPedidoContainerLista'>
@@ -108,22 +123,22 @@ export default function EditarPedido(){
                     <li>preco</li>
                 </ul>
                 <div >
-                {typeof listProduto !== "undefined" && 
-                    listProduto.map((value) => {
+                {typeof listProdutoEditar !== "undefined" && 
+                    listProdutoEditar.map((value) => {
                     return(
                     < >
                         <div className='listaProdutos'>
                             <Itens  key={value.idProduto}
-                                listCard={listProduto}
-                                setListCard={setListProduto}
+                                listCard={listProdutoEditar}
+                                setListCard={setListProdutoEditar}
                                 id={value.idProduto}
                                 name={value.nomeProduto}
                                 cost={value.preco}
-                                category={value.idCategoria}
-                                quantidade={value.quantidade} /> 
+                                category={value.nomeCategoria}
+                                quantidade={quantidades[value.idProduto] || 0} /> 
                                 <div className='adicionaERemoveProduto'>
-                                    <button className='buttonApagarDepois' onClick={() => pedidoInserir(value.idProduto, value.preco, value.quantidade)}>+</button>   
-                                    <p>{quantidades[value.idProduto] || 0}</p> 
+                                    <button className='buttonApagarDepois' onClick={() => pedidoInserir(value.idProduto, value.preco, value.quantidade)}>+</button>                                                                                                          
+                                        <p>{quantidades[value.idProduto] || 0}</p>
                                     <button className='buttonApagarDepois' onClick={() => pedidoExcluir(value.idProduto)}>-</button>
                                 </div>   
                         </div>                    

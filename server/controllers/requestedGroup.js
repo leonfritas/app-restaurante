@@ -5,9 +5,10 @@ export const grupoPedidoSalvar = (req, res) => {
     const { idGrupoPedido } = req.body;
     const { nomeGrupoPedido } = req.body;
     const { idMesa } = req.body;
-    let sql = "call sp_grupoPedido_salvar(?,?,?)";
+    const { textoObservacao } = req.body;
+    let sql = "call sp_grupoPedido_salvar(?,?,?,?)";
     
-    db.query(sql, [idGrupoPedido, nomeGrupoPedido, idMesa], (err, result) => {
+    db.query(sql, [idGrupoPedido, nomeGrupoPedido, idMesa, textoObservacao], (err, result) => {
         if (err) console.log(err)
         else res.send(result)        
     })    
@@ -54,4 +55,17 @@ export const grupoPedidoFinalizar = (req, res) => {
         else res.send(result)        
     })    
     console.log(sql)
+}
+
+export const grupoPedidoEditar = (req, res) => {
+    const { idGrupoPedido } = req.body;
+
+    let sql = "call sp_GrupoPedido_Editar(?)";
+    
+    db.query(sql, [idGrupoPedido], (err, result) => {
+        if (err) console.log(err)
+        else res.send(result)
+    console.log(result)        
+    })    
+    
 }

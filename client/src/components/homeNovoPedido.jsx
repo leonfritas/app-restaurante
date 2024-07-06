@@ -91,7 +91,8 @@ export default function NovoPedido() {
                 Axios.post("http://localhost:3001/orderGroup/orderGroupSave", {                
                     idGrupoPedido: idGrupoPedido,
                     nomeGrupoPedido: nomeGrupoPedido,
-                    idMesa: idMesa     
+                    idMesa: idMesa,
+                    textoObservacao: 'teste'     
                 }).then((response) => {                              
                     console.log(response);                                       
                 });

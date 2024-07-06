@@ -5,24 +5,27 @@ import { useState, useEffect } from "react";
 import { mensagem, mensagemPergunta } from "../geral";
 import './css/ApagarDepois.css';
 import Navbar from "./navbar.jsx";
+import { useContext } from "react";
+import { LoginContext } from '../context/LoginContext';
 
 import Loading from "./loading.jsx";
 
 export default function Home() {
   const [grupoPedido, setGrupoPedido] = useState([]);
-  const [removeLoading, setRemoveLoading] = useState(false)
+  const [removeLoading, setRemoveLoading] = useState(false);
+  const { setIdGrupoPedido } = useContext(LoginContext);
 
   const atualizarLista = async () => {
     try {
-      console.log('Iniciando');
+      // console.log('Iniciando');
       const response = await Axios.post('http://localhost:3001/orderGroup/orderGroupList', {
         dataEntrada: '2024-01-01'
       });
-      console.log('Reiniciando:', response.data);
+      // console.log('Reiniciando:', response.data);
       setGrupoPedido(response.data[0]);
       setRemoveLoading(true);
     } catch (error) {
-      console.error('Erro ao buscar dados:', error);
+      // console.error('Erro ao buscar dados:', error);
       if (error.response) {
         console.error('Erro na resposta:', error.response);
       } else {
@@ -31,7 +34,7 @@ export default function Home() {
     }
   };
 
-  console.log(atualizarLista)
+  // console.log(atualizarLista)
 
   useEffect(() => {
     atualizarLista();
@@ -43,8 +46,9 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  function editarPedido() {
-    console.log('1');
+  function editarPedido(idGrupoPedido) {
+    setIdGrupoPedido(idGrupoPedido)
+
   }
 
   function finalizarPedido(idGrupoPedido, nomeGrupoPedido) {
@@ -94,7 +98,7 @@ export default function Home() {
           {grupoPedido && grupoPedido.map((value) => (
             <div key={value.idGrupoPedido} className='listaPedidos'>
               <ul className="cardPedido">
-                <li>Código: {value.idFinanceiroPedido}</li>
+                <li>Código: {value.idGrupoPedido}</li>
                 <li>Nome: {value.nomeGrupoPedido}</li>
                 <li>Lugar: {value.nomeMesa}</li>
                 <li>Pagamento: {value.ativoBaixa}</li>
@@ -112,7 +116,7 @@ export default function Home() {
                   <>
                     <button className="buttonCancelarPedido" onClick={() => cancelarPedido(value.idGrupoPedido)}>Cancelar Pedido</button>
                     <Link to='/editarpedido'>
-                      <button className="buttonEditarPedido" onClick={() => editarPedido(value.idGrupoPedido, value.nomeGrupoPedido)}>Editar Pedido</button>
+                      <button className="buttonEditarPedido" onClick={() => editarPedido(value.idGrupoPedido)}>Editar Pedido</button>
                     </Link>
                   </>
                 )}
