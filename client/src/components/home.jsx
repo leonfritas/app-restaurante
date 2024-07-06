@@ -99,7 +99,7 @@ export default function Home() {
                 <li>Lugar: {value.nomeMesa}</li>
                 <li>Pagamento: {value.ativoBaixa}</li>
                 <li>Valor: {value.valorPedido}</li>
-                <li>Status: {value.ativoPedidoPronto}</li>
+                <li>Status: {value.statusPedido}</li>
               </ul>
               <div className="homeBotoesPedido">
                 {value.ativoBaixa === 'PAGO' ? (
