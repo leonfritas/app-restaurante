@@ -11,7 +11,6 @@ export default function Login() {
   const [senha, setSenha] = useState("");
   const navigate = useNavigate();
 
-
     
     function logar() {
         if (usuario !== '' && senha !== '') {
@@ -19,8 +18,7 @@ export default function Login() {
                 name: usuario,
                 senha: senha
             }).then((response) => {            
-                let ativoFuncionario = response.data[0][0].ativoFuncionario; 
-                console.log(response.data[0][0])                                                                                     
+                let ativoFuncionario = response.data[0][0].ativoFuncionario;                                                                                                   
                 if (ativoFuncionario == 1) {
                     let ativoAdm = response.data[0][0].ativoAdm;                     
                     setAtivoAdm(ativoAdm)
