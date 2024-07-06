@@ -41,7 +41,7 @@ export default function Home() {
 
     const interval = setInterval(() => {
       atualizarLista();
-    }, 50000);
+    }, 2000);
 
     return () => clearInterval(interval);
   }, []);

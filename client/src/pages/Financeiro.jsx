@@ -3,7 +3,11 @@ import Axios from "axios";
 import Navbar from "../components/navbar.jsx";
 import Loading from "../components/loading.jsx";
 
+import financeiroPDF from "../components/pdf.jsx";
+
 export default function Home() {
+
+
   const [financeiro, setFinanceiro] = useState([]);
 
   useEffect(() => {
@@ -16,7 +20,7 @@ export default function Home() {
         dataEntrada: '2024-01-01'
         
       });
-      console.log('Dados recebidos da API:', response.data);
+      console.log('Dados recebidos da API:', response.data[0]);
       const financeiroFormatado = response.data[0].map(item => ({
         ...item,
         dataPagamento: formatarData(item.dataPagamento)
@@ -42,23 +46,28 @@ export default function Home() {
     <>
       <Navbar />
       <main className="container mx-auto px-4 py-8">
-        <h1 className="text-2xl font-bold mb-4">Lista de Movimentos Financeiros</h1>
-
+        <h1 className="text-2xl font-bold mb-4 ">Lista de Movimentos Financeiros</h1>
+        <button 
+          type="button"
+          onClick={(e) =>financeiroPDF(financeiro)}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded ml-3 mb-5">
+          Salvar em PDF
+        </button>
+  
         {financeiro.length > 0 ? (
           <div className="overflow-x-auto">
-            <table className="min-w-full bg-white border rounded-lg shadow overflow-hidden">
+            <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow overflow-hidden">
               <thead className="bg-gray-800 text-white">
                 <tr>
-                  <th className="px-4 py-2">ID</th>
-                  <th className="px-4 py-2">ID do Grupo Pedido</th>
-                  <th className="px-4 py-2">Data de Movimento</th>
-                  <th className="px-4 py-2">Data de Pagamento</th>
-                  <th className="px-4 py-2">Pagamento</th>
+                  <th className="px-4 py-2 text-left">ID</th>
+                  <th className="px-4 py-2 text-left">N°Pedido</th>
+                  <th className="px-4 py-2 text-left">Data de Pagamento</th>
+                  <th className="px-4 py-2 text-left">Total do Pedido</th>
                 </tr>
               </thead>
               <tbody className="text-gray-700">
                 {financeiro.map((item, index) => (
-                  <tr key={index} className="border-b">
+                  <tr key={index} className="border-b hover:bg-gray-100">
                     <td className="px-4 py-2">{item.idFinanceiroGrupoPedido}</td>
                     <td className="px-4 py-2">{item.idGrupoPedido}</td>
                     <td className="px-4 py-2">{item.dataPagamento}</td>
