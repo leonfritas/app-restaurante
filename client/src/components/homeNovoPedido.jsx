@@ -11,8 +11,8 @@ import Loading from './loading.jsx';
 
 export default function NovoPedido() {
     const [listProduto, setListProduto] = useState([]); 
-    const [nomeGrupoPedido, setNomeGrupoPedido] = useState('');      
-    const { idGrupoPedido } = useContext(LoginContext); 
+     
+    const { idGrupoPedido, nomeGrupoPedido, setNomeGrupoPedido } = useContext(LoginContext); 
     const navigate = useNavigate(); 
     const [quantidades, setQuantidades] = useState({});
     const [mostrarListaMesa, setMostrarListaMesa] = useState(true);
@@ -37,8 +37,7 @@ export default function NovoPedido() {
                 idProduto: idProduto,   
                 quantidade: quantidade,             
                 preco: preco,            
-            }).then((response) => {                              
-                console.log(response);  
+            }).then(() => {                                              
                 setQuantidades(prev => ({
                     ...prev,
                     [idProduto]: (prev[idProduto] || 0) + 1
@@ -54,8 +53,7 @@ export default function NovoPedido() {
             Axios.post("http://localhost:3001/requested/requestDelete", {                
                 idGrupoPedido: idGrupoPedido,
                 idProduto: idProduto         
-            }).then((response) => {                              
-                console.log(response);
+            }).then(() => {                                              
                 setQuantidades(prev => ({
                     ...prev,
                     [idProduto]: (prev[idProduto] || 1) - 1
@@ -93,8 +91,7 @@ export default function NovoPedido() {
                     nomeGrupoPedido: nomeGrupoPedido,
                     idMesa: idMesa,
                     textoObservacao: 'teste'     
-                }).then((response) => {                              
-                    console.log(response);                                       
+                }).then(() => {                                                                                      
                 });
                 mensagem('Pedido salvo com sucesso.');
                 navigate('/home');
@@ -108,8 +105,7 @@ export default function NovoPedido() {
         if (idGrupoPedido > 0) {
             Axios.post("http://localhost:3001/orderGroup/orderGroupCancel", {                
                 idGrupoPedido: idGrupoPedido                         
-            }).then((response) => {                              
-                console.log(response);                                       
+            }).then(() => {                                                                                   
             });
             navigate('/home');
         } else {

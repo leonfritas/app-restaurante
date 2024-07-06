@@ -6,13 +6,15 @@ import './css/homeNovoPedido.css'
 import { mensagem } from '../geral.jsx';
 import { useNavigate } from "react-router-dom";
 import './css/ApagarDepois.css'
+import Loading from './loading.jsx';
+
 
 export default function EditarPedido(){
-    const [listProdutoEditar, setListProdutoEditar] = useState(); 
-    const [nomeGrupoPedido] = useState();      
-    const { idGrupoPedido } = useContext(LoginContext); 
+    const [listProdutoEditar, setListProdutoEditar] = useState();      
+    const { idGrupoPedido, nomeGrupoPedido, setNomeGrupoPedido} = useContext(LoginContext); 
     const navigate = useNavigate(); 
     const [quantidades, setQuantidades] = useState({});
+    const [removeLoading, setRemoveLoading] = useState(false);    
 
 
 
@@ -29,8 +31,8 @@ export default function EditarPedido(){
             });
             setQuantidades(quantidadesIniciais);        
           })
+          setRemoveLoading(true)
     }
-
     useEffect(() => {
         atualizaEdicao();
            
@@ -77,11 +79,9 @@ export default function EditarPedido(){
         }        
     }
 
-    function salvarGrupoPedido(){        
-        if (nomeGrupoPedido == '' || nomeGrupoPedido == undefined) return mensagem('Digite o nome do pedido.');
-
+    function salvarGrupoPedido(){                         
         if (idGrupoPedido > 0){
-            Axios.post("http://localhost:3001/grupopedidosalvar", {                
+            Axios.post("http://localhost:3001/orderGroup/orderGroupSave", {                
                 idGrupoPedido: idGrupoPedido,
                 nomeGrupoPedido: nomeGrupoPedido          
             }).then(() => {                                                                                  
@@ -95,7 +95,7 @@ export default function EditarPedido(){
 
     function cancelarGrupoPedido(){
         if (idGrupoPedido > 0){
-            Axios.post("http://localhost:3001/grupopedidocancelar", {                
+            Axios.post("http://localhost:3001/orderGroup/orderGroupCancel", {                
                 idGrupoPedido: idGrupoPedido                         
             }).then(() => {                                                                                  
             })
@@ -112,8 +112,10 @@ export default function EditarPedido(){
             <div className='botoesPedido'>                
                 <button className='apagarDepois' onClick={() => salvarGrupoPedido()}>Salvar Pedido</button>             
                 <button className='apagarDepois' onClick={() => cancelarGrupoPedido()}>Cancelar Pedido</button>                                              
-            </div>         
-            <input  className='inputNomeGrupoPedido' value={nomeGrupoPedido} type="text" /> 
+            </div>      
+
+            <input className='inputNomeGrupoPedido' placeholder='Digite aqui o nome do pedido' type="text" value={nomeGrupoPedido} onChange={(e) => setNomeGrupoPedido(e.target.value)}/>   
+            {/* <input  className='inputNomeGrupoPedido' value={nomeGrupoPedido} type="text" />  */}
             <h2>Selecione os items do pedido:</h2>
             <div >                    
                 <ul className='NovoPedidoContainerLista'>
@@ -122,29 +124,25 @@ export default function EditarPedido(){
                     <li>categoria</li> 
                     <li>preco</li>
                 </ul>
-                <div >
-                {typeof listProdutoEditar !== "undefined" && 
-                    listProdutoEditar.map((value) => {
-                    return(
-                    < >
-                        <div className='listaProdutos'>
-                            <Itens  key={value.idProduto}
-                                listCard={listProdutoEditar}
-                                setListCard={setListProdutoEditar}
-                                id={value.idProduto}
-                                name={value.nomeProduto}
-                                cost={value.preco}
-                                category={value.nomeCategoria}
-                                quantidade={quantidades[value.idProduto] || 0} /> 
-                                <div className='adicionaERemoveProduto'>
-                                    <button className='buttonApagarDepois' onClick={() => pedidoInserir(value.idProduto, value.preco, value.quantidade)}>+</button>                                                                                                          
-                                        <p>{quantidades[value.idProduto] || 0}</p>
-                                    <button className='buttonApagarDepois' onClick={() => pedidoExcluir(value.idProduto)}>-</button>
-                                </div>   
-                        </div>                    
-                    </>
-                    )
-                })}     
+                <div >                      
+                    {listProdutoEditar?.map((value) => (
+                                <div key={value.idProduto} className='listaProdutos'>
+                                   <Itens  
+                                    listCard={listProdutoEditar}
+                                    setListCard={setListProdutoEditar}
+                                    id={value.idProduto}
+                                    name={value.nomeProduto}
+                                    cost={value.preco}
+                                    category={value.nomeCategoria}
+                                    quantidade={quantidades[value.idProduto] || 0} /> 
+                                    <div className='adicionaERemoveProduto'>
+                                        <button className='buttonApagarDepois' onClick={() => pedidoInserir(value.idProduto, value.preco, value.quantidade)}>+</button>                                                                                                          
+                                            <p>{quantidades[value.idProduto] || 0}</p>
+                                        <button className='buttonApagarDepois' onClick={() => pedidoExcluir(value.idProduto)}>-</button>
+                                    </div>    
+                                </div>
+                            ))}
+                            {!removeLoading && <Loading />}  
                 </div>               
             </div>
 
