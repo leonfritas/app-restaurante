@@ -20,22 +20,13 @@ export default function Login() {
                 senha: senha
             }).then((response) => {            
                 let ativoFuncionario = response.data[0][0].ativoFuncionario; 
-                  
-                console.log(response.data)
-                console.log(ativoFuncionario)                                                         
+                console.log(response.data[0][0])                                                                                     
                 if (ativoFuncionario == 1) {
-                    let ativoAdm = response.data[0][0].ativoAdmistrador; 
-                    console.log(ativoAdm) 
-                    setAtivoAdm(false)
+                    let ativoAdm = response.data[0][0].ativoAdm;                     
+                    setAtivoAdm(ativoAdm)
                     setIsLogged(true);
                     navigate('/home');                    
-                  } else if (ativoFuncionario == 0) {
-                    let ativoAdm = response.data[0][0].ativoAdmistrador; 
-                    console.log(ativoAdm) 
-                    setAtivoAdm(true)
-                    setIsLogged(true);
-                    navigate('/home');
-                } else if(ativoFuncionario !== 1){
+                  } else if(ativoFuncionario !== 1){
                     mensagem('Acesso negado');                    
                 }
             });
