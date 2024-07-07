@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { LoginContext } from '../context/LoginContext.jsx';
 import Axios from "axios";
-import Itens from './homeNovoPedidoItem.jsx';
+import ListaProdutos from './homeNovoPedidoItem.jsx';
 import './css/homeNovoPedido.css';
 import { mensagem } from '../geral.jsx';
 import { useNavigate } from "react-router-dom";
@@ -133,7 +133,7 @@ export default function NovoPedido() {
                         <div>
                             {listProduto.map((value) => (
                                 <div key={value.idProduto} className='listaProdutos'>
-                                    <Itens
+                                    <ListaProdutos
                                         listCard={listProduto}
                                         setListCard={setListProduto}
                                         id={value.idProduto}
