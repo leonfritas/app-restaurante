@@ -39,7 +39,7 @@ export default function ListUser() {
     };
 
     return (
-        <div className="p-6 bg-gray-100 min-h-screen">
+        <div className="p-6 bg-gray-100 min-h-screen ">
             <h1 className="text-3xl font-bold mb-6 text-center text-blue-600">Lista de Usuários</h1>
             <Link to='/cadastro'>
                 <button className="text-white w-60 py-3 my-2 leading-none bg-indigo-600 hover:bg-indigo-700 font-semibold rounded shadow">
