@@ -31,18 +31,22 @@ export default function Register() {
             return;
           }
           console.log(response.data);
-          if (response.data[0][0].idFuncionario > 0) {
-            mensagem(
-              "Funcionário: " +
-                response.data[0][0].nomeFuncionario +
-                " cadastrado com sucesso."
-            );
-            navigate("/lista");
-          } else {
-            mensagem(
-              "Erro ao tentar cadastrar. Resposta inválida do servidor."
-            );
-          }
+          if (response.data[0][0].usuarioDuplicado == 0){
+            if (response.data[0][0].idFuncionario > 0) {
+              mensagem(
+                "Funcionário: " +
+                  response.data[0][0].nomeFuncionario +
+                  " cadastrado com sucesso."
+              );
+              navigate("/lista");
+            } else {
+              mensagem(
+                "Erro ao tentar cadastrar. Resposta inválida do servidor."
+              );
+            }
+          }else{
+            mensagem('Nome de usuário inválido.')
+          }  
         })
         .catch(() => {
           mensagem(
