@@ -12,9 +12,7 @@ import Loading from "./Loading.jsx";
 
 export default function Home() {
   const [grupoPedido, setGrupoPedido] = useState([]);
-
   const [removeLoading, setRemoveLoading] = useState(false);
-  
   const { setIdGrupoPedido } = useContext(LoginContext);
 
   const atualizarLista = async () => {
