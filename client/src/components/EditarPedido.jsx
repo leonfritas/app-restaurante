@@ -10,14 +10,10 @@ import Loading from './Loading.jsx';
 
 
 export default function EditarPedido(){
-    const [listProdutoEditar, setListProdutoEditar] = useState();
-
+    const [listProdutoEditar, setListProdutoEditar] = useState();      
     const { idGrupoPedido, nomeGrupoPedido, setNomeGrupoPedido} = useContext(LoginContext); 
-
     const navigate = useNavigate(); 
-
     const [quantidades, setQuantidades] = useState({});
-    
     const [removeLoading, setRemoveLoading] = useState(false);    
 
 
