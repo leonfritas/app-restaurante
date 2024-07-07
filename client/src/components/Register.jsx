@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
-import { mensagem } from "../../geral";
+import { mensagem } from "../geral.jsx";
 
 export default function Register() {
   const [realName, setName] = useState("");

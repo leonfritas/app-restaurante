@@ -1,12 +1,12 @@
 import { useState, useEffect, useContext } from 'react';
 import {LoginContext} from '../context/LoginContext.jsx'
 import Axios from "axios"
-import ListaProdutos from './homeNovoPedidoItem.jsx';
+import ListaProdutos from './ListaProdutos.jsx';
 import './css/homeNovoPedido.css'
 import { mensagem } from '../geral.jsx';
 import { useNavigate } from "react-router-dom";
 import './css/ApagarDepois.css'
-import Loading from './loading.jsx';
+import Loading from './Loading.jsx';
 
 
 export default function EditarPedido(){

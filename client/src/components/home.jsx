@@ -2,13 +2,13 @@ import { Link } from "react-router-dom";
 import "./css/homeNovoPedido.css";
 import Axios from "axios";
 import { useState, useEffect } from "react";
-import { mensagem, mensagemPergunta } from "../geral";
+import { mensagem, mensagemPergunta } from "../geral.jsx";
 import './css/ApagarDepois.css';
-import Navbar from "./navbar.jsx";
+import Navbar from "./Navbar.jsx";
 import { useContext } from "react";
-import { LoginContext } from '../context/LoginContext';
+import { LoginContext } from '../context/LoginContext.jsx';
 
-import Loading from "./loading.jsx";
+import Loading from "./Loading.jsx";
 
 export default function Home() {
   const [grupoPedido, setGrupoPedido] = useState([]);
@@ -51,13 +51,18 @@ export default function Home() {
 
   }
 
-  function finalizarPedido(idGrupoPedido, nomeGrupoPedido) {
+  function finalizarPedido(idGrupoPedido, nomeGrupoPedido, ativoPedidoPronto) {
+    let pedidoPronto = ativoPedidoPronto.data[0]
     if (idGrupoPedido > 0) {
-      Axios.post("http://localhost:3001/orderGroup/orderGroupFinalize", {
-        idGrupoPedido: idGrupoPedido
-      });
-      mensagem('Pedido ' + nomeGrupoPedido + ' finalizado.');
-      atualizarLista();
+      if(pedidoPronto){  
+        Axios.post("http://localhost:3001/orderGroup/orderGroupFinalize", {
+          idGrupoPedido: idGrupoPedido
+        });
+        mensagem('Pedido ' + nomeGrupoPedido + ' finalizado.');
+        atualizarLista();
+      }else{
+        mensagem('Verifique status do pedido.')
+      }
     } else {
       mensagem('Pedido não encontrado');
     }
@@ -107,7 +112,7 @@ export default function Home() {
               </ul>
               <div className="homeBotoesPedido">
                 {value.ativoBaixa === 'PAGO' ? (
-                  <button className="buttonFinalizarPedido" onClick={() => finalizarPedido(value.idGrupoPedido, value.nomeGrupoPedido)}>Finalizar Pedido</button>
+                  <button className="buttonFinalizarPedido" onClick={() => finalizarPedido(value.idGrupoPedido, value.nomeGrupoPedido, value.ativoPedidoPronto)}>Finalizar Pedido</button>
                 ) : (
                   <button className="buttonRealizarBaixa" onClick={() => realizarBaixa(value.idGrupoPedido, value.nomeGrupoPedido)}>Pagar</button>
                 )}
