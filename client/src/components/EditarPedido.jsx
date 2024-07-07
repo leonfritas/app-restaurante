@@ -1,12 +1,12 @@
 import { useState, useEffect, useContext } from 'react';
 import {LoginContext} from '../context/LoginContext.jsx'
 import Axios from "axios"
-import Itens from './homeNovoPedidoItem.jsx';
+import ListaProdutos from './ListaProdutos.jsx';
 import './css/homeNovoPedido.css'
 import { mensagem } from '../geral.jsx';
 import { useNavigate } from "react-router-dom";
 import './css/ApagarDepois.css'
-import Loading from './loading.jsx';
+import Loading from './Loading.jsx';
 
 
 export default function EditarPedido(){
@@ -97,16 +97,8 @@ export default function EditarPedido(){
         }  
     }
 
-    function cancelarGrupoPedido(){
-        if (idGrupoPedido > 0){
-            Axios.post("http://localhost:3001/orderGroup/orderGroupCancel", {                
-                idGrupoPedido: idGrupoPedido                         
-            }).then(() => {                                                                                  
-            })
-            navigate('/home')
-        }else{
-            navigate('/home')
-        }  
+    function cancelarGrupoPedido(){                    
+            navigate('/home')       
     }
 
 
@@ -131,7 +123,7 @@ export default function EditarPedido(){
                 <div >                      
                     {listProdutoEditar?.map((value) => (
                                 <div key={value.idProduto} className='listaProdutos'>
-                                   <Itens  
+                                   <ListaProdutos  
                                     listCard={listProdutoEditar}
                                     setListCard={setListProdutoEditar}
                                     id={value.idProduto}

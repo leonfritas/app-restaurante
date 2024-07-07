@@ -1,24 +1,21 @@
 import { useState, useEffect, useContext } from 'react';
 import { LoginContext } from '../context/LoginContext.jsx';
 import Axios from "axios";
-import Itens from './homeNovoPedidoItem.jsx';
+import ListaProdutos from './ListaProdutos.jsx';
 import './css/homeNovoPedido.css';
 import { mensagem } from '../geral.jsx';
 import { useNavigate } from "react-router-dom";
 import './css/ApagarDepois.css';
-
-import Loading from './loading.jsx';
+import Loading from './Loading.jsx';
 
 export default function NovoPedido() {
-    const [listProduto, setListProduto] = useState([]); 
-     
+    const [listProduto, setListProduto] = useState([]);      
     const { idGrupoPedido, nomeGrupoPedido, setNomeGrupoPedido } = useContext(LoginContext); 
     const navigate = useNavigate(); 
     const [quantidades, setQuantidades] = useState({});
     const [mostrarListaMesa, setMostrarListaMesa] = useState(true);
     const [table, setTable] = useState([]);
     const [idMesa, setIdMesa] = useState();
-
     const [removeLoading, setRemoveLoading] = useState(false)
 
 
@@ -133,7 +130,7 @@ export default function NovoPedido() {
                         <div>
                             {listProduto.map((value) => (
                                 <div key={value.idProduto} className='listaProdutos'>
-                                    <Itens
+                                    <ListaProdutos
                                         listCard={listProduto}
                                         setListCard={setListProduto}
                                         id={value.idProduto}

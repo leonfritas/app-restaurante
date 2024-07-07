@@ -1,6 +1,6 @@
 import loading from '../assets/loading.svg'
 
-import styles from './loading.module.css'
+import styles from './css/loading.module.css'
 
 function Loading() {
     return (

@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import Axios from "axios";
-import Navbar from "../components/navbar.jsx";
-import Loading from "../components/loading.jsx";
+import Navbar from "../components/Navbar.jsx";
+import Loading from "../components/Loading.jsx";
+import financeiroPDF from "../components/Pdf.jsx";
 
-import financeiroPDF from "../components/pdf.jsx";
-
-export default function Home() {
+export default function FinanceiroPage() {
 
 
   const [financeiro, setFinanceiro] = useState([]);
@@ -17,10 +16,8 @@ export default function Home() {
   const listaFinanceiro = async () => {
     try {
       const response = await Axios.post('http://localhost:3001/financier/movimentoRealizado', {
-        dataEntrada: '2024-01-01'
-        
-      });
-      console.log('Dados recebidos da API:', response.data[0]);
+        dataEntrada: '2024-01-01'        
+      });      
       const financeiroFormatado = response.data[0].map(item => ({
         ...item,
         dataPagamento: formatarData(item.dataPagamento)
@@ -49,7 +46,7 @@ export default function Home() {
         <h1 className="text-2xl font-bold mb-4 ">Lista de Movimentos Financeiros</h1>
         <button 
           type="button"
-          onClick={(e) =>financeiroPDF(financeiro)}
+          onClick={() =>financeiroPDF(financeiro)}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded ml-3 mb-5">
           Salvar em PDF
         </button>
