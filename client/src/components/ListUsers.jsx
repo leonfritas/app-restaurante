@@ -50,13 +50,13 @@ export default function ListUser() {
                 {listUser && listUser.length > 0 ? (
                     listUser.map((user, index) => (
                         <li key={index} className="bg-slate-700 p-4 rounded-lg shadow-md">
-                            <p className="text-white font-semibold">ID: {user.idFuncionario}</p>
+                            <p className="text-white font-bold">ID: {user.idFuncionario}</p>
                             <p className="text-white font-mono">Nome: {user.nomeFuncionario}</p>
                             <p className="text-white font-mono">CPF: {user.numeroCPF}</p>
                             <p className="text-white font-mono">Senha: {user.nomeSenha}</p>
-                            <p className="text-white font-mono">Funcionário: {user.ativoFuncionario}</p>
-                            <p className="text-white font-mono">Administrador: {user.ativoAdministrador}</p>
-                            <button className="buttonDeleteUser text-white w-60 py-3 my-2 leading-none bg-indigo-600 hover:bg-indigo-700 font-semibold rounded shadow " onClick={() => deleteUser(user.idFuncionario)}>EXCLUIR CONTA</button>
+                            <p className="text-white font-mono">Funcionário: {user.ativoFuncionario === 1 ? 'Ativado' : 'Desativado'}</p>
+                            <p className="text-white font-mono">Administrador: {user.ativoAdministrador === 1 ? 'Ativado' : 'Desativado'}</p>
+                            <button className="buttonDeleteUser text-white w-20 py-3 my-2 leading-none bg-indigo-600 hover:bg-indigo-700 font-semibold rounded shadow " onClick={() => deleteUser(user.idFuncionario)}>EXCLUIR CONTA</button>
                         </li>
                     ))
                 ) : (

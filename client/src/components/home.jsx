@@ -10,6 +10,11 @@ import { LoginContext } from '../context/LoginContext.jsx';
 
 import Loading from "./Loading.jsx";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCoffee, faUtensils, faShoppingCart, faCashRegister, faBarcode } from '@fortawesome/free-solid-svg-icons'; // Exemplos de ícones
+
+
+
 export default function Home() {
   const [grupoPedido, setGrupoPedido] = useState([]);
   const [removeLoading, setRemoveLoading] = useState(false);
@@ -98,39 +103,53 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <main className="listaGrupoPedido">
-        <div className="listaPedido">
-          {grupoPedido && grupoPedido.map((value) => (
-            <div key={value.idGrupoPedido} className='listaPedidos'>
-              <ul className="cardPedido">
-                <li>Código: {value.idGrupoPedido}</li>
-                <li>Nome: {value.nomeGrupoPedido}</li>
-                <li>Lugar: {value.nomeMesa}</li>
-                <li>Pagamento: {value.ativoBaixa}</li>
-                <li>Valor: {value.valorPedido}</li>
-                <li>Status: {value.statusPedido}</li>
-              </ul>
-              <div className="homeBotoesPedido">
-                {value.ativoBaixa === 'PAGO' ? (
-                  <button className="buttonFinalizarPedido" onClick={() => finalizarPedido(value.idGrupoPedido, value.nomeGrupoPedido, value.ativoPedidoPronto)}>Finalizar Pedido</button>
-                ) : (
-                  <button className="buttonRealizarBaixa" onClick={() => realizarBaixa(value.idGrupoPedido, value.nomeGrupoPedido)}>Pagar</button>
-                )}
-                
-                {value.ativoBaixa === 'PENDENTE' && (
-                  <>
-                    <button className="buttonCancelarPedido" onClick={() => cancelarPedido(value.idGrupoPedido)}>Cancelar Pedido</button>
-                    <Link to='/editarpedido'>
-                      <button className="buttonEditarPedido" onClick={() => editarPedido(value.idGrupoPedido)}>Editar Pedido</button>
-                    </Link>
-                  </>
-                )}
-              </div>
-            </div>
-          ))}
-          {!removeLoading && <Loading/>}  
+      <main className="flex justify-center">
+  <div className="max-w-md w-full bg-white shadow-md rounded-lg overflow-hidden mx-4 my-8">
+    {grupoPedido && grupoPedido.map((value, index) => (
+      <div key={value.idGrupoPedido} className={`border-b border-gray-200 ${index !== 0 ? 'mb-8' : ''}`}>
+        <div className="p-4">
+          <div className="mb-4">
+            <p className="text-gray-600 font-bold text-xl"><FontAwesomeIcon icon={faBarcode} /> Código: {value.idGrupoPedido}</p>
+            <p className="text-gray-600 font-semibold text-xl">Nome: {value.nomeGrupoPedido}</p>
+          </div>
+          <div className="mb-4">
+            <p className="text-gray-600 font-bold text-xl">Lugar: {value.nomeMesa}</p>
+            <p className="text-gray-600 font-semibold text-xl">
+              <FontAwesomeIcon icon={faCashRegister} className="mr-2" />
+              Status do Pagamento: {value.ativoBaixa}
+            </p>
+          </div>
+          <div className="mb-4">
+            <p className="text-gray-600 font-semibold text-xl">Valor: R${value.valorPedido}</p>
+            <p className="text-gray-600 font-semibold text-xl">Status: {value.statusPedido}</p>
+          </div>
         </div>
-      </main>
+        <div className="flex justify-between items-center p-4">
+          {value.ativoBaixa === 'PAGO' && (
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              Finalizar Pedido
+            </button>
+          )}
+
+          {value.ativoBaixa === 'PENDENTE' && (
+            <>
+              <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onClick={() => cancelarPedido(value.idGrupoPedido)}>
+                Cancelar Pedido
+              </button>
+              <Link to='/editarpedido'>
+                <button className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded" onClick={() => editarPedido(value.idGrupoPedido)}>
+                  Editar Pedido
+                </button>
+              </Link>
+            </>
+          )}
+          </div>
+        </div>
+    ))}
+    {!removeLoading && <Loading />}  
+  </div>
+</main>
+
     </>
   );
 }
