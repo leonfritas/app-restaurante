@@ -2,6 +2,9 @@ import EditarPedido from "../components/EditarPedido"
 
 export default function EditarPedidoPage(){
     return(
-        <EditarPedido />
+        <div className='bg-slate-300'>
+
+            <EditarPedido />
+        </div>
     )
 }

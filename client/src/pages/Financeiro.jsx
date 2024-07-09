@@ -4,6 +4,9 @@ import Navbar from "../components/Navbar.jsx";
 import Loading from "../components/Loading.jsx";
 import financeiroPDF from "../components/Pdf.jsx";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilePdf } from '@fortawesome/free-solid-svg-icons'; // Exemplos de ícones
+
 export default function FinanceiroPage() {
 
 
@@ -47,8 +50,8 @@ export default function FinanceiroPage() {
         <button 
           type="button"
           onClick={() =>financeiroPDF(financeiro)}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded ml-3 mb-5">
-          Salvar em PDF
+          className="bg-red-500 hover:bg-red-800 text-white font-bold py-2 px-5 rounded ml-3 mb-5">
+          <FontAwesomeIcon icon={faFilePdf} /> Salvar em PDF
         </button>
   
         {financeiro.length > 0 ? (

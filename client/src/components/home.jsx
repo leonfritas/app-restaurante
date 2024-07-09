@@ -107,11 +107,10 @@ export default function Home() {
   <div className="max-w-md w-full bg-white shadow-md rounded-lg overflow-hidden mx-4 my-8">
     {grupoPedido && grupoPedido.map((value, index) => (
       <div key={value.idGrupoPedido} className={`border-b border-gray-200 ${index !== 0 ? 'mb-8' : ''}`}>
-        <div className="p-4">
-          <div className="mb-4">
+        <ul className="p-4">
+          <li className="mb-4">
             <p className="text-gray-600 font-bold text-xl"><FontAwesomeIcon icon={faBarcode} /> Código: {value.idGrupoPedido}</p>
             <p className="text-gray-600 font-semibold text-xl">Nome: {value.nomeGrupoPedido}</p>
-          </div>
           <div className="mb-4">
             <p className="text-gray-600 font-bold text-xl">Lugar: {value.nomeMesa}</p>
             <p className="text-gray-600 font-semibold text-xl">
@@ -123,13 +122,10 @@ export default function Home() {
             <p className="text-gray-600 font-semibold text-xl">Valor: R${value.valorPedido}</p>
             <p className="text-gray-600 font-semibold text-xl">Status: {value.statusPedido}</p>
           </div>
-        </div>
-        <div className="flex justify-between items-center p-4">
-          {value.ativoBaixa === 'PAGO' && (
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-              Finalizar Pedido
-            </button>
-          )}
+          <div className="flex justify-between items-center p-4">
+                {value.ativoBaixa === 'PAGO' ? (
+                  <button className="buttonFinalizarPedido" onClick={() => finalizarPedido(value.idGrupoPedido, value.nomeGrupoPedido, value.ativoPedidoPronto)}>Finalizar Pedido</button>
+                ) : ''}
 
           {value.ativoBaixa === 'PENDENTE' && (
             <>
@@ -143,11 +139,14 @@ export default function Home() {
               </Link>
             </>
           )}
-          </div>
         </div>
-    ))}
-    {!removeLoading && <Loading />}  
+      </li>
+    </ul>
   </div>
+ ))} 
+ {!removeLoading && <Loading />} 
+</div>
+  
 </main>
 
     </>

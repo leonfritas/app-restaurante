@@ -100,25 +100,25 @@ export default function EditarPedido(){
 
     return(
         <div className='NovoPedidoContainer'>
-            <h2>Editar pedido</h2>
-            <div className='botoesPedido'>                
-                <button className='apagarDepois' onClick={() => salvarGrupoPedido()}>Salvar Pedido</button>             
-                <button className='apagarDepois' onClick={() => cancelarGrupoPedido()}>Cancelar Pedido</button>                                              
+            <h2 className='text-lg font-bold mb-2'>EDITAR PEDIDO</h2>
+            <div className='flex justify-between mb-4'>               
+                <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2' onClick={() => salvarGrupoPedido()}>Salvar Pedido</button>             
+                <button className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded' onClick={() => cancelarGrupoPedido()}>Cancelar Pedido</button>                                              
             </div>      
 
-            <input className='inputNomeGrupoPedido' placeholder='Digite aqui o nome do pedido' type="text" value={nomeGrupoPedido} onChange={(e) => setNomeGrupoPedido(e.target.value)}/>   
+            <input className='border border-gray-300 rounded px-3 py-2 mb-4 w-80' placeholder='Digite aqui o nome do pedido' type="text" value={nomeGrupoPedido} onChange={(e) => setNomeGrupoPedido(e.target.value)}/>   
             {/* <input  className='inputNomeGrupoPedido' value={nomeGrupoPedido} type="text" />  */}
-            <h2>Selecione os items do pedido:</h2>
-            <div >                    
-                <ul className='NovoPedidoContainerLista'>
-                    <li>Item</li>
-                    <li>Valor</li>
-                    <li>categoria</li> 
-                    <li>preco</li>
+            <h2 className='text-lg font-bold mb-2'>Selecione os items do pedido:</h2>
+            <div className=''>                    
+                <ul className='flex mb-4 border-b border-gray-300'>
+                    <li className='w-1/4 py-2'>Item</li>
+                    <li className='w-1/4 py-2'>Valor</li>
+                    <li className='w-1/4 py-2'>categoria</li> 
+                    <li className='w-1/4 py-2'>preco</li>
                 </ul>
                 <div >                      
                     {listProdutoEditar?.map((value) => (
-                                <div key={value.idProduto} className='listaProdutos'>
+                                <div key={value.idProduto} className='listaProdutos flex items-center justify-between border-b border-gray-300 py-2'>
                                    <ListaProdutos  
                                     listCard={listProdutoEditar}
                                     setListCard={setListProdutoEditar}
@@ -127,10 +127,10 @@ export default function EditarPedido(){
                                     cost={value.preco}
                                     category={value.nomeCategoria}
                                     quantidade={quantidades[value.idProduto] || 0} /> 
-                                    <div className='adicionaERemoveProduto'>
-                                        <button className='buttonApagarDepois' onClick={() => pedidoInserir(value.idProduto, value.preco, value.quantidade)}>+</button>                                                                                                          
-                                            <p>{quantidades[value.idProduto] || 0}</p>
-                                        <button className='buttonApagarDepois' onClick={() => pedidoExcluir(value.idProduto)}>-</button>
+                                   <div className='adicionaERemoveProduto flex items-center'>
+                                        <button className='buttonApagarDepois bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded' onClick={() => pedidoInserir(value.idProduto, value.preco, value.quantidade)}>+</button>                                                                                                          
+                                            <p  className='mx-2'>{quantidades[value.idProduto] || 0}</p>
+                                        <button className='buttonApagarDepois bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded' onClick={() => pedidoExcluir(value.idProduto)}>-</button>
                                     </div>    
                                 </div>
                             ))}

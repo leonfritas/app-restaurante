@@ -1,5 +1,4 @@
 .loader_container {
-
     width: 100%;
     height: 100%;
     display: flex;
@@ -8,6 +7,6 @@
 }
 
 .loader {
-
-    width: 50px;
+    max-width: 100%; /* Torna a imagem responsiva */
+    height: auto; /* Ajusta a altura automaticamente */
 }
