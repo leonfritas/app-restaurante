@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { LoginContext } from '../context/LoginContext';
 import Axios from "axios";
+import './css/navbar.css'
 
 export default function Navbar() {
     const { ativoAdm, setIdGrupoPedido } = useContext(LoginContext);
@@ -18,7 +19,7 @@ export default function Navbar() {
     }
 
     return (
-        <nav className="bg-gray-800 p-6">
+        <nav className="bg-gray-800 p-6 zindex">
             <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
                 <div className="relative flex items-center justify-between h-16">
                     {/* Menu button for mobile */}
