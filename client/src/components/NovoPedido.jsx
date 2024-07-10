@@ -143,58 +143,60 @@ export default function NovoPedido() {
 
     return (
         <div className='NovoPedidoContainer'>
-            {mostrarListaMesa === false &&
-                <>
-                    <div className='flex justify-between mb-4'>
-                    <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2' onClick={() => salvarGrupoPedido()}>Salvar Pedido</button>
-                    <button className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded' onClick={() => cancelarGrupoPedido()}>Cancelar Pedido</button>
-                    </div>
-                    <input className='border border-gray-300 rounded px-3 py-2 mb-4 w-full' placeholder='Digite aqui o nome do pedido' type="text" onChange={(e) => setNomeGrupoPedido(e.target.value)} />
-                    <h2 className='text-lg font-bold mb-2'>Selecione os itens do pedido:</h2>
-                    <div className=''>
-                        <ul className='flex mb-4 border-b border-gray-300'>
-                            <li className='w-1/4 py-2'>Item</li>
-                            <li className='w-1/4 py-2'>Valor</li>
-                            <li className='w-1/4 py-2'>Categoria</li>
-                            <li className='w-1/4 py-2'>Preço</li>
-                        </ul>
-                        <div className=''>
-                            {listProduto.map((value) => (
-                        <div key={value.idProduto} className='listaProdutos flex items-center justify-between border-b border-gray-300 py-2'>
-                                    <ListaProdutos
-                                        listCard={listProduto}
-                                        setListCard={setListProduto}
-                                        id={value.idProduto}
-                                        name={value.nomeProduto}
-                                        cost={value.preco}
-                                        category={value.idCategoria}
-                                        quantidade={value.quantidade}
-                                    />
-                                    <div className='adicionaERemoveProduto flex items-center'>
-                                    <button className='buttonApagarDepois bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded' onClick={() => pedidoInserir(value.idProduto, value.preco, value.quantidade)}>+</button>
-                                    <p className='mx-2'>{quantidades[value.idProduto] || 0}</p>
-                                    <button className='buttonApagarDepois bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded' onClick={() => pedidoExcluir(value.idProduto)}>-</button>
-                                    </div>
-                                </div>
-                            ))}
-                            {!removeLoading && <Loading />}
-                        </div>
-                    </div>
-                </>
-            }
-            {mostrarListaMesa === true &&
-                <div id="" className="flex justify-center items-center h-screen">
-                    <div className="max-w-md mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                        <h2 className="text-2xl mb-4 text-center">Selecione uma mesa:</h2>
-                        {table.map((value) => (
-                            <div key={value.idMesa} className="mb-4">
-                                <button className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => selecionarMesa(value.idMesa)}>{value.nomeMesa}</button>
-                            </div>
+    {mostrarListaMesa === false &&
+        <>
+            <div className='flex flex-col md:flex-row justify-between mb-2'>
+                <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2 md:mb-0 md:mr-2' onClick={() => salvarGrupoPedido()}>Salvar Pedido</button>
+                <button className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded' onClick={() => cancelarGrupoPedido()}>Cancelar Pedido</button>
+            </div>
+            <input className='border border-gray-300 rounded px-3 py-2 mb-4 w-full' placeholder='Digite aqui o nome do pedido' type="text" onChange={(e) => setNomeGrupoPedido(e.target.value)} />
+            <h2 className='text-lg font-bold mb-2'>Selecione os itens do pedido:</h2>
+            <div className='overflow-x-auto'>
+                <table className='min-w-full divide-y divide-gray-200'>
+                    <thead className='bg-zinc-500 text-white font-bold'>
+                        <tr className='text-gray-800'>
+                            <th className='py-2 text-white font-bold'>ID</th>
+                            <th className='py-2 text-start text-white font-bold'>Nome</th>
+                            <th className='py-2 text-white font-bold'>Preço</th>
+                            <th className='py-2 text-white font-bold '>Categoria</th>
+                            <th className='py-2 text-white font-bold pl-3'>Quantidade</th>
+                            <th className='py-2 text-white font-bold'>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody className='bg-white divide-y divide-gray-200'>
+                        {listProduto.map((value) => (
+                            <tr key={value.idProduto}>
+                                <td className='py-2 px-4'>{value.idProduto}</td>
+                                <td className='py-2 px-2'>{value.nomeProduto}</td>
+                                <td className='py-2'>R${value.preco},00</td>
+                                <td className='py-2 px-7'>{value.idCategoria}</td>
+                                <td className='py-2 px-7'>{value.quantidade}</td>
+                                <td className='py-2 whitespace-nowrap mb-3'>
+                                    <button className='bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded mr-1 md:mr-2 mb-1 md:mb-3' onClick={() => pedidoInserir(value.idProduto, value.preco, value.quantidade)}>+</button>
+                                    <button className='bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded md:ml-2' onClick={() => pedidoExcluir(value.idProduto)}>-</button>
+
+                                </td>
+                            </tr>
                         ))}
-                        {!removeLoading && <Loading />}
+                    </tbody>
+                </table>
+            </div>
+            {!removeLoading && <Loading />}
+        </>
+    }
+    {mostrarListaMesa === true &&
+        <div className="flex justify-center items-center h-screen">
+            <div className="max-w-md mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                <h2 className="text-2xl mb-4 text-center">Selecione uma mesa:</h2>
+                {table.map((value) => (
+                    <div key={value.idMesa} className="mb-4">
+                        <button className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => selecionarMesa(value.idMesa)}>{value.nomeMesa}</button>
                     </div>
-                </div>
-            }
+                ))}
+                {!removeLoading && <Loading />}
+            </div>
         </div>
+    }
+</div>
     );
 }

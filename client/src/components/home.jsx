@@ -4,7 +4,7 @@ import Axios from "axios";
 import { useState, useEffect } from "react";
 import { mensagem, mensagemPergunta } from "../geral.jsx";
 import './css/ApagarDepois.css';
-import Navbar from "./Navbar.jsx";
+import Navbar from "./navbar.jsx";
 import { useContext } from "react";
 import { LoginContext } from '../context/LoginContext.jsx';
 import './css/home.css'
@@ -148,7 +148,6 @@ export default function Home() {
         <h2>Carrossel</h2>
       </div> */}
       <main className="flex justify-center">
-<<<<<<< HEAD
         <div className="">
           {grupoPedido && grupoPedido.map((value, index) => (
             // <div key={value.idGrupoPedido} className={`cardContainer border-b border-gray-200 ${index !== 0 ? 'mb-8' : ''}`}>
@@ -190,10 +189,6 @@ export default function Home() {
             //     )}
             //     </div>
             //   </div>
-=======
-        <div className="mainCard">
-          {grupoPedido && grupoPedido.map((value, index) => (                        
->>>>>>> f9b2df8b1eaf0dade3e0b9bc8f23dbb21332bf1f
             <div key={value.idGrupoPedido} className={`cardContainer  ${index !== 0 ? 'mb-8' : ''}`}>
               {/* <div className=""> */}
                 <div className="cardPrincipal">
@@ -248,10 +243,6 @@ export default function Home() {
           {!removeLoading && <Loading />}  
         </div>
       </main>
-<<<<<<< HEAD
-
-=======
->>>>>>> f9b2df8b1eaf0dade3e0b9bc8f23dbb21332bf1f
     </>
   );
 }
