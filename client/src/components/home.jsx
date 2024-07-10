@@ -105,7 +105,6 @@ export default function Home() {
     <>
       <Navbar />
       <main className="flex justify-center">
-<<<<<<< HEAD
         <div className="">
           {grupoPedido && grupoPedido.map((value, index) => (
             // <div key={value.idGrupoPedido} className={`cardContainer border-b border-gray-200 ${index !== 0 ? 'mb-8' : ''}`}>
@@ -188,52 +187,6 @@ export default function Home() {
           {!removeLoading && <Loading />}  
         </div>
       </main>
-=======
-  <div className="max-w-md w-full bg-white shadow-md rounded-lg overflow-hidden mx-4 my-8">
-    {grupoPedido && grupoPedido.map((value, index) => (
-      <div key={value.idGrupoPedido} className={`border-b border-gray-200 ${index !== 0 ? 'mb-8' : ''}`}>
-        <ul className="p-4">
-          <li className="mb-4">
-            <p className="text-gray-600 font-bold text-xl"><FontAwesomeIcon icon={faBarcode} /> Código: {value.idGrupoPedido}</p>
-            <p className="text-gray-600 font-semibold text-xl">Nome: {value.nomeGrupoPedido}</p>
-          <div className="mb-4">
-            <p className="text-gray-600 font-bold text-xl">Lugar: {value.nomeMesa}</p>
-            <p className="text-gray-600 font-semibold text-xl">
-              <FontAwesomeIcon icon={faCashRegister} className="mr-2" />
-              Status do Pagamento: {value.ativoBaixa}
-            </p>
-          </div>
-          <div className="mb-4">
-            <p className="text-gray-600 font-semibold text-xl">Valor: R${value.valorPedido}</p>
-            <p className="text-gray-600 font-semibold text-xl">Status: {value.statusPedido}</p>
-          </div>
-          <div className="flex justify-between items-center p-4">
-                {value.ativoBaixa === 'PAGO' ? (
-                  <button className="buttonFinalizarPedido" onClick={() => finalizarPedido(value.idGrupoPedido, value.nomeGrupoPedido, value.ativoPedidoPronto)}>Finalizar Pedido</button>
-                ) : ''}
-
-          {value.ativoBaixa === 'PENDENTE' && (
-            <>
-              <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onClick={() => cancelarPedido(value.idGrupoPedido)}>
-                Cancelar Pedido
-              </button>
-              <Link to='/editarpedido'>
-                <button className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded" onClick={() => editarPedido(value.idGrupoPedido)}>
-                  Editar Pedido
-                </button>
-              </Link>
-            </>
-          )}
-        </div>
-      </li>
-    </ul>
-  </div>
- ))} 
- {!removeLoading && <Loading />} 
-</div>
-  
-</main>
->>>>>>> f44b756e919776e3346f08c0a27a83f838d73d87
 
     </>
   );
