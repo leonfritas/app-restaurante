@@ -12,7 +12,7 @@ import './css/home.css'
 import Loading from "./Loading.jsx";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCoffee, faUtensils, faShoppingCart, faCashRegister, faBarcode } from '@fortawesome/free-solid-svg-icons'; // Exemplos de ícones
+import { faCoffee, faUtensils, faShoppingCart, faCashRegister, faBarcode, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons'; // Exemplos de ícones
 
 
 
@@ -20,6 +20,8 @@ export default function Home() {
   const [grupoPedido, setGrupoPedido] = useState([]);
   const [removeLoading, setRemoveLoading] = useState(false);
   const { setIdGrupoPedido } = useContext(LoginContext);
+  const [ verPedido, setVerPedido] = useState(false);
+  const [listaProduto, setListaProduto] = useState();
 
   const atualizarLista = async () => {
     try {
@@ -101,10 +103,52 @@ export default function Home() {
   //   }
   // }
 
+
+  function listarProdutos(idGrupoPedido){
+    if (idGrupoPedido > 0) {      
+        Axios.post("http://localhost:3001/orderGroup/orderGroupListProduct", {
+          idGrupoPedido: idGrupoPedido
+        }).then((response) => {
+          setListaProduto(response.data[0])
+          console.log(response.data[0])          
+        })
+        
+
+        atualizarLista();
+      }
+  }
+
+  useEffect(() => {
+    listarProdutos();
+  }, [])
+
+  const divCardVerPedido = document.getElementsByClassName('divCardVerPedido');
+  const cardVerPedido = document.getElementsByClassName('cardVerPedido');
+  // console.log(divCardVerPedido[0])
+
+  function mostrarPedido(i, idGrupoPedido){
+    
+    if (verPedido == false){
+      divCardVerPedido[i].classList.add('mostrarPedido');
+      cardVerPedido[i].innerHTML = 'Fechar pedido';
+      setVerPedido(true);
+      listarProdutos(idGrupoPedido);      
+    }else{
+      divCardVerPedido[i].classList.remove('mostrarPedido');
+      cardVerPedido[i].innerHTML = 'Ver pedido';
+      setVerPedido(false);
+        
+    }    
+  }
+
   return (
     <>
       <Navbar />
+      {/* <div>
+        <h2>Carrossel</h2>
+      </div> */}
       <main className="flex justify-center">
+<<<<<<< HEAD
         <div className="">
           {grupoPedido && grupoPedido.map((value, index) => (
             // <div key={value.idGrupoPedido} className={`cardContainer border-b border-gray-200 ${index !== 0 ? 'mb-8' : ''}`}>
@@ -146,22 +190,25 @@ export default function Home() {
             //     )}
             //     </div>
             //   </div>
+=======
+        <div className="mainCard">
+          {grupoPedido && grupoPedido.map((value, index) => (                        
+>>>>>>> f9b2df8b1eaf0dade3e0b9bc8f23dbb21332bf1f
             <div key={value.idGrupoPedido} className={`cardContainer  ${index !== 0 ? 'mb-8' : ''}`}>
               {/* <div className=""> */}
                 <div className="cardPrincipal">
-                  <p className="">Pedido: {value.idGrupoPedido}</p>
-                  <p className="">Nome: {value.nomeGrupoPedido}</p>
-                  <p className="">Status: {value.statusPedido}</p>
-                  <button>:</button>
+                  <div className="cardPrincipalNome">
+                    <p>Pedido: {value.idGrupoPedido}</p>
+                    <p className="cardNomeGrupoPedido">Nome: {value.nomeGrupoPedido}</p>
+                  </div>                  
+                  <p className="">{value.statusPedido}</p>
+                  <FontAwesomeIcon className="iconMenu" icon={faEllipsisVertical}  />                                
                 </div>
                 <div className="cardInfo">
-                  <p className="">Lugar: {value.nomeMesa}</p>
-                  <p className="">                    
-                    Status: {value.ativoBaixa}
-                  </p>
-                  <p className="">Valor: R${value.valorPedido}</p>
-                </div>                
-              {/* </div> */}
+                  <p className="">{value.nomeMesa}</p>
+                  <p className="">{value.ativoBaixa}</p>
+                  <p className="">R${value.valorPedido}</p>
+                </div>                              
               <div className="cardButton">
                 {value.ativoBaixa === 'PAGO' && (
                   <button className="">
@@ -171,23 +218,42 @@ export default function Home() {
 
                 {value.ativoBaixa === 'PENDENTE' && (
                   <>
-                    <button className="" onClick={() => cancelarPedido(value.idGrupoPedido)}>
-                      Cancelar Pedido
+                    <button className="buttonCancelar" onClick={() => cancelarPedido(value.idGrupoPedido)}>
+                      Cancelar
                     </button>
                     <Link to='/editarpedido'>
-                      <button className="" onClick={() => editarPedido(value.idGrupoPedido)}>
-                        Editar Pedido
+                      <button className="buttonEditar" onClick={() => editarPedido(value.idGrupoPedido)}>
+                        Editar
                       </button>
                     </Link>
                   </>
                 )}
                 </div>
+                <div onClick={() => mostrarPedido(0, value.idGrupoPedido)} className='divCardVerPedido' >
+                  <button className='cardVerPedido' >Ver Pedido</button> 
+                  {verPedido == true?
+                    <div className="divCardListProduct">
+                      {listaProduto && listaProduto.map((value, index) => (                        
+                        <div key={value.idProduto} className={ `${index !== 0 ? 'cardListProduct' : 'cardListProduct'}`}>                                              
+                              <p>{value.nomeProduto}</p>                                                                                  
+                              <p>{value.nomeCategoria}</p>                                                                               
+                              <p>{value.quantidade}</p>                               
+                        </div>             
+                      ))}               
+                    </div>  
+                    :''}
+                </div>                
               </div>
           ))}
           {!removeLoading && <Loading />}  
         </div>
       </main>
+<<<<<<< HEAD
 
+=======
+>>>>>>> f9b2df8b1eaf0dade3e0b9bc8f23dbb21332bf1f
     </>
   );
 }
+
+

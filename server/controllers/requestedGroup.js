@@ -66,6 +66,19 @@ export const grupoPedidoEditar = (req, res) => {
         if (err) console.log(err)
         else res.send(result)
     console.log(result)        
+    })            
+}
+
+export const grupoPedidoListarProduto = (req, res) => {
+    const { idGrupoPedido } = req.body;
+
+    let sql = "call sp_GrupoPedido_ListarProduto(?)";
+    
+    db.query(sql, [idGrupoPedido], (err, result) => {
+        if (err) console.log(err)
+        else res.send(result)
+    console.log(result)        
     })    
+    
     
 }
