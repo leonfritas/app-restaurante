@@ -3,6 +3,7 @@ import { LoginContext } from "../context/LoginContext.jsx";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import Loading from "../components/Loading.jsx";
+import './css/login.css'
 
 export default function Login() {
     const { setIsLogged, setAtivoAdm } = useContext(LoginContext);
@@ -65,7 +66,7 @@ export default function Login() {
     return (
         <>
             <div className="min-h-screen flex items-center justify-center bg-gray-800">
-                <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
+                <div className=" loginContainer bg-white p-8 rounded-lg shadow-md max-w-85 w-full ">
                     <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">APP-RESTAURANTE</h2>
                     <div className="mb-4">
                     { removeLoading ?
@@ -91,14 +92,16 @@ export default function Login() {
                             className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500 text-gray-700 leading-tight focus:bg-white"
                         /> : '' }
                     </div>
-                    <div className="mb-6">
+                    { removeLoading ?
+                        <div className="mb-6">
                         <button
                             onClick={() => logar()}
                             className="w-full px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
                         >
                             {removeLoading ? "Entrar" : "Carregando..."}
                         </button>
-                    </div>
+                    </div> 
+                        : ''} 
                     {!removeLoading && <Loading />} {/* Exibir o componente de loading se removeLoading for false */}
                 </div>
             </div>

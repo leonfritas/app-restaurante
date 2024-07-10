@@ -1,0 +1,16 @@
+.cardContainer{
+    border: 2px solid red;
+    border-radius: 20px;
+    overflow: hidden;
+    padding: 10px;
+    margin: 20px;
+}
+
+.cardPrincipal{
+    display: flex;
+    
+}
+
+.cardButton{
+    border: 1px solid blue;
+}
