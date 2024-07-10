@@ -1,4 +1,4 @@
-import Home from '../components/Home.jsx'
+import Home from '../components/home.jsx'
 
 export default function HomePage(){
     return(

@@ -1,5 +1,5 @@
 import ListUser from "../components/ListUsers"
-import Navbar from '../components/Navbar'
+import Navbar from '../components/Navbar.jsx'
 
 
 export default function ListUserPage(){
