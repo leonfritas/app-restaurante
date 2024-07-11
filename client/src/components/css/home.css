@@ -114,3 +114,11 @@
     width: 100%;
     
 }
+
+.divCardListProduct{
+    display: none; 
+}
+
+.divCardListProductMostrar{
+    display: flex;
+}

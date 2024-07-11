@@ -12,7 +12,7 @@ import './css/home.css'
 import Loading from "./Loading.jsx";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCoffee, faUtensils, faShoppingCart, faCashRegister, faBarcode, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons'; // Exemplos de ícones
+import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons'; // Exemplos de ícones
 
 
 
@@ -21,15 +21,13 @@ export default function Home() {
   const [removeLoading, setRemoveLoading] = useState(false);
   const { setIdGrupoPedido } = useContext(LoginContext);
   const [ verPedido, setVerPedido] = useState(false);
-  const [listaProduto, setListaProduto] = useState();
+  const [listaProduto, setListaProduto] = useState();  
 
   const atualizarLista = async () => {
-    try {
-      // console.log('Iniciando');
+    try {      
       const response = await Axios.post('http://localhost:3001/orderGroup/orderGroupList', {
         dataEntrada: '2024-01-01'
-      });
-      // console.log('Reiniciando:', response.data);
+      });  
       setGrupoPedido(response.data[0]);
       setRemoveLoading(true);
     } catch (error) {
@@ -42,7 +40,6 @@ export default function Home() {
     }
   };
 
-  // console.log(atualizarLista)
 
   useEffect(() => {
     atualizarLista();
@@ -55,7 +52,7 @@ export default function Home() {
   }, []);
 
   function editarPedido(idGrupoPedido) {
-    setIdGrupoPedido(idGrupoPedido)
+    setIdGrupoPedido(idGrupoPedido)    
 
   }
 
@@ -104,17 +101,16 @@ export default function Home() {
   // }
 
 
-  function listarProdutos(idGrupoPedido){
-    if (idGrupoPedido > 0) {      
-        Axios.post("http://localhost:3001/orderGroup/orderGroupListProduct", {
+ async function listarProdutos(idGrupoPedido){
+    if (idGrupoPedido > 0) { 
+      setRemoveLoading(false);   
+        await Axios.post("http://localhost:3001/orderGroup/orderGroupListProduct", {
           idGrupoPedido: idGrupoPedido
         }).then((response) => {
-          setListaProduto(response.data[0])
-          console.log(response.data[0])          
-        })
-        
-
+          setListaProduto(response.data[0])                          
+        })      
         atualizarLista();
+        
       }
   }
 
@@ -122,23 +118,30 @@ export default function Home() {
     listarProdutos();
   }, [])
 
-  const divCardVerPedido = document.getElementsByClassName('divCardVerPedido');
-  const cardVerPedido = document.getElementsByClassName('cardVerPedido');
-  // console.log(divCardVerPedido[0])
 
-  function mostrarPedido(i, idGrupoPedido){
-    
-    if (verPedido == false){
-      divCardVerPedido[i].classList.add('mostrarPedido');
-      cardVerPedido[i].innerHTML = 'Fechar pedido';
-      setVerPedido(true);
-      listarProdutos(idGrupoPedido);      
-    }else{
+
+  function mostrarPedido(index, idGrupoPedido){
+    const divCardVerPedido    = document.getElementsByClassName('divCardVerPedido');
+    const divCardListProduct  =  document.getElementsByClassName('divCardListProduct');
+    const buttonVerPedido     = document.getElementsByClassName('buttonVerPedido');
+
+    for(let i = 0; i < divCardVerPedido.length; i = i + 1 ) {
       divCardVerPedido[i].classList.remove('mostrarPedido');
-      cardVerPedido[i].innerHTML = 'Ver pedido';
-      setVerPedido(false);
-        
-    }    
+      divCardListProduct[i].classList.remove('divCardListProductMostrar');            
+      buttonVerPedido[i].innerHTML = 'Ver Pedido';        
+      setListaProduto('');
+    }
+    if (verPedido == false && buttonVerPedido[index].innerHTML == 'Ver Pedido'){      
+      divCardVerPedido[index].classList.add('mostrarPedido');
+      divCardListProduct[index].classList.add('divCardListProductMostrar');          
+      listarProdutos(idGrupoPedido); 
+      buttonVerPedido[index].innerHTML = 'Fechar Pedido';  
+      setVerPedido(true)         
+    }else{      
+      buttonVerPedido[index].innerHTML = 'Ver Pedido';
+      setVerPedido(false)
+    }  
+    setRemoveLoading(true);        
   }
 
   return (
@@ -184,21 +187,23 @@ export default function Home() {
                     </Link>
                   </>
                 )}
-                </div>
-                <div onClick={() => mostrarPedido(0, value.idGrupoPedido)} className='divCardVerPedido' >
-                  <button className='cardVerPedido' >Ver Pedido</button> 
-                  {verPedido == true?
-                    <div className="divCardListProduct">
+                </div>              
+                {!removeLoading ? 
+                  <Loading />                 
+                  : 
+                  <div onClick={() => mostrarPedido(index, value.idGrupoPedido)} className='divCardVerPedido' >
+                    <button className='buttonVerPedido' >Ver Pedido</button> 
+                    {/* {verPedido == true? */}
+                    <div className= {`divCardListProduct`}  >
                       {listaProduto && listaProduto.map((value, index) => (                        
-                        <div key={value.idProduto} className={ `${index !== 0 ? 'cardListProduct' : 'cardListProduct'}`}>                                              
+                        <div key={value.idProduto} className={`${index !== 0 ? 'cardListProduct' : 'cardListProduct'}`}>                                              
                               <p>{value.nomeProduto}</p>                                                                                  
                               <p>{value.nomeCategoria}</p>                                                                               
                               <p>{value.quantidade}</p>                               
                         </div>             
                       ))}               
-                    </div>  
-                    :''}
-                </div>                
+                    </div>                      
+                </div>}               
               </div>
           ))}
           {!removeLoading && <Loading />}  
