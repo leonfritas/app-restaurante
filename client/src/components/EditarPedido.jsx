@@ -15,6 +15,7 @@ export default function EditarPedido(){
     const navigate = useNavigate(); 
     const [quantidades, setQuantidades] = useState({});
     const [removeLoading, setRemoveLoading] = useState(false);    
+    const [precoTotal, setPrecoTotal] = useState(0)
 
 
 
@@ -97,6 +98,18 @@ export default function EditarPedido(){
             navigate('/home')       
     }
 
+    useEffect(() => {
+
+        if (listProdutoEditar) {
+            let total = 0;
+        listProdutoEditar.forEach((produto) => {
+            const quantidade = quantidades[produto.idProduto] || 0;
+            total += produto.preco * quantidade;
+        })
+            setPrecoTotal(total);
+        }
+    }, [listProdutoEditar, quantidades])
+
 
     return(
         <div className='NovoPedidoContainer'>
@@ -109,6 +122,10 @@ export default function EditarPedido(){
 
             <input className='border border-gray-300 rounded px-3 py-2 mb-4 w-80' placeholder='Digite aqui o nome do pedido' type="text" value={nomeGrupoPedido} onChange={(e) => setNomeGrupoPedido(e.target.value)}/>   
             {/* <input  className='inputNomeGrupoPedido' value={nomeGrupoPedido} type="text" />  */}
+            <div className="flex justify-end items-center mt-4">
+                <h2 className="text-lg font-bold mr-2">Preço Total do Pedido:</h2>
+                <span className="text-xl font-bold">R${precoTotal.toFixed(2)}</span>
+            </div>
             <h2 className='text-lg font-bold mb-2'>Selecione os items do pedido:</h2>
             <table className='w-full'>
     <thead className='bg-gray-200'>

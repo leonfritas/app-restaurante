@@ -10,21 +10,23 @@ export default function NovoPedido() {
     const { idGrupoPedido, nomeGrupoPedido, setNomeGrupoPedido } = useContext(LoginContext);
     const navigate = useNavigate();
 
-    // State for managing products and quantities
+
     const [listProduto, setListProduto] = useState([]);
     const [quantidades, setQuantidades] = useState({});
-    const [grupoPedido, setGrupoPedido] = useState([]);
+    const [precoTotal, setPrecoTotal] = useState(0);
 
 
-    // State for managing table selection
+
+
     const [table, setTable] = useState([]);
+
     const [idMesa, setIdMesa] = useState();
+
     const [mostrarListaMesa, setMostrarListaMesa] = useState(true);
 
-    // State for loading indicator
     const [removeLoading, setRemoveLoading] = useState(false);
 
-    // Fetch products from API on component mount
+
     useEffect(() => {
         Axios.get("http://localhost:3001/products/listProduct")
             .then((response) => {
@@ -36,7 +38,7 @@ export default function NovoPedido() {
             });
     }, []);
 
-    // Fetch available tables from API on component mount
+    
     useEffect(() => {
         Axios.get("http://localhost:3001/table/getTable")
             .then((response) => {
@@ -47,7 +49,7 @@ export default function NovoPedido() {
             });
     }, []);
 
-    // Add item to order
+    
     function pedidoInserir(idProduto, preco, quantidade) {
         if (idGrupoPedido > 0) {
             Axios.post("http://localhost:3001/requested/requestInsert", {
@@ -60,6 +62,7 @@ export default function NovoPedido() {
                 setQuantidades((prev) => ({
                     ...prev,
                     [idProduto]: (prev[idProduto] || 0) + 1
+                    
                 }));
             })
             .catch((error) => {
@@ -70,7 +73,7 @@ export default function NovoPedido() {
         }
     }
 
-    // Remove item from order
+    
     function pedidoExcluir(idProduto) {
         if (idGrupoPedido > 0) {
             Axios.post("http://localhost:3001/requested/requestDelete", {
@@ -91,13 +94,13 @@ export default function NovoPedido() {
         }
     }
 
-    // Select a table
+    
     function selecionarMesa(idMesa) {
         setIdMesa(idMesa);
         setMostrarListaMesa(false);
     }
 
-    // Save order group
+    
     function salvarGrupoPedido() {
         if (nomeGrupoPedido === '') {
             return mensagem('Digite o nome do pedido.');
@@ -112,6 +115,7 @@ export default function NovoPedido() {
                     nomeGrupoPedido: nomeGrupoPedido,
                     idMesa: idMesa,
                     textoObservacao: 'teste'
+                    
                 })
                 .then(() => {
                     mensagem('Pedido salvo com sucesso.');
@@ -124,9 +128,10 @@ export default function NovoPedido() {
         } else {
             mensagem('Informe o código do pedido.');
         }
+        
     }
 
-    // Cancel order group
+    
     function cancelarGrupoPedido() {
         if (idGrupoPedido > 0) {
             Axios.post("http://localhost:3001/orderGroup/orderGroupCancel", {
@@ -143,6 +148,17 @@ export default function NovoPedido() {
         }
     }
 
+    useEffect(() => {
+        let total = 0;
+        listProduto.forEach((produto) => {
+            const quantidade = quantidades[produto.idProduto] || 0;
+            total += produto.preco * quantidade;
+        })
+
+        setPrecoTotal(total);
+    }, [listProduto, quantidades])
+        
+
     return (
         
         <div className='NovoPedidoContainer'>
@@ -154,6 +170,10 @@ export default function NovoPedido() {
                     <button className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-2 rounded  mt-5' onClick={() => cancelarGrupoPedido()}>Cancelar Pedido</button>
                     </div>
                     <input className='border border-blue-700 rounded px-4 py-2 mb-4 w-80 focus:outline-none' placeholder='Digite aqui o nome do pedido' type="text" onChange={(e) => setNomeGrupoPedido(e.target.value)} />
+                    <div className="flex justify-end items-center mt-4">
+                        <h2 className="text-lg font-bold mr-2">Preço Total do Pedido:</h2>
+                        <span className="text-xl font-bold">R${precoTotal.toFixed(2)}</span>
+                    </div>
                     <h2 className='text-lg font-bold mb-2'>Selecione os itens do pedido:</h2>
                     <table className='table-auto border-collapse w-full'>
                         <thead>
