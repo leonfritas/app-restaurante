@@ -21,7 +21,6 @@ export default function Login() {
                 name: usuario,
                 senha: senha
             }).then((response) => {
-                console.log(response.data);
                 let ativoFuncionario = response.data[0][0].ativoFuncionario;
                 if (ativoFuncionario === 1) {
                     let ativoAdm = response.data[0][0].ativoAdm;

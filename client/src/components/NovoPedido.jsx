@@ -10,19 +10,23 @@ export default function NovoPedido() {
     const { idGrupoPedido, nomeGrupoPedido, setNomeGrupoPedido } = useContext(LoginContext);
     const navigate = useNavigate();
 
-    // State for managing products and quantities
+
     const [listProduto, setListProduto] = useState([]);
     const [quantidades, setQuantidades] = useState({});
+    const [precoTotal, setPrecoTotal] = useState(0);
 
-    // State for managing table selection
+
+
+
     const [table, setTable] = useState([]);
+
     const [idMesa, setIdMesa] = useState();
+
     const [mostrarListaMesa, setMostrarListaMesa] = useState(true);
 
-    // State for loading indicator
     const [removeLoading, setRemoveLoading] = useState(false);
 
-    // Fetch products from API on component mount
+
     useEffect(() => {
         Axios.get("http://localhost:3001/products/listProduct")
             .then((response) => {
@@ -34,7 +38,7 @@ export default function NovoPedido() {
             });
     }, []);
 
-    // Fetch available tables from API on component mount
+    
     useEffect(() => {
         Axios.get("http://localhost:3001/table/getTable")
             .then((response) => {
@@ -45,7 +49,7 @@ export default function NovoPedido() {
             });
     }, []);
 
-    // Add item to order
+    
     function pedidoInserir(idProduto, preco, quantidade) {
         if (idGrupoPedido > 0) {
             Axios.post("http://localhost:3001/requested/requestInsert", {
@@ -58,6 +62,7 @@ export default function NovoPedido() {
                 setQuantidades((prev) => ({
                     ...prev,
                     [idProduto]: (prev[idProduto] || 0) + 1
+                    
                 }));
             })
             .catch((error) => {
@@ -68,7 +73,7 @@ export default function NovoPedido() {
         }
     }
 
-    // Remove item from order
+    
     function pedidoExcluir(idProduto) {
         if (idGrupoPedido > 0) {
             Axios.post("http://localhost:3001/requested/requestDelete", {
@@ -89,13 +94,13 @@ export default function NovoPedido() {
         }
     }
 
-    // Select a table
+    
     function selecionarMesa(idMesa) {
         setIdMesa(idMesa);
         setMostrarListaMesa(false);
     }
 
-    // Save order group
+    
     function salvarGrupoPedido() {
         if (nomeGrupoPedido === '') {
             return mensagem('Digite o nome do pedido.');
@@ -110,6 +115,7 @@ export default function NovoPedido() {
                     nomeGrupoPedido: nomeGrupoPedido,
                     idMesa: idMesa,
                     textoObservacao: 'teste'
+                    
                 })
                 .then(() => {
                     mensagem('Pedido salvo com sucesso.');
@@ -122,9 +128,10 @@ export default function NovoPedido() {
         } else {
             mensagem('Informe o código do pedido.');
         }
+        
     }
 
-    // Cancel order group
+    
     function cancelarGrupoPedido() {
         if (idGrupoPedido > 0) {
             Axios.post("http://localhost:3001/orderGroup/orderGroupCancel", {
@@ -141,45 +148,58 @@ export default function NovoPedido() {
         }
     }
 
+    useEffect(() => {
+        let total = 0;
+        listProduto.forEach((produto) => {
+            const quantidade = quantidades[produto.idProduto] || 0;
+            total += produto.preco * quantidade;
+        })
+
+        setPrecoTotal(total);
+    }, [listProduto, quantidades])
+        
+
     return (
+        
         <div className='NovoPedidoContainer'>
+            
             {mostrarListaMesa === false &&
                 <>
-                    <div className='flex justify-between mb-4'>
-                    <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2' onClick={() => salvarGrupoPedido()}>Salvar Pedido</button>
-                    <button className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded' onClick={() => cancelarGrupoPedido()}>Cancelar Pedido</button>
+                    <div className='flex mb-4'>
+                    <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2 mt-5' onClick={() => salvarGrupoPedido()}>Salvar Pedido</button>
+                    <button className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-2 rounded  mt-5' onClick={() => cancelarGrupoPedido()}>Cancelar Pedido</button>
                     </div>
-                    <input className='border border-gray-300 rounded px-3 py-2 mb-4 w-full' placeholder='Digite aqui o nome do pedido' type="text" onChange={(e) => setNomeGrupoPedido(e.target.value)} />
+                    <input className='border border-blue-700 rounded px-4 py-2 mb-4 w-80 focus:outline-none' placeholder='Digite aqui o nome do pedido' type="text" onChange={(e) => setNomeGrupoPedido(e.target.value)} />
+                    <div className="flex justify-end items-center mt-4">
+                        <h2 className="text-lg font-bold mr-2">Preço Total do Pedido:</h2>
+                        <span className="text-xl font-bold">R${precoTotal.toFixed(2)}</span>
+                    </div>
                     <h2 className='text-lg font-bold mb-2'>Selecione os itens do pedido:</h2>
-                    <div className=''>
-                        <ul className='flex mb-4 border-b border-gray-300'>
-                            <li className='w-1/4 py-2'>Item</li>
-                            <li className='w-1/4 py-2'>Valor</li>
-                            <li className='w-1/4 py-2'>Categoria</li>
-                            <li className='w-1/4 py-2'>Preço</li>
-                        </ul>
-                        <div className=''>
+                    <table className='table-auto border-collapse w-full'>
+                        <thead>
+                            <tr className='bg-gray-200'>
+                                <th className='w-1/4 py-2 px-4 text-left'>Produto</th>
+                                <th className='w-1/4 py-2 px-4 text-left'>Preço</th>
+                                <th className='w-1/4 py-2 px-4 text-left'>Quantidade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                             {listProduto.map((value) => (
-                        <div key={value.idProduto} className='listaProdutos flex items-center justify-between border-b border-gray-300 py-2'>
-                                    <ListaProdutos
-                                        listCard={listProduto}
-                                        setListCard={setListProduto}
-                                        id={value.idProduto}
-                                        name={value.nomeProduto}
-                                        cost={value.preco}
-                                        category={value.idCategoria}
-                                        quantidade={value.quantidade}
-                                    />
-                                    <div className='adicionaERemoveProduto flex items-center'>
-                                    <button className='buttonApagarDepois bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded' onClick={() => pedidoInserir(value.idProduto, value.preco, value.quantidade)}>+</button>
-                                    <p className='mx-2'>{quantidades[value.idProduto] || 0}</p>
-                                    <button className='buttonApagarDepois bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded' onClick={() => pedidoExcluir(value.idProduto)}>-</button>
-                                    </div>
-                                </div>
-                            ))}
-                            {!removeLoading && <Loading />}
-                        </div>
-                    </div>
+                            <tr key={value.idProduto} className='border-b border-gray-200'>
+                                <td className='py-2 px-4'>{value.nomeProduto}</td>
+                                <td className='py-2 px-4'>R${value.preco.toFixed(2)}</td>
+                                <td className='py-2 px-4'>
+                                    <button className='bg-green-600 hover:bg-red-700 text-white font-bold py-1 px-2 rounded'
+                                        onClick={() => pedidoInserir(value.idProduto, value.preco, value.quantidade)}>+</button>
+                                    <span className='mx-2'>{quantidades[value.idProduto] || 0}</span>
+                                    <button className='bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-2 rounded'
+                                        onClick={() => pedidoExcluir(value.idProduto)}>-</button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+                        {!removeLoading && <Loading />}
                 </>
             }
             {mostrarListaMesa === true &&
