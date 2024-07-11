@@ -14,19 +14,24 @@
     min-width: 80%;
     background-color: #fdfdfd;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;    
-    z-index: 0;
-    position: relative;
+    z-index: 0;    
+    /* height: 300px;
+    transition: all linear 3s;
+    border: 1px solid red; */
+
 }
 
 
 .cardPrincipal{
     display: flex;
     height: 65px;
-    width: 85%;
+    width: 100%;
     align-items: center;
     justify-content: space-between;
     padding-right: 10px;
     padding-left: 10px;
+    
+    
     
 }
 
@@ -44,6 +49,7 @@
     font-size: 20px;
     font-weight: 500;
     color: #777777;
+
 }
 
 .buttonEditar{
@@ -81,19 +87,22 @@
 
 .mainCard{    
     width: 100%;
+    
 }
 
 .iconMenu{
-    font-size: 20px;
-    position: absolute;
-    top: 20px;
-    right: 25px;
+    font-size: 20px;    
+    margin-bottom: 50px;
+    margin-right: -10px;
+
 }
 
 .divCardVerPedido{
     display: flex;
     justify-content: center;
     font-weight: 500;
+    
+    
 }
 
 .mostrarPedido{
@@ -105,7 +114,20 @@
 .divCardListProduct{
     display: flex;
     height: 100%;
+    justify-content: space-between;
     flex-direction: column;
+    border-top: 1px solid black;
+    margin: 10px;
+}
+
+.divCardListProduct p{  
+    margin-top: 5px;
+}
+
+
+.divCardListProduct p:first-child{  
+     
+    width: 50%;
 }
 
 .cardListProduct{    

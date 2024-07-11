@@ -1,22 +1,22 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext,useRef } from 'react';
 import { LoginContext } from '../context/LoginContext.jsx';
 import Axios from "axios";
-import ListaProdutos from './ListaProdutos.jsx';
+// import ListaProdutos from './ListaProdutos.jsx';
 import { mensagem } from '../geral.jsx';
 import { useNavigate } from "react-router-dom";
 import Loading from './Loading.jsx';
+import './css/novoPedido.css'
+import seta from '../assets/setaCarousel.png'
 
 export default function NovoPedido() {
     const { idGrupoPedido, nomeGrupoPedido, setNomeGrupoPedido } = useContext(LoginContext);
     const navigate = useNavigate();
 
-
     const [listProduto, setListProduto] = useState([]);
     const [quantidades, setQuantidades] = useState({});
     const [precoTotal, setPrecoTotal] = useState(0);
-
-
-
+    const [listCategory, setListCategory] = useState();
+    const carousel = useRef(null)
 
     const [table, setTable] = useState([]);
 
@@ -32,6 +32,18 @@ export default function NovoPedido() {
             .then((response) => {
                 setListProduto(response.data);
                 setRemoveLoading(true);
+            })
+            .catch((error) => {
+                console.error("Error fetching products:", error);
+            });
+    }, []);
+    
+
+    useEffect(() => {
+        Axios.get("http://localhost:3001/category/getCategory")
+            .then((response) => {
+                setListCategory(response.data);
+                setRemoveLoading(true);                
             })
             .catch((error) => {
                 console.error("Error fetching products:", error);
@@ -113,7 +125,7 @@ export default function NovoPedido() {
                 Axios.post("http://localhost:3001/orderGroup/orderGroupSave", {
                     idGrupoPedido: idGrupoPedido,
                     nomeGrupoPedido: nomeGrupoPedido,
-                    idMesa: idMesa,
+                    idMesa: idMesa,                
                     textoObservacao: 'teste'
                     
                 })
@@ -156,12 +168,23 @@ export default function NovoPedido() {
         })
 
         setPrecoTotal(total);
-    }, [listProduto, quantidades])
+    }, [listProduto, quantidades]);
+
+    const handleLeftClick = (e) => {
+        e.preventDefault();
+        carousel.current.scrollLeft -= carousel.current.offsetWidth;
+      }
+  
+      const handleRightClick = (e) => {
+        e.preventDefault();
+        carousel.current.scrollLeft += carousel.current.offsetWidth;
+      }
         
 
     return (
         
         <div className='NovoPedidoContainer'>
+            
             
             {mostrarListaMesa === false &&
                 <>
@@ -171,10 +194,19 @@ export default function NovoPedido() {
                     </div>
                     <input className='border border-blue-700 rounded px-4 py-2 mb-4 w-80 focus:outline-none' placeholder='Digite aqui o nome do pedido' type="text" onChange={(e) => setNomeGrupoPedido(e.target.value)} />
                     <div className="flex justify-end items-center mt-4">
-                        <h2 className="text-lg font-bold mr-2">Preço Total do Pedido:</h2>
-                        <span className="text-xl font-bold">R${precoTotal.toFixed(2)}</span>
+                        {/* <h2 className="text-lg font-bold mr-2">Preço Total do Pedido:</h2> */}
+                        <span className="text-xl font-bold">R$ {precoTotal.toFixed(2)}</span>
                     </div>
                     <h2 className='text-lg font-bold mb-2'>Selecione os itens do pedido:</h2>
+                    <div className='carousel' ref={carousel}> 
+                        {listCategory.map((value) => (
+                                <div key={value.idCategoria} className='divCarouselButton'>
+                                    <button className='carouselButton' role="button">{value.nomeCategoria}</button>                                                                
+                                </div>
+                        ))}
+                    </div>
+                    <button className='buttonPrev' onClick={handleLeftClick} ><img src={seta} alt="Scroll Left" /></button>
+                    <button className='buttonNext' onClick={handleRightClick}><img src={seta} alt="Scroll Right" /></button>
                     <table className='table-auto border-collapse w-full'>
                         <thead>
                             <tr className='bg-gray-200'>

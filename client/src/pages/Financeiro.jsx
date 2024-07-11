@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Axios from "axios";
-import Navbar from "../components/navbar.jsx"
+import Navbar from "../components/Navbar.jsx"
 import Loading from "../components/Loading.jsx";
 import financeiroPDF from "../components/Pdf.jsx";
 

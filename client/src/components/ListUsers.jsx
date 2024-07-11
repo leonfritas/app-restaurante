@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import Axios from "axios";
-import './css/homeNovoPedido.css';
+import './css/novoPedido.css';
 
 export default function ListUser() {
     const [listUser, setListUser] = useState([]);

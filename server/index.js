@@ -9,6 +9,7 @@ import orderRoute from "./routes/requests.js";
 import orderGroupRoute from "./routes/ordersgroup.js";
 import financierRoute from "./routes/Financiers.js";
 import getTableRoute  from "./routes/tables.js";
+import getCategoryRoute  from "./routes/categories.js";
 
 
 
@@ -25,6 +26,7 @@ app.use('/requested', orderRoute)
 app.use('/orderGroup', orderGroupRoute)
 app.use('/financier', financierRoute)
 app.use('/table', getTableRoute)
+app.use('/category', getCategoryRoute)
 ''
 
 
