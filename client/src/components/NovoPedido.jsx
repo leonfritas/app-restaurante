@@ -13,6 +13,8 @@ export default function NovoPedido() {
     // State for managing products and quantities
     const [listProduto, setListProduto] = useState([]);
     const [quantidades, setQuantidades] = useState({});
+    const [grupoPedido, setGrupoPedido] = useState([]);
+
 
     // State for managing table selection
     const [table, setTable] = useState([]);
@@ -142,44 +144,42 @@ export default function NovoPedido() {
     }
 
     return (
+        
         <div className='NovoPedidoContainer'>
+            
             {mostrarListaMesa === false &&
                 <>
-                    <div className='flex justify-between mb-4'>
-                    <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2' onClick={() => salvarGrupoPedido()}>Salvar Pedido</button>
-                    <button className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded' onClick={() => cancelarGrupoPedido()}>Cancelar Pedido</button>
+                    <div className='flex mb-4'>
+                    <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2 mt-5' onClick={() => salvarGrupoPedido()}>Salvar Pedido</button>
+                    <button className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-2 rounded  mt-5' onClick={() => cancelarGrupoPedido()}>Cancelar Pedido</button>
                     </div>
-                    <input className='border border-gray-300 rounded px-3 py-2 mb-4 w-full' placeholder='Digite aqui o nome do pedido' type="text" onChange={(e) => setNomeGrupoPedido(e.target.value)} />
+                    <input className='border border-blue-700 rounded px-4 py-2 mb-4 w-80 focus:outline-none' placeholder='Digite aqui o nome do pedido' type="text" onChange={(e) => setNomeGrupoPedido(e.target.value)} />
                     <h2 className='text-lg font-bold mb-2'>Selecione os itens do pedido:</h2>
-                    <div className=''>
-                        <ul className='flex mb-4 border-b border-gray-300'>
-                            <li className='w-1/4 py-2'>Item</li>
-                            <li className='w-1/4 py-2'>Valor</li>
-                            <li className='w-1/4 py-2'>Categoria</li>
-                            <li className='w-1/4 py-2'>Preço</li>
-                        </ul>
-                        <div className=''>
+                    <table className='table-auto border-collapse w-full'>
+                        <thead>
+                            <tr className='bg-gray-200'>
+                                <th className='w-1/4 py-2 px-4 text-left'>Produto</th>
+                                <th className='w-1/4 py-2 px-4 text-left'>Preço</th>
+                                <th className='w-1/4 py-2 px-4 text-left'>Quantidade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                             {listProduto.map((value) => (
-                        <div key={value.idProduto} className='listaProdutos flex items-center justify-between border-b border-gray-300 py-2'>
-                                    <ListaProdutos
-                                        listCard={listProduto}
-                                        setListCard={setListProduto}
-                                        id={value.idProduto}
-                                        name={value.nomeProduto}
-                                        cost={value.preco}
-                                        category={value.idCategoria}
-                                        quantidade={value.quantidade}
-                                    />
-                                    <div className='adicionaERemoveProduto flex items-center'>
-                                    <button className='buttonApagarDepois bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded' onClick={() => pedidoInserir(value.idProduto, value.preco, value.quantidade)}>+</button>
-                                    <p className='mx-2'>{quantidades[value.idProduto] || 0}</p>
-                                    <button className='buttonApagarDepois bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded' onClick={() => pedidoExcluir(value.idProduto)}>-</button>
-                                    </div>
-                                </div>
-                            ))}
-                            {!removeLoading && <Loading />}
-                        </div>
-                    </div>
+                            <tr key={value.idProduto} className='border-b border-gray-200'>
+                                <td className='py-2 px-4'>{value.nomeProduto}</td>
+                                <td className='py-2 px-4'>R${value.preco.toFixed(2)}</td>
+                                <td className='py-2 px-4'>
+                                    <button className='bg-green-600 hover:bg-red-700 text-white font-bold py-1 px-2 rounded'
+                                        onClick={() => pedidoInserir(value.idProduto, value.preco, value.quantidade)}>+</button>
+                                    <span className='mx-2'>{quantidades[value.idProduto] || 0}</span>
+                                    <button className='bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-2 rounded'
+                                        onClick={() => pedidoExcluir(value.idProduto)}>-</button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+                        {!removeLoading && <Loading />}
                 </>
             }
             {mostrarListaMesa === true &&
