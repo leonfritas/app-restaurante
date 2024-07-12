@@ -33,7 +33,6 @@ export default function NovoPedido() {
             });
     }, []);
     
-
     useEffect(() => {
         Axios.get("http://localhost:3001/category/getCategory")
             .then((response) => {
@@ -45,7 +44,6 @@ export default function NovoPedido() {
             });
     }, []);
 
-    
     useEffect(() => {
         Axios.get("http://localhost:3001/table/getTable")
             .then((response) => {
@@ -56,7 +54,6 @@ export default function NovoPedido() {
             });
     }, []);
 
-    
     useEffect(() => {
         let total = 0;
         listProduto.forEach((produto) => {
@@ -65,7 +62,6 @@ export default function NovoPedido() {
         })
         setPrecoTotal(total);
     }, [listProduto, quantidades]);
-
     
     function pedidoInserir(idProduto, preco, quantidade) {
         if (idGrupoPedido > 0) {
@@ -111,12 +107,11 @@ export default function NovoPedido() {
         }
     }
 
-    
-    function selecionarMesa(idMesa) {
+    function selecionarMesa(idMesa, nomeMesa) {
         setIdMesa(idMesa);
         setMostrarListaMesa(false);
+        setNomeGrupoPedido('Pedido: ' + nomeMesa)
     }
-
     
     function salvarGrupoPedido() {
         if (nomeGrupoPedido === '') {
@@ -246,7 +241,7 @@ export default function NovoPedido() {
                         <h2 className="text-2xl mb-4 text-center">Selecione uma mesa:</h2>
                         {table.map((value) => (
                             <div key={value.idMesa} className="mb-4">
-                                <button className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => selecionarMesa(value.idMesa)}>{value.nomeMesa}</button>
+                                <button className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => selecionarMesa(value.idMesa, value.nomeMesa)}>{value.nomeMesa}</button>
                             </div>
                         ))}
                         {!removeLoading && <Loading />}

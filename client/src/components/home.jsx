@@ -40,7 +40,6 @@ export default function Home() {
     }
   };
 
-
   useEffect(() => {
     atualizarLista();
 
@@ -86,9 +85,7 @@ export default function Home() {
     }
   }
 
-
-
- async function listarProdutos(idGrupoPedido){
+  async function listarProdutos(idGrupoPedido){
     if (idGrupoPedido > 0) { 
       setRemoveLoading(false);   
         await Axios.post("http://localhost:3001/orderGroup/orderGroupListProduct", {
@@ -104,8 +101,7 @@ export default function Home() {
   useEffect(() => {
     listarProdutos();
   }, [])
-
-
+  
 
   function mostrarPedido(index, idGrupoPedido){
     const divCardVerPedido    = document.getElementsByClassName('divCardVerPedido');
@@ -131,6 +127,9 @@ export default function Home() {
     setRemoveLoading(true);        
   }
 
+  function abrirMenu(){
+    mensagem('1')
+}
   return (
     <>
       <Navbar />
@@ -143,18 +142,20 @@ export default function Home() {
             <div key={value.idGrupoPedido} className={`cardContainer  ${index !== 0 ? 'mb-8' : ''}`}>
               {/* <div className=""> */}
                 <div className="cardPrincipal">
-                  <div className="cardPrincipalNome">
-                    <p>Pedido: {value.idGrupoPedido}</p>
-                    <p className="cardNomeGrupoPedido">Nome: {value.nomeGrupoPedido}</p>
-                  </div>                  
-                  <p className="">{value.statusPedido}</p>
-                  <FontAwesomeIcon className="iconMenu" icon={faEllipsisVertical}  />                                
+                  <div className="cardPrincipalTop">    
+                  <p className="statusPedido">{value.idGrupoPedido} - {value.statusPedido}</p>                                                    
+                    <button onClick={() => abrirMenu()}>
+                      <FontAwesomeIcon className="iconMenu" icon={faEllipsisVertical}  />
+                    </button>
+                  </div>                    
+                  <p className="cardNomeGrupoPedido">{value.nomeGrupoPedido}</p>                               
                 </div>
-                <div className="cardInfo">
+                <div className="cardInfo">                  
+                  <p className=""> {value.horaPedido}</p>
                   <p className="">{value.nomeMesa}</p>
-                  <p className="">{value.ativoBaixa}</p>
-                  <p className="">R${value.valorPedido}</p>
-                </div>                              
+                  <p className="">R$ {value.valorPedido}</p>
+                </div> 
+                                          
               <div className="cardButton">
                 {value.ativoBaixa === 'PAGO' && (
                   <button className="">
