@@ -13,6 +13,7 @@ import Loading from "./Loading.jsx";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons'; // Exemplos de ícones
+import Menu from "./Menu.jsx";
 
 
 
@@ -136,6 +137,8 @@ export default function Home() {
       {/* <div>
         <h2>Carrossel</h2>
       </div> */}
+
+      <Menu />
       <main className="flex justify-center">
         <div className="">
           {grupoPedido && grupoPedido.map((value, index) => (            
