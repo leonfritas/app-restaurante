@@ -16,19 +16,24 @@
 
 }
 
+.NovoPedidoContainer{    
+    padding: 0;
+}
 
 .carousel{
     display: flex;
     overflow-x: auto;
     scroll-behavior: smooth;
-    max-width: 80vw;
+    /* max-width: 80vw; */
     margin:20px 0;
-    gap: 15px;
+    gap: 15px;    
+    width: 100%;
+    padding: 5px;
 }
 
 .carousel::-webkit-scrollbar{
     display: none;
-
+    
 }
 
 .buttonPrev, .buttonNext{
@@ -36,11 +41,7 @@
     width: 50px;
 }
 
-/* .divCarouselButton{
-    display
-} */
 
-/* CSS */
 .carouselButton {
   background: #5454fd;
   border-radius: 999px;
@@ -64,6 +65,5 @@
 }
 
 .carouselButton:hover {
-    background: #6d6dfc;
-    /* color: #222; */
+    background: #6d6dfc;    
 }

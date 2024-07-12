@@ -11,20 +11,15 @@ import seta from '../assets/setaCarousel.png'
 export default function NovoPedido() {
     const { idGrupoPedido, nomeGrupoPedido, setNomeGrupoPedido } = useContext(LoginContext);
     const navigate = useNavigate();
-
     const [listProduto, setListProduto] = useState([]);
     const [quantidades, setQuantidades] = useState({});
     const [precoTotal, setPrecoTotal] = useState(0);
-    const [listCategory, setListCategory] = useState();
-    const carousel = useRef(null)
-
+    const [listCategory, setListCategory] = useState();    
     const [table, setTable] = useState([]);
-
     const [idMesa, setIdMesa] = useState();
-
     const [mostrarListaMesa, setMostrarListaMesa] = useState(true);
-
     const [removeLoading, setRemoveLoading] = useState(false);
+    const carousel = useRef(null);    
 
 
     useEffect(() => {
@@ -60,6 +55,16 @@ export default function NovoPedido() {
                 console.error("Error fetching tables:", error);
             });
     }, []);
+
+    
+    useEffect(() => {
+        let total = 0;
+        listProduto.forEach((produto) => {
+            const quantidade = quantidades[produto.idProduto] || 0;
+            total += produto.preco * quantidade;
+        })
+        setPrecoTotal(total);
+    }, [listProduto, quantidades]);
 
     
     function pedidoInserir(idProduto, preco, quantidade) {
@@ -160,25 +165,27 @@ export default function NovoPedido() {
         }
     }
 
-    useEffect(() => {
-        let total = 0;
-        listProduto.forEach((produto) => {
-            const quantidade = quantidades[produto.idProduto] || 0;
-            total += produto.preco * quantidade;
-        })
-
-        setPrecoTotal(total);
-    }, [listProduto, quantidades]);
-
     const handleLeftClick = (e) => {
         e.preventDefault();
         carousel.current.scrollLeft -= carousel.current.offsetWidth;
       }
   
-      const handleRightClick = (e) => {
+    const handleRightClick = (e) => {
         e.preventDefault();
         carousel.current.scrollLeft += carousel.current.offsetWidth;
-      }
+    }
+
+    function filterByCategory(idCategory){        
+        if(idGrupoPedido > 0){            
+            Axios.post("http://localhost:3001/category/filterByCategory", {
+                idCategory: idCategory                
+            }).then((response) => {                
+                setListProduto(response.data[0]);
+            })
+        }else{
+            mensagem('Número de pedido não encontrado');
+        }
+    }
         
 
     return (
@@ -193,15 +200,14 @@ export default function NovoPedido() {
                     <button className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-2 rounded  mt-5' onClick={() => cancelarGrupoPedido()}>Cancelar Pedido</button>
                     </div>
                     <input className='border border-blue-700 rounded px-4 py-2 mb-4 w-80 focus:outline-none' placeholder='Digite aqui o nome do pedido' type="text" onChange={(e) => setNomeGrupoPedido(e.target.value)} />
-                    <div className="flex justify-end items-center mt-4">
-                        {/* <h2 className="text-lg font-bold mr-2">Preço Total do Pedido:</h2> */}
+                    <div className="flex justify-end items-center mt-4">                        
                         <span className="text-xl font-bold">R$ {precoTotal.toFixed(2)}</span>
                     </div>
                     <h2 className='text-lg font-bold mb-2'>Selecione os itens do pedido:</h2>
                     <div className='carousel' ref={carousel}> 
                         {listCategory.map((value) => (
                                 <div key={value.idCategoria} className='divCarouselButton'>
-                                    <button className='carouselButton' role="button">{value.nomeCategoria}</button>                                                                
+                                    <button className='carouselButton' onClick={() => filterByCategory(value.idCategoria)} role="button">{value.nomeCategoria}</button>                                                                
                                 </div>
                         ))}
                     </div>
