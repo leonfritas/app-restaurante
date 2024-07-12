@@ -11,8 +11,7 @@ export const grupoPedidoSalvar = (req, res) => {
     db.query(sql, [idGrupoPedido, nomeGrupoPedido, idMesa, textoObservacao], (err, result) => {
         if (err) console.log(err)
         else res.send(result)        
-    })    
-    console.log(sql)
+    })        
 }
 
 export const grupoPedidoCancelar =  (req, res) => {
@@ -23,8 +22,7 @@ export const grupoPedidoCancelar =  (req, res) => {
     db.query(sql, [idGrupoPedido], (err, result) => {
         if (err) console.log(err)
         else res.send(result)        
-    })    
-    console.log(sql)
+    })        
 }
 
 export const grupoPedidoInserir = (req, res) => {
@@ -53,8 +51,7 @@ export const grupoPedidoFinalizar = (req, res) => {
     db.query(sql, [idGrupoPedido], (err, result) => {
         if (err) console.log(err)
         else res.send(result)        
-    })    
-    console.log(sql)
+    })        
 }
 
 export const grupoPedidoEditar = (req, res) => {

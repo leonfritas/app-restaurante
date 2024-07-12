@@ -29,8 +29,7 @@ export default function Register() {
           if (!response.data) {
             mensagem("Erro ao tentar cadastrar. Resposta vazia do servidor.");
             return;
-          }
-          console.log(response.data);
+          }          
           if (response.data[0][0].usuarioDuplicado == 0){
             if (response.data[0][0].idFuncionario > 0) {
               mensagem(

@@ -12,8 +12,7 @@ export default function ListUser() {
 
     const buscarUsers = () => {
         Axios.get("http://localhost:3001/users/userList")
-            .then((response) => {
-                console.log(response.data); // Verifique os dados recebidos
+            .then((response) => {                
                 setListUser(response.data);
             })
             .catch((error) => {
@@ -25,8 +24,7 @@ export default function ListUser() {
         if (idFuncionario > 0) {
             if (window.confirm(`Deseja excluir essa conta ${idFuncionario}` )) {
                 Axios.delete(`http://localhost:3001/users/deleteUser/${idFuncionario}`)
-                    .then((response) => {
-                        console.log(response.data);
+                    .then(() => {                        
                         buscarUsers(); 
                     })
                     .catch((error) => {
