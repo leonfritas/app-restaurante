@@ -19,7 +19,7 @@ import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons'; // Exemp
 export default function Home() {
   const [grupoPedido, setGrupoPedido] = useState([]);
   const [removeLoading, setRemoveLoading] = useState(false);
-  const { setIdGrupoPedido } = useContext(LoginContext);
+  const { setIdGrupoPedido, setNomeGrupoPedido } = useContext(LoginContext);
   const [ verPedido, setVerPedido] = useState(false);
   const [listaProduto, setListaProduto] = useState();  
 
@@ -51,9 +51,9 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  function editarPedido(idGrupoPedido) {
+  function editarPedido(idGrupoPedido, nomeGrupoPedido) {
     setIdGrupoPedido(idGrupoPedido)    
-
+    setNomeGrupoPedido(nomeGrupoPedido)
   }
 
   // function finalizarPedido(idGrupoPedido, nomeGrupoPedido, ativoPedidoPronto) {
@@ -85,20 +85,7 @@ export default function Home() {
       mensagem('Pedido não encontrado');
     }
   }
-  
 
-  // function realizarBaixa(idGrupoPedido, nomeGrupoPedido) {
-  //   if (idGrupoPedido > 0) {
-  //     if (mensagemPergunta('Deseja realizar a baixa do pedido ' + nomeGrupoPedido)) {
-  //       Axios.post("http://localhost:3001/financier/realizarBaixa", {
-  //         idGrupoPedido: idGrupoPedido
-  //       });
-  //       atualizarLista();
-  //     }
-  //   } else {
-  //     mensagem('Pedido não encontrado');
-  //   }
-  // }
 
 
  async function listarProdutos(idGrupoPedido){
@@ -181,7 +168,7 @@ export default function Home() {
                       Cancelar
                     </button>
                     <Link to='/editarpedido'>
-                      <button className="buttonEditar" onClick={() => editarPedido(value.idGrupoPedido)}>
+                      <button className="buttonEditar" onClick={() => editarPedido(value.idGrupoPedido, value.nomeGrupoPedido)}>
                         Editar
                       </button>
                     </Link>

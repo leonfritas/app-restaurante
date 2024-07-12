@@ -119,11 +119,8 @@ export default function EditarPedido(){
                 <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2' onClick={() => salvarGrupoPedido()}>Salvar Pedido</button>             
                 <button className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded' onClick={() => cancelarGrupoPedido()}>Cancelar Pedido</button>                                              
             </div>      
-
-            <input className='border border-gray-300 rounded px-3 py-2 mb-4 w-80' placeholder='Digite aqui o nome do pedido' type="text" value={nomeGrupoPedido} onChange={(e) => setNomeGrupoPedido(e.target.value)}/>   
-            {/* <input  className='inputNomeGrupoPedido' value={nomeGrupoPedido} type="text" />  */}
-            <div className="flex justify-end items-center mt-4">
-                <h2 className="text-lg font-bold mr-2">Preço Total do Pedido:</h2>
+            <input className='border border-gray-300 rounded px-3 py-2 mb-4 w-80' placeholder='Digite aqui o nome do pedido' type="text" value={nomeGrupoPedido} onChange={(e) => setNomeGrupoPedido(e.target.value)}/>               
+            <div className="flex justify-end items-center mt-4">                
                 <span className="text-xl font-bold">R${precoTotal.toFixed(2)}</span>
             </div>
             <h2 className='text-lg font-bold mb-2'>Selecione os items do pedido:</h2>
