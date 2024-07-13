@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import Loading from "./Loading.jsx";
-import ModalRegister from "../components/modals/ModalRegister.jsx";
 
 export default function Register() {
   const [realName, setName] = useState("");
@@ -13,8 +12,6 @@ export default function Register() {
   const [userCheck, setUserCheck] = useState(false);
   const navigate = useNavigate();
   const [removeLoading, setRemoveLoading] = useState(true);
-  const [modalMessage, setModalMessage] = useState("");
-  const [showModal, setShowModal] = useState(false);
 
   const register = () => {
     const ativoAdminValue = checkAdmin ? 1 : 0;
@@ -31,8 +28,7 @@ export default function Register() {
       })
         .then((response) => {
           if (!response.data) {
-            setModalMessage("Erro ao tentar cadastrar. Resposta vazia do servidor.");
-            setShowModal(true);
+
             setRemoveLoading(true);
             return;
           }          
@@ -101,9 +97,6 @@ export default function Register() {
     setUserCheck(e.target.checked);
   };
 
-  const closeModal = () => {
-    setShowModal(false);
-  };
 
   return (
     <div className="min-h-screen flex flex-col justify-center bg-indigo-600">
@@ -186,14 +179,7 @@ export default function Register() {
           </button>
           {!removeLoading && <Loading />}
         </div>
-
       </div>
-
-      {/* Modal de Mensagem */}
-      <ModalRegister isOpen={showModal} onCancel={closeModal}>
-        {modalMessage}
-      </ModalRegister>
-
     </div>
   );
 }

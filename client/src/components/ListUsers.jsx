@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import Axios from 'axios';
 import './css/novoPedido.css';
 import Loading from './Loading.jsx';
-import ModalListUser from './modals/ModalListUser.jsx'; // Certifique-se de importar o modal corretamente
 
 export default function ListUser() {
     const [listUser, setListUser] = useState([]);
@@ -84,11 +83,6 @@ export default function ListUser() {
             </ul>
             {!removeLoading && <Loading />}
             {/* Modal de confirmação */}
-            <ModalListUser
-                isOpen={showModal}
-                onCancel={() => setShowModal(false)}
-                onConfirm={handleDeleteUser}
-            />
         </div>
     );
 }

@@ -8,9 +8,7 @@ import Navbar from "./Navbar.jsx";
 import { useContext } from "react";
 import { LoginContext } from '../context/LoginContext.jsx';
 import './css/home.css'
-
 import Loading from "./Loading.jsx";
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons'; // Exemplos de ícones
 import Menu from "./Menu.jsx";
@@ -174,41 +172,12 @@ export default function Home() {
   return (
     <>
       <Navbar />
-<<<<<<< HEAD
-=======
+
       {/* <div>
         <h2>Carrossel</h2>
       </div> */}
 
-      <Menu />
-      <main className="flex justify-center">
-        <div className="">
-          {grupoPedido && grupoPedido.map((value, index) => (            
-            <div key={value.idGrupoPedido} className={`cardContainer  ${index !== 0 ? 'mb-8' : ''}`}>
-              {/* <div className=""> */}
-                <div className="cardPrincipal">
-                  <div className="cardPrincipalTop">    
-                  <p className="statusPedido">{value.idGrupoPedido} - {value.statusPedido}</p>                                                    
-                    <button onClick={() => abrirMenu()}>
-                      <FontAwesomeIcon className="iconMenu" icon={faEllipsisVertical}  />
-                    </button>
-                  </div>                    
-                  <p className="cardNomeGrupoPedido">{value.nomeGrupoPedido}</p>                               
-                </div>
-                <div className="cardInfo">                  
-                  <p className=""> {value.horaPedido}</p>
-                  <p className="">{value.nomeMesa}</p>
-                  <p className="">R$ {value.valorPedido}</p>
-                </div> 
-                                          
-              <div className="cardButton">
-                {value.ativoBaixa === 'PAGO' && (
-                  <button className="">
-                    Finalizar Pedido
-                  </button>
-                )}
->>>>>>> 05b3b1e18af7625fbaf347fddc17db7f5cf7fa20
-
+      <Menu />    
       <main className="flex justify-center">
         
         <div className="">
