@@ -59,7 +59,10 @@ export default function NovoPedido() {
         listProduto.forEach((produto) => {
             const quantidade = quantidades[produto.idProduto] || 0;
             total += produto.preco * quantidade;
+            console.log(quantidade)
+            console.log(produto.preco)
         })
+        
         setPrecoTotal(total);
     }, [listProduto, quantidades]);
     
