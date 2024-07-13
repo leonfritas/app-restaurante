@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
-import Loading from "./Loading.jsx";
+import { mensagem } from "../geral.jsx";
 
 export default function Register() {
   const [realName, setName] = useState("");
@@ -11,7 +11,6 @@ export default function Register() {
   const [checkAdmin, setUserAdmin] = useState(false);
   const [userCheck, setUserCheck] = useState(false);
   const navigate = useNavigate();
-  const [removeLoading, setRemoveLoading] = useState(true);
 
   const register = () => {
     const ativoAdminValue = checkAdmin ? 1 : 0;
@@ -28,39 +27,33 @@ export default function Register() {
       })
         .then((response) => {
           if (!response.data) {
-
-            setRemoveLoading(true);
+            mensagem("Erro ao tentar cadastrar. Resposta vazia do servidor.");
             return;
           }          
           if (response.data[0][0].usuarioDuplicado == 0){
             if (response.data[0][0].idFuncionario > 0) {
-              setModalMessage(
+              mensagem(
                 "Funcionário: " +
                   response.data[0][0].nomeFuncionario +
                   " cadastrado com sucesso."
               );
-              setShowModal(true);
               navigate("/lista");
             } else {
-              setModalMessage(
+              mensagem(
                 "Erro ao tentar cadastrar. Resposta inválida do servidor."
               );
-              setShowModal(true);
             }
           }else{
-            setModalMessage('Nome de usuário inválido.');
-            setShowModal(true);
+            mensagem('Nome de usuário inválido.')
           }  
         })
         .catch(() => {
-          setModalMessage(
+          mensagem(
             "Erro ao tentar cadastrar. Por favor, tente novamente mais tarde."
           );
-          setShowModal(true);
         });
     } else {
-      setModalMessage("Preencha seu nome, usuário e senha para continuar.");
-      setShowModal(true);
+      mensagem("Preencha seu nome, usuário e senha para continuar.");
     }
   };
 
@@ -97,11 +90,9 @@ export default function Register() {
     setUserCheck(e.target.checked);
   };
 
-
   return (
-    <div className="min-h-screen flex flex-col justify-center bg-indigo-600">
+    <div className=" flex flex-col justify-center ">
       <div className="bg-white mx-auto max-w-md py-8 px-10 shadow rounded-lg">
-        <h1 className="text-center font-bold mb-5 text-2xl">Área de Registro</h1>
         <div className="mb-4">
           <input
             type="text"
@@ -177,7 +168,15 @@ export default function Register() {
           >
             Criar Conta
           </button>
-          {!removeLoading && <Loading />}
+        </div>
+
+        <div className="mb-4">
+          <p>
+            Já tem uma conta?{" "}
+            <a href="/" className="text-indigo-600">
+              Faça Login
+            </a>
+          </p>
         </div>
       </div>
     </div>
