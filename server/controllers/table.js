@@ -10,3 +10,15 @@ export const getTable = (req, res) => {
             else res.send(result)
     })
 }
+
+export const joinTable = (req, res) => {
+    const {idMesa } = req.body;
+    const {idGrupoPedido} = req.body;
+    
+    let sql = 'call sp_Mesa_Inserir(?,?)'  
+
+    db.query(sql, [idMesa, idGrupoPedido], (err, result) => {
+        if(err) console.log(err)
+            else res.send(result)
+    })
+}

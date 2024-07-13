@@ -19,9 +19,11 @@ import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons'; // Exemp
 export default function Home() {
   const [grupoPedido, setGrupoPedido] = useState([]);
   const [removeLoading, setRemoveLoading] = useState(false);
-  const { setIdGrupoPedido, setNomeGrupoPedido } = useContext(LoginContext);
+  const { idGrupoPedido, setIdGrupoPedido, setNomeGrupoPedido } = useContext(LoginContext);
   const [ verPedido, setVerPedido] = useState(false);
-  const [listaProduto, setListaProduto] = useState();  
+  const [listaProduto, setListaProduto] = useState(); 
+  const [cardUnirMesa, setCardUnirMesa] = useState(false) 
+  const [table, setTable] = useState();
 
   const atualizarLista = async () => {
     try {      
@@ -127,75 +129,134 @@ export default function Home() {
     setRemoveLoading(true);        
   }
 
-  function abrirMenu(){
-    mensagem('1')
-}
+  function abrirMenu(idGrupoPedido){
+    setIdGrupoPedido(idGrupoPedido)
+    setCardUnirMesa(true)
+  }
+
+
+  function getTable(){
+    // 
+    Axios.get("http://localhost:3001/table/getTable")
+    .then((response) => {
+        setTable(response.data[0]);
+    })
+    .catch((error) => {
+        console.error("Error fetching tables:", error);
+    });
+  }
+
+  useEffect(() => {
+    getTable()
+  }, []);
+
+  function unirMesa(idMesa){
+    console.log(idMesa)
+    console.log(idGrupoPedido)
+
+    if (idGrupoPedido > 0) {
+      
+        Axios.post("http://localhost:3001/table/joinTable", {
+          idGrupoPedido: idGrupoPedido,
+          idMesa: idMesa
+        });
+        atualizarLista();
+        setCardUnirMesa(false)
+      
+    } else {
+      mensagem('Pedido não encontrado');
+    }
+    getTable()
+
+  }
+
   return (
     <>
       <Navbar />
-      {/* <div>
-        <h2>Carrossel</h2>
-      </div> */}
-      <main className="flex justify-center">
-        <div className="">
-          {grupoPedido && grupoPedido.map((value, index) => (            
-            <div key={value.idGrupoPedido} className={`cardContainer  ${index !== 0 ? 'mb-8' : ''}`}>
-              {/* <div className=""> */}
-                <div className="cardPrincipal">
-                  <div className="cardPrincipalTop">    
-                  <p className="statusPedido">{value.idGrupoPedido} - {value.statusPedido}</p>                                                    
-                    <button onClick={() => abrirMenu()}>
-                      <FontAwesomeIcon className="iconMenu" icon={faEllipsisVertical}  />
-                    </button>
-                  </div>                    
-                  <p className="cardNomeGrupoPedido">{value.nomeGrupoPedido}</p>                               
-                </div>
-                <div className="cardInfo">                  
-                  <p className=""> {value.horaPedido}</p>
-                  <p className="">{value.nomeMesa}</p>
-                  <p className="">R$ {value.valorPedido}</p>
-                </div> 
-                                          
-              <div className="cardButton">
-                {value.ativoBaixa === 'PAGO' && (
-                  <button className="">
-                    Finalizar Pedido
-                  </button>
-                )}
 
-                {value.ativoBaixa === 'PENDENTE' && (
-                  <>
-                    <button className="buttonCancelar" onClick={() => cancelarPedido(value.idGrupoPedido)}>
-                      Cancelar
-                    </button>
-                    <Link to='/editarpedido'>
-                      <button className="buttonEditar" onClick={() => editarPedido(value.idGrupoPedido, value.nomeGrupoPedido)}>
-                        Editar
+      <main className="flex justify-center">
+        
+        <div className="">
+          { cardUnirMesa == false ?
+          <div>
+            {grupoPedido && grupoPedido.map((value, index) => (                         
+              <div key={value.idGrupoPedido} className={`cardContainer   ${index !== 0 ? 'mb-8' : ''}`}>              
+                
+                <>
+                  <div className="cardPrincipal">
+                    <div className="cardPrincipalTop">    
+                      <p className="statusPedido">{value.idGrupoPedido} - {value.statusPedido}</p>                                                    
+                      <button onClick={() => abrirMenu(value.idGrupoPedido)}>
+                        <FontAwesomeIcon className="iconMenu" icon={faEllipsisVertical}  />
                       </button>
-                    </Link>
-                  </>
-                )}
-                </div>              
-                {!removeLoading ? 
-                  <Loading />                 
-                  : 
-                  <div onClick={() => mostrarPedido(index, value.idGrupoPedido)} className='divCardVerPedido' >
-                    <button className='buttonVerPedido' >Ver Pedido</button> 
-                    {/* {verPedido == true? */}
-                    <div className= {`divCardListProduct`}  >
-                      {listaProduto && listaProduto.map((value, index) => (                        
-                        <div key={value.idProduto} className={`${index !== 0 ? 'cardListProduct' : 'cardListProduct'}`}>                                              
-                              <p>{value.nomeProduto}</p>                                                                                  
-                              <p>{value.nomeCategoria}</p>                                                                               
-                              <p>{value.quantidade}</p>                               
-                        </div>             
-                      ))}               
-                    </div>                      
-                </div>}               
+                    </div>                    
+                    <p className="cardNomeGrupoPedido">{value.nomeGrupoPedido}</p>                               
+                  </div>
+                  <div className="cardInfo">                  
+                    <p className=""> {value.horaPedido}</p>                    
+                    {value.mesaAdicional !== value.nomeMesa ? 
+                      <div className="mesaAdicional">
+                        <p>{value.nomeMesa}</p>                        
+                        <p>{value.mesaAdicional}</p>
+                      </div>                  
+                      : 
+                      <p className="">{value.nomeMesa}</p>
+                    }
+                    <p className="">R$ {value.valorPedido}</p>
+                  </div>                                           
+                  <div className="cardButton">
+                    {value.ativoBaixa === 'PAGO' && (
+                      <button className="">
+                        Finalizar Pedido
+                      </button>
+                    )}
+
+                    {value.ativoBaixa === 'PENDENTE' && (
+                      <>
+                        <button className="buttonCancelar" onClick={() => cancelarPedido(value.idGrupoPedido)}>
+                          Cancelar
+                        </button>
+                        <Link to='/editarpedido'>
+                          <button className="buttonEditar" onClick={() => editarPedido(value.idGrupoPedido, value.nomeGrupoPedido)}>
+                            Editar
+                          </button>
+                        </Link>
+                      </>
+                    )}
+                  </div>              
+                  {!removeLoading ? 
+                    <Loading />                 
+                    : 
+                    <div onClick={() => mostrarPedido(index, value.idGrupoPedido)} className='divCardVerPedido' >
+                      <button className='buttonVerPedido' >Ver Pedido</button>                     
+                      <div className= {`divCardListProduct`}  >
+                        {listaProduto && listaProduto.map((value, index) => (                        
+                          <div key={value.idProduto} className={`${index !== 0 ? 'cardListProduct' : 'cardListProduct'}`}>                                              
+                                <p>{value.nomeProduto}</p>                                                                                  
+                                <p>{value.nomeCategoria}</p>                                                                               
+                                <p>{value.quantidade}</p>                               
+                          </div>             
+                        ))}               
+                      </div>                      
+                    </div>}
+                </>     
+                            
               </div>
-          ))}
+                
+            ))}
+          </div>  
+          : 
+          <div className="divContainerMesa">                            
+            {table.map((value) => (
+                <div key={value.idMesa} >
+                    <button onClick={() => unirMesa(value.idMesa)} className="butonMesa" >{value.nomeMesa}</button>
+                </div>
+            ))}            
+          </div>}  
+          
           {!removeLoading && <Loading />}  
         </div>
+        
       </main>
     </>
   );

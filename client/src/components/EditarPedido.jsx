@@ -17,8 +17,6 @@ export default function EditarPedido(){
     const [removeLoading, setRemoveLoading] = useState(false);    
     const [precoTotal, setPrecoTotal] = useState(0)
 
-
-
     function atualizaEdicao(){
         Axios.post("http://localhost:3001/orderGroup/orderGroupEdit",{
             idGrupoPedido: idGrupoPedido
@@ -34,19 +32,21 @@ export default function EditarPedido(){
           })
           setRemoveLoading(true)
     }
+
     useEffect(() => {
         atualizaEdicao();
            
       }, []);
 
-
-    function pedidoInserir(idProduto, preco, quantidade){         
+    function pedidoInserir(idProduto, preco, quantidade){   
+        console.log(quantidade +1) 
+        console.log(preco)     
         if (idGrupoPedido > 0){
             const novaQuantidade = (quantidades[idProduto] || 0) + 1;
             Axios.post("http://localhost:3001/requested/requestInsert", {                
                 idGrupoPedido: idGrupoPedido,
                 idProduto: idProduto,   
-                quantidade: quantidade,             
+                quantidade: quantidade + 1,             
                 preco: preco,            
             }).then(() => {                                               
                 setQuantidades(prev => ({
@@ -109,7 +109,6 @@ export default function EditarPedido(){
             setPrecoTotal(total);
         }
     }, [listProdutoEditar, quantidades])
-
 
     return(
         <div className='NovoPedidoContainer'>
