@@ -12,6 +12,7 @@ import Loading from "./Loading.jsx";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons'; // Exemplos de ícones
 import Menu from "./Menu.jsx";
+import Modal from 'react-modal'
 
 
 
@@ -23,6 +24,25 @@ export default function Home() {
   const [listaProduto, setListaProduto] = useState(); 
   const [cardUnirMesa, setCardUnirMesa] = useState(false) 
   const [table, setTable] = useState();
+  const [modalEdit, setModalEdit] = useState(false)
+  const [modalCancel, setModalCancel] = useState(false)
+
+
+  function openModalEdit() {
+    setModalEdit(true)
+  }
+
+  function closeModalEdit() {
+    setModalEdit(false)
+  }
+
+  function openModalCancel() {
+    setModalCancel(true)
+  }
+
+  function closeModalCancel() {
+    setModalCancel(false)
+  }
 
   const atualizarLista = async () => {
     try {      
@@ -201,14 +221,14 @@ export default function Home() {
 
                     {value.ativoBaixa === 'PENDENTE' && (
                       <>
-                        <button className="buttonCancelar" onClick={() => cancelarPedido(value.idGrupoPedido)}>
+                        <button className="buttonCancelar" onClick={openModalCancel}>
                           Cancelar
                         </button>
-                        <Link to='/editarpedido'>
-                          <button className="buttonEditar" onClick={() => editarPedido(value.idGrupoPedido, value.nomeGrupoPedido)}>
+                        
+                          <button className="buttonEditar" onClick={openModalEdit} >
                             Editar
                           </button>
-                        </Link>
+                        
                       </>
                     )}
                   </div>              
@@ -227,6 +247,67 @@ export default function Home() {
                         ))}               
                       </div>                      
                     </div>}
+                    <Modal
+                      isOpen={modalEdit}
+                      onRequestClose={closeModalEdit}
+                      contentLabel="Modal de Edição de Produto"
+                      className="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex"
+                    >
+                      <div className="relative p-5 bg-white w-50  m-auto flex-col flex rounded-lg shadow-lg">
+                        <h1 className="text-xl font-bold mb-4">Deseja Editar o Pedido?</h1>
+                        <div className="flex justify-center">
+                          <Link to="/editarpedido" className="mx-4">
+                            <button 
+                            className="bg-green-500 hover:bg-green-700 text-white font-bold mx-2 py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+                            onClick={() => editarPedido(value.idGrupoPedido, value.nomeGrupoPedido)}
+                            >
+                              Sim
+                            </button>
+                          </Link>
+                          <button
+                            onClick={closeModalEdit}
+                            className="bg-red-500 hover:bg-red-800 text-white font-bold mx-2 py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+                          >
+                            Cancelar
+                          </button>
+                        </div>
+                      </div>
+                    </Modal>
+
+                    <Modal
+                      isOpen={modalCancel}
+                      onRequestClose={closeModalCancel}
+                      contentLabel="Modal de Cancelar o PEDIDO!"
+                      className="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex" 
+                      >
+                        <div className="relative p-5 bg-white w-50  m-auto flex-col flex rounded-lg shadow-lg">
+                        <h1 className="text-xl font-bold mb-4">Deseja Cancelar o Pedido?</h1>
+
+                        <div  className="flex justify-center">
+                          <button
+                            className="bg-green-500 hover:bg-blue-700 text-white font-bold mx-2 py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+                            onClick={() => {
+                              cancelarPedido(value.idGrupoPedido)
+                              closeModalCancel()
+                            }}
+                              >
+                            Sim
+                          </button>
+                          <button
+                            onClick={() => {
+                              closeModalCancel()
+                            }}
+                            className="bg-red-500 hover:bg-red-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mx-2 w-full"
+                          >
+                            Cancelar
+                          </button>
+                        </div>
+                          
+                        </div>
+                      
+                    </Modal>
+
+ 
                 </>     
                             
               </div>

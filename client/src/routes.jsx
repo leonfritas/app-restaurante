@@ -7,7 +7,6 @@ import EditarPedidoPage from './pages/editarPedidoPage.jsx';
 import NovoPedidoPage from './pages/novoPedidoPage.jsx';
 import FinanceiroPage from './pages/Financeiro.jsx'
 import ListUserPage from './pages/ListUserPage.jsx';
-import RegisterPage from './pages/registerPage.jsx';
 
 import Login from './pages/login.jsx';
 // import Err from './components/err';
@@ -29,7 +28,6 @@ export default function AppRoutes() {
                         <Route exact path='/home' element={<HomePage />} />
                         <Route exact path="/novopedido" element={<NovoPedidoPage />} />
                         <Route exact path="/editarpedido" element={<EditarPedidoPage />} />
-                        <Route exact path="/cadastro" element={<RegisterPage />} />                    
                         <Route exact path='/lista' element={<ListUserPage />}></Route>
                         <Route exact path='/financeiro' element={<FinanceiroPage />}></Route>
                     </Routes>
