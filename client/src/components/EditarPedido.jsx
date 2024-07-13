@@ -38,9 +38,7 @@ export default function EditarPedido(){
            
       }, []);
 
-    function pedidoInserir(idProduto, preco, quantidade){   
-        console.log(quantidade) 
-        console.log(preco)     
+    function pedidoInserir(idProduto, preco, quantidade){                   
         if (idGrupoPedido > 0){
             const novaQuantidade = (quantidades[idProduto] || 0) + 1;
             Axios.post("http://localhost:3001/requested/requestInsert", {                

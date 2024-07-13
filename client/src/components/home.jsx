@@ -76,6 +76,22 @@ export default function Home() {
     setNomeGrupoPedido(nomeGrupoPedido)
   }
 
+  // function finalizarPedido(idGrupoPedido, nomeGrupoPedido, ativoPedidoPronto) {
+  //   let pedidoPronto = ativoPedidoPronto.data[0]
+  //   if (idGrupoPedido > 0) {
+  //     if(pedidoPronto){  
+  //       Axios.post("http://localhost:3001/orderGroup/orderGroupFinalize", {
+  //         idGrupoPedido: idGrupoPedido
+  //       });
+  //       mensagem('Pedido ' + nomeGrupoPedido + ' finalizado.');
+  //       atualizarLista();
+  //     }else{
+  //       mensagem('Verifique status do pedido.')
+  //     }
+  //   } else {
+  //     mensagem('Pedido não encontrado');
+  //   }
+  // }
 
   function cancelarPedido(idGrupoPedido) {
     if (idGrupoPedido > 0) {
@@ -154,8 +170,6 @@ export default function Home() {
   }, []);
 
   function unirMesa(idMesa){
-    console.log(idMesa)
-    console.log(idGrupoPedido)
 
     if (idGrupoPedido > 0) {
       
@@ -170,26 +184,18 @@ export default function Home() {
       mensagem('Pedido não encontrado');
     }
     getTable()
-
   }
 
   return (
     <>
       <Navbar />
-
-      {/* <div>
-        <h2>Carrossel</h2>
-      </div> */}
-
       <Menu />    
-      <main className="flex justify-center">
-        
+      <main className="flex justify-center">        
         <div className="">
           { cardUnirMesa == false ?
           <div>
             {grupoPedido && grupoPedido.map((value, index) => (                         
-              <div key={value.idGrupoPedido} className={`cardContainer   ${index !== 0 ? 'mb-8' : ''}`}>              
-                
+              <div key={value.idGrupoPedido} className={`cardContainer   ${index !== 0 ? 'mb-8' : ''}`}>                              
                 <>
                   <div className="cardPrincipal">
                     <div className="cardPrincipalTop">    
@@ -210,7 +216,7 @@ export default function Home() {
                       : 
                       <p className="">{value.nomeMesa}</p>
                     }
-                    <p className="">R$ {value.valorPedido}</p>
+                    <p className="">R$ {value.valorPedido.toFixed(2)}</p>
                   </div>                                           
                   <div className="cardButton">
                     {value.ativoBaixa === 'PAGO' && (
@@ -240,9 +246,9 @@ export default function Home() {
                       <div className= {`divCardListProduct`}  >
                         {listaProduto && listaProduto.map((value, index) => (                        
                           <div key={value.idProduto} className={`${index !== 0 ? 'cardListProduct' : 'cardListProduct'}`}>                                              
-                                <p>{value.nomeProduto}</p>                                                                                  
-                                <p>{value.nomeCategoria}</p>                                                                               
-                                <p>{value.quantidade}</p>                               
+                                <p>{value.nomeProduto}</p>                                                                                                                                                                                               
+                                <p>{value.quantidade}</p> 
+                                <p>R$ {value.preco.toFixed(2)}</p>                               
                           </div>             
                         ))}               
                       </div>                      
@@ -319,13 +325,12 @@ export default function Home() {
             {table.map((value) => (
                 <div key={value.idMesa} >
                     <button onClick={() => unirMesa(value.idMesa)} className="butonMesa" >{value.nomeMesa}</button>
-                </div>
-            ))}            
-          </div>}  
-          
+                </div>                
+            ))}               
+            <button  onClick={() => setCardUnirMesa(false)}className="butonMesa bg-red-500 hover:bg-red-700 text-white font-bold " >Voltar</button>                           
+          </div>}                                   
           {!removeLoading && <Loading />}  
-        </div>
-        
+        </div>        
       </main>
     </>
   );

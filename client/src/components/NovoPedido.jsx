@@ -3,7 +3,7 @@ import { LoginContext } from '../context/LoginContext.jsx';
 import Axios from "axios";
 // import ListaProdutos from './ListaProdutos.jsx';
 import { mensagem } from '../geral.jsx';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Loading from './Loading.jsx';
 import './css/novoPedido.css'
 import seta from '../assets/setaCarousel.png'
@@ -20,6 +20,7 @@ export default function NovoPedido() {
     const [mostrarListaMesa, setMostrarListaMesa] = useState(true);
     const [removeLoading, setRemoveLoading] = useState(false);
     const carousel = useRef(null);    
+    const [isProcessing, setIsProcessing] = useState(false);
 
 
     useEffect(() => {
@@ -67,6 +68,7 @@ export default function NovoPedido() {
     }, [listProduto, quantidades]);
     
     function pedidoInserir(idProduto, preco, quantidade) {
+        setIsProcessing(true);
         if (idGrupoPedido > 0) {
             Axios.post("http://localhost:3001/requested/requestInsert", {
                 idGrupoPedido: idGrupoPedido,
@@ -87,6 +89,7 @@ export default function NovoPedido() {
         } else {
             mensagem('Informe o código do pedido.');
         }
+        setIsProcessing(false);        
     }
 
     
@@ -225,11 +228,15 @@ export default function NovoPedido() {
                                 <td className='py-2 px-4'>{value.nomeProduto}</td>
                                 <td className='py-2 px-4'>R${value.preco.toFixed(2)}</td>
                                 <td className='py-2 px-4'>
+                                {isProcessing? <Loading /> :
+                                <>
                                     <button className='bg-green-600 hover:bg-red-700 text-white font-bold py-1 px-2 rounded'
                                         onClick={() => pedidoInserir(value.idProduto, value.preco, value.quantidade)}>+</button>
                                     <span className='mx-2'>{quantidades[value.idProduto] || 0}</span>
                                     <button className='bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-2 rounded'
                                         onClick={() => pedidoExcluir(value.idProduto)}>-</button>
+                                </>
+                                }
                                 </td>
                             </tr>
                         ))}
@@ -246,7 +253,11 @@ export default function NovoPedido() {
                             <div key={value.idMesa} className="mb-4">
                                 <button className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => selecionarMesa(value.idMesa, value.nomeMesa)}>{value.nomeMesa}</button>
                             </div>
-                        ))}
+                        ))}                        
+                        <Link to='/home'>
+                            <button className="w-full bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Voltar</button>
+                        </Link>
+                        
                         {!removeLoading && <Loading />}
                     </div>
                 </div>
