@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
-import { mensagem } from "../geral.jsx";
+import Loading from "./Loading.jsx";
+import ModalRegister from "../components/modals/ModalRegister.jsx";
 
 export default function Register() {
   const [realName, setName] = useState("");
@@ -11,6 +12,9 @@ export default function Register() {
   const [checkAdmin, setUserAdmin] = useState(false);
   const [userCheck, setUserCheck] = useState(false);
   const navigate = useNavigate();
+  const [removeLoading, setRemoveLoading] = useState(true);
+  const [modalMessage, setModalMessage] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
   const register = () => {
     const ativoAdminValue = checkAdmin ? 1 : 0;
@@ -27,33 +31,40 @@ export default function Register() {
       })
         .then((response) => {
           if (!response.data) {
-            mensagem("Erro ao tentar cadastrar. Resposta vazia do servidor.");
+            setModalMessage("Erro ao tentar cadastrar. Resposta vazia do servidor.");
+            setShowModal(true);
+            setRemoveLoading(true);
             return;
           }          
           if (response.data[0][0].usuarioDuplicado == 0){
             if (response.data[0][0].idFuncionario > 0) {
-              mensagem(
+              setModalMessage(
                 "Funcionário: " +
                   response.data[0][0].nomeFuncionario +
                   " cadastrado com sucesso."
               );
+              setShowModal(true);
               navigate("/lista");
             } else {
-              mensagem(
+              setModalMessage(
                 "Erro ao tentar cadastrar. Resposta inválida do servidor."
               );
+              setShowModal(true);
             }
           }else{
-            mensagem('Nome de usuário inválido.')
+            setModalMessage('Nome de usuário inválido.');
+            setShowModal(true);
           }  
         })
         .catch(() => {
-          mensagem(
+          setModalMessage(
             "Erro ao tentar cadastrar. Por favor, tente novamente mais tarde."
           );
+          setShowModal(true);
         });
     } else {
-      mensagem("Preencha seu nome, usuário e senha para continuar.");
+      setModalMessage("Preencha seu nome, usuário e senha para continuar.");
+      setShowModal(true);
     }
   };
 
@@ -90,9 +101,14 @@ export default function Register() {
     setUserCheck(e.target.checked);
   };
 
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
   return (
     <div className="min-h-screen flex flex-col justify-center bg-indigo-600">
       <div className="bg-white mx-auto max-w-md py-8 px-10 shadow rounded-lg">
+        <h1 className="text-center font-bold mb-5 text-2xl">Área de Registro</h1>
         <div className="mb-4">
           <input
             type="text"
@@ -168,17 +184,16 @@ export default function Register() {
           >
             Criar Conta
           </button>
+          {!removeLoading && <Loading />}
         </div>
 
-        <div className="mb-4">
-          <p>
-            Já tem uma conta?{" "}
-            <a href="/" className="text-indigo-600">
-              Faça Login
-            </a>
-          </p>
-        </div>
       </div>
+
+      {/* Modal de Mensagem */}
+      <ModalRegister isOpen={showModal} onCancel={closeModal}>
+        {modalMessage}
+      </ModalRegister>
+
     </div>
   );
 }

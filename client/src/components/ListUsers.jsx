@@ -1,46 +1,58 @@
-import { useState, useEffect } from 'react';
-import { Link } from "react-router-dom";
-import Axios from "axios";
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import Axios from 'axios';
 import './css/novoPedido.css';
+import Loading from './Loading.jsx';
+import ModalListUser from './modals/ModalListUser.jsx'; // Certifique-se de importar o modal corretamente
 
 export default function ListUser() {
     const [listUser, setListUser] = useState([]);
+    const [removeLoading, setRemoveLoading] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [userIdToDelete, setUserIdToDelete] = useState(null);
 
     useEffect(() => {
         buscarUsers();
     }, []);
 
     const buscarUsers = () => {
-        Axios.get("http://localhost:3001/users/userList")
-            .then((response) => {                
+        Axios.get('http://localhost:3001/users/userList')
+            .then((response) => {
                 setListUser(response.data);
+                setRemoveLoading(true);
             })
             .catch((error) => {
-                console.error("Erro ao buscar dados: ", error);
+                console.error('Erro ao buscar dados: ', error);
             });
     };
 
-    const deleteUser = (idFuncionario) => {
+    const confirmDeleteUser = (idFuncionario) => {
         if (idFuncionario > 0) {
-            if (window.confirm(`Deseja excluir essa conta ${idFuncionario}` )) {
-                Axios.delete(`http://localhost:3001/users/deleteUser/${idFuncionario}`)
-                    .then(() => {                        
-                        buscarUsers(); 
-                    })
-                    .catch((error) => {
-                        console.error("Erro ao deletar usuário: ", error);
-                    });
-            }
+            setUserIdToDelete(idFuncionario);
+            setShowModal(true);
         } else {
             alert('Usuário não encontrado');
         }
     };
 
+    const handleDeleteUser = () => {
+        Axios.delete(`http://localhost:3001/users/deleteUser/${userIdToDelete}`)
+            .then(() => {
+                buscarUsers();
+                setRemoveLoading(true);
+                setShowModal(false); // Fecha o modal após a exclusão
+                
+            })
+            .catch((error) => {
+                console.error('Erro ao deletar usuário: ', error);
+            });
+    };
+
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
             <h1 className="text-3xl font-bold mb-6 text-center text-blue-600">Lista de Usuários</h1>
-            <Link to='/cadastro'>
-                <button className="text-white w-60 py-3 my-2 leading-none bg-indigo-600 hover:bg-indigo-700 font-semibold rounded shadow">
+            <Link to="/cadastro" className="transition duration-500 ease-in-out transform hover:scale-105">
+                <button className="text-white w-60 py-3 my-2 leading-none bg-indigo-600 hover:bg-indigo-700 font-semibold rounded shadow transition duration-300 ease-in-out transform hover:scale-105">
                     Cadastrar novos usuários!
                 </button>
             </Link>
@@ -52,15 +64,31 @@ export default function ListUser() {
                             <p className="text-white font-mono">Nome: {user.nomeFuncionario}</p>
                             <p className="text-white font-mono">CPF: {user.numeroCPF}</p>
                             <p className="text-white font-mono">Senha: {user.nomeSenha}</p>
-                            <p className="text-white font-mono">Funcionário: {user.ativoFuncionario === 1 ? 'Ativado' : 'Desativado'}</p>
-                            <p className="text-white font-mono">Administrador: {user.ativoAdministrador === 1 ? 'Ativado' : 'Desativado'}</p>
-                            <button className="buttonDeleteUser text-white w-20 py-3 my-2 leading-none bg-indigo-600 hover:bg-indigo-700 font-semibold rounded shadow " onClick={() => deleteUser(user.idFuncionario)}>EXCLUIR CONTA</button>
+                            <p className="text-white font-mono">
+                                Funcionário: {user.ativoFuncionario === 1 ? 'Ativado' : 'Desativado'}
+                            </p>
+                            <p className="text-white font-mono">
+                                Administrador: {user.ativoAdministrador === 1 ? 'Ativado' : 'Desativado'}
+                            </p>
+                            <button
+                                className="buttonDeleteUser text-white w-20 py-3 my-2 leading-none bg-indigo-600 hover:bg-indigo-700 font-semibold rounded shadow "
+                                onClick={() => confirmDeleteUser(user.idFuncionario)}
+                            >
+                                EXCLUIR CONTA
+                            </button>
                         </li>
                     ))
                 ) : (
                     <li className="text-gray-500">Nenhum usuário encontrado</li>
                 )}
             </ul>
+            {!removeLoading && <Loading />}
+            {/* Modal de confirmação */}
+            <ModalListUser
+                isOpen={showModal}
+                onCancel={() => setShowModal(false)}
+                onConfirm={handleDeleteUser}
+            />
         </div>
     );
 }

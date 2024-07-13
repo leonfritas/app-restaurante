@@ -65,6 +65,7 @@ export default function Login() {
     return (
         <>
             <div className="min-h-screen flex items-center justify-center bg-gray-800">
+            
                 <div className=" loginContainer bg-white p-8 rounded-lg shadow-md max-w-85 w-full ">
                     <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">APP-RESTAURANTE</h2>
                     <div className="mb-4">
