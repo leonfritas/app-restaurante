@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Axios from 'axios';
 import './css/novoPedido.css';
-import Loading from './loading.jsx';
+import Loading from './Loading.jsx';
 
 import Modal from 'react-modal'
 import Register from './Register.jsx';
@@ -32,9 +32,6 @@ export default function ListUser() {
         setModalDelete(false)
     }
 
-    useEffect(() => {
-        buscarUsers();
-    }, []);
 
     const buscarUsers = () => {
         Axios.get('http://localhost:3001/users/userList')
@@ -46,6 +43,15 @@ export default function ListUser() {
                 console.error('Erro ao buscar dados: ', error);
             });
     };
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            buscarUsers();
+          }, 2000);
+      
+          return () => clearInterval(interval);
+        }, []);
+    
 
     const deleteUser = (idFuncionario) => {
         if (idFuncionario > 0) {
@@ -132,7 +138,7 @@ export default function ListUser() {
                                 <div className='rounded-lg p-8 max-w-md w-full opacity-100 transition-transform duration-300 transform'>
                                     <div className='flex justify-center mb-1'>
                                         <button
-                                            className='bg-indigo-600 font-bold px-4 py-2 rounded text-white'
+                                            className='bg-indigo-600 font-semibold px-4 py-2 rounded text-white'
                                             onClick={closeModalRegister}
                                         >
                                             Fechar

@@ -56,22 +56,6 @@ export default function Home() {
     setNomeGrupoPedido(nomeGrupoPedido)
   }
 
-  // function finalizarPedido(idGrupoPedido, nomeGrupoPedido, ativoPedidoPronto) {
-  //   let pedidoPronto = ativoPedidoPronto.data[0]
-  //   if (idGrupoPedido > 0) {
-  //     if(pedidoPronto){  
-  //       Axios.post("http://localhost:3001/orderGroup/orderGroupFinalize", {
-  //         idGrupoPedido: idGrupoPedido
-  //       });
-  //       mensagem('Pedido ' + nomeGrupoPedido + ' finalizado.');
-  //       atualizarLista();
-  //     }else{
-  //       mensagem('Verifique status do pedido.')
-  //     }
-  //   } else {
-  //     mensagem('Pedido não encontrado');
-  //   }
-  // }
 
   function cancelarPedido(idGrupoPedido) {
     if (idGrupoPedido > 0) {

@@ -172,10 +172,7 @@ export default function Register() {
 
         <div className="mb-4">
           <p>
-            Já tem uma conta?{" "}
-            <a href="/" className="text-indigo-600">
-              Faça Login
-            </a>
+            Após a <strong>CONFIRMAÇÃO</strong> do <strong>CADASTRO</strong>, pode fechar a tela.
           </p>
         </div>
       </div>
