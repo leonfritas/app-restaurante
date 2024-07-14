@@ -6,7 +6,7 @@ import Loading from "../components/Loading.jsx";
 import './css/login.css'
 
 export default function Login() {
-    const { setIsLogged, setAtivoAdm } = useContext(LoginContext);
+    const { setIsLogged, setAtivoAdm, setIdFuncionario } = useContext(LoginContext);
     const [usuario, setUsuario] = useState("");
     const [senha, setSenha] = useState("");
     const navigate = useNavigate();
@@ -23,7 +23,9 @@ export default function Login() {
             }).then((response) => {
                 let ativoFuncionario = response.data[0][0].ativoFuncionario;
                 if (ativoFuncionario === 1) {
-                    let ativoAdm = response.data[0][0].ativoAdm;
+                    let ativoAdm = response.data[0][0].ativoAdm;                    
+                    let idFuncionario = response.data[0][0].idFuncionario;
+                    setIdFuncionario(idFuncionario)                    
                     setAtivoAdm(ativoAdm);
                     setIsLogged(true);
                     navigate('/home');
