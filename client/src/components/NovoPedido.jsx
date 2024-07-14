@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext,useRef } from 'react';
 import { LoginContext } from '../context/LoginContext.jsx';
 import Axios from "axios";
-import { mensagem } from '../geral.jsx';
 import { useNavigate, Link } from "react-router-dom";
 import Loading from './Loading.jsx';
 import './css/novoPedido.css';
@@ -22,6 +21,7 @@ export default function NovoPedido() {
     const carousel = useRef(null);    
     const [isProcessing, setIsProcessing] = useState(false);
     const [textModal, setTextModal ] = useState(); 
+    const [link, setLink] = useState();
 
 
     useEffect(() => {
@@ -136,10 +136,10 @@ export default function NovoPedido() {
                     textoObservacao: 'teste'
                     
                 })
-                .then(() => {
-                    openModal('Pedido salvo com sucesso.');
-                    navigate('/home');
-                    setMsgModal(false);
+                .then(() => {    
+                    openModal('msg', 'Pedido salvo com sucesso.', '/home');                                     
+                    // navigate('/home');
+                                       
                 })
                 .catch((error) => {
                     console.error("Error saving order group:", error);
@@ -186,21 +186,26 @@ export default function NovoPedido() {
                 setListProduto(response.data[0]);
             })
         }else{
-            mensagem('Número de pedido não encontrado');
+            openModal('Número de pedido não encontrado');
         }
     }
 
-    function closeModal(action){
-        alert('2')
-        if (action === 'msg') {
-            alert('1')
+    function closeModal(action){        
+        if (action === 'msg') {            
           setMsgModal(false);
         }
     }
 
-    function openModal(msg){
-        setTextModal(msg)
-        setMsgModal(true)
+    function openModal(action, msg, link){
+
+        if (action === 'msg') {  
+            setLink(link)
+            setTextModal(msg)
+            alert(msg)
+            setMsgModal(true)
+                        
+        }
+        
     }
         
 
@@ -282,7 +287,8 @@ export default function NovoPedido() {
                 // isOpen={functionModal}                    
                 isClose={() => closeModal('msg')}                
                 contentLabel="Modal de Edição de Produto"                            
-                text={textModal}                    
+                text={textModal}    
+                link={link}                
                 />
             : ''}
         </div>

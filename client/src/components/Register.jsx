@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
-import { mensagem } from "../geral.jsx";
+import { LoginContext } from "../context/LoginContext.jsx";
+import { MsgModal } from "../geral.jsx";
 
 export default function Register() {
   const [realName, setName] = useState("");
@@ -11,10 +12,14 @@ export default function Register() {
   const [checkAdmin, setUserAdmin] = useState(false);
   const [userCheck, setUserCheck] = useState(false);
   const navigate = useNavigate();
+  const { msgModal, setMsgModal} = useContext(LoginContext);
+  const [textModal, setTextoModal ] = useState();
 
-  const register = () => {
+  function register (){
     const ativoAdminValue = checkAdmin ? 1 : 0;
     const ativoFuncionarioValue = userCheck ? 1 : 0;
+
+
 
     if (realName !== "" && userName !== "" && senha !== "" && cpf !== "") {
       Axios.post("http://localhost:3001/users/register", {
@@ -27,35 +32,36 @@ export default function Register() {
       })
         .then((response) => {
           if (!response.data) {
-            mensagem("Erro ao tentar cadastrar. Resposta vazia do servidor.");
+            openModal('msg', "Erro ao tentar cadastrar. Resposta vazia do servidor.");
             return;
           }          
           if (response.data[0][0].usuarioDuplicado == 0){
             if (response.data[0][0].idFuncionario > 0) {
-              mensagem(
+              openModal("msg",
                 "Funcionário: " +
                   response.data[0][0].nomeFuncionario +
                   " cadastrado com sucesso."
               );
               navigate("/lista");
             } else {
-              mensagem(
+              openModal("msg",
                 "Erro ao tentar cadastrar. Resposta inválida do servidor."
               );
             }
           }else{
-            mensagem('Nome de usuário inválido.')
+            openModal("msg", 'Nome de usuário inválido.')
           }  
         })
         .catch(() => {
-          mensagem(
+          openModal("msg",
             "Erro ao tentar cadastrar. Por favor, tente novamente mais tarde."
           );
         });
     } else {
-      mensagem("Preencha seu nome, usuário e senha para continuar.");
+      openModal("msg","Preencha seu nome, usuário e senha para continuar.");
     }
-  };
+    // setMsgModal(false)
+  }
 
   const formatCPF = (value) => {
     value = value.replace(/\D/g, "");
@@ -89,6 +95,17 @@ export default function Register() {
   const handleUserCheckboxChange = (e) => {
     setUserCheck(e.target.checked);
   };
+
+  function closeModal(){
+    setMsgModal(false);
+  }
+
+  function openModal(action, msg){
+    if(action == 'msg'){
+      setTextoModal(msg)
+      setMsgModal(true)
+    }
+  }
 
   return (
     <div className=" flex flex-col justify-center ">
@@ -175,6 +192,13 @@ export default function Register() {
             Após a <strong>CONFIRMAÇÃO</strong> do <strong>CADASTRO</strong>, pode fechar a tela.
           </p>
         </div>
+        {msgModal ?
+          <MsgModal
+          isClose={closeModal}
+          text={textModal}
+
+          />
+        : ''}
       </div>
     </div>
   );

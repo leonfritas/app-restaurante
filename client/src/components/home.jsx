@@ -1,7 +1,6 @@
 import "./css/novoPedido.css";
 import Axios from "axios";
 import { useState, useEffect } from "react";
-import { mensagem } from "../geral.jsx";
 import './css/ApagarDepois.css';
 import Navbar from "./Navbar.jsx";
 import { useContext } from "react";
@@ -50,12 +49,14 @@ export default function Home() {
       }else 
       if(action == 'cancel'){      
         setTextModal('Deseja Cancelar o Pedido?');
-        setFunctionModal(() => () => cancelarPedido(idGrupoPedido)); 
+        setFunctionModal(() => () => cancelarPedido(idGrupoPedido));
+        setLink(''); 
       }
-      setConfirmModal(true)
-    }else if(action == 'msg'){      
+      setConfirmModal(true);
+    }else if(action == 'msg'){         
       setTextModal(msg);      
       setMsgModal(true);      
+      setCardUnirMesa(false);    
     }
     
   }
@@ -181,11 +182,16 @@ export default function Home() {
   }
 
   useEffect(() => {
-    getTable()
+
+    const interval = setInterval(() => {
+      getTable()
+    }, 5000);
+
+    return () => clearInterval(interval);
+    
   }, []);
 
-  function unirMesa(idMesa){
-
+  function unirMesa(idMesa){   
     if (idGrupoPedido > 0) {      
         Axios.post("http://localhost:3001/table/joinTable", {
           idGrupoPedido: idGrupoPedido,
@@ -193,10 +199,10 @@ export default function Home() {
         });
         atualizarLista();
         setCardUnirMesa(false)      
-    } else {
-      mensagem('Pedido não encontrado');
+    } else {      
+      openModal('msg',null, null, 'Pedido não encontrado');
     }
-    getTable()
+    getTable();
   }
 
   return (
@@ -276,6 +282,7 @@ export default function Home() {
                     link={link}
                   />
                   : ''}
+
                   {msgModal?
                   <MsgModal
                     // isOpen={functionModal}                    

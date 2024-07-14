@@ -1,17 +1,6 @@
 import { Link } from "react-router-dom";
 
 
-
-export const mensagem = (mensagem) => {
-  alert(mensagem);
-};
-
-export const mensagemPergunta = (mensagemPergunta) => {
-  let confirm;
-  confirm = window.confirm(mensagemPergunta);
-  return confirm;
-};
-
 export function ConfirmModal(props){   
   const handleConfirm = () => {
     if (props.isOpen) {
@@ -57,12 +46,14 @@ export function MsgModal(props){
       <div className="relative p-5 bg-white w-50 m-auto flex-col flex rounded-lg shadow-lg">
         <h1 className="text-xl font-bold mb-4">{props.text}</h1>
         <div className="flex justify-center">
-          <button 
-            className="bg-green-500 hover:bg-green-700 text-white font-bold mx-2 py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
-            onClick={handleConfirm}
-          >
-            Ok
-          </button>
+          <Link to={props.link}>          
+            <button 
+              className="bg-green-500 hover:bg-green-700 text-white font-bold mx-2 py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+              onClick={handleConfirm}
+            >
+              Ok
+            </button>
+          </Link>
         </div>
       </div>  
     </div>  
