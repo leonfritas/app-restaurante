@@ -26,8 +26,9 @@ export const grupoPedidoCancelar =  (req, res) => {
 }
 
 export const grupoPedidoInserir = (req, res) => {
-    let sql = "call sp_GrupoPedido_Inserir";
-    db.query(sql, (err, result) => {
+    const { idFuncionario } = req.body;
+    let sql = "call sp_GrupoPedido_Inserir(?)";
+    db.query(sql,[ idFuncionario ], (err, result) => {
         if(err) console.log(err)
         else res.send(result)
     })

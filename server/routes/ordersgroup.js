@@ -4,7 +4,7 @@ import { grupoPedidoCancelar, grupoPedidoFinalizar, grupoPedidoInserir, grupoPed
 
 const orderGroupRoute = express.Router()
 
-orderGroupRoute.get('/orderGroupInsert', grupoPedidoInserir)
+orderGroupRoute.post('/orderGroupInsert', grupoPedidoInserir)
 orderGroupRoute.post('/orderGroupCancel', grupoPedidoCancelar)
 orderGroupRoute.post('/orderGroupSave', grupoPedidoSalvar)
 orderGroupRoute.post('/orderGroupFinalize', grupoPedidoFinalizar)

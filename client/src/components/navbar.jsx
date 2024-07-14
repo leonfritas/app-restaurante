@@ -5,12 +5,14 @@ import Axios from "axios";
 import './css/navbar.css'
 
 export default function Navbar() {
-    const { ativoAdm, setIdGrupoPedido } = useContext(LoginContext);
+    const { ativoAdm, setIdGrupoPedido, idFuncionario } = useContext(LoginContext);
     const [isMenuOpen, setIsMenuOpen] = useState(false); // Estado para controlar a abertura do menu responsivo
 
     function CriarNovoPedido() {
-        Axios.get("http://localhost:3001/orderGroup/orderGroupInsert")
-            .then((response) => {
+        Axios.post("http://localhost:3001/orderGroup/orderGroupInsert", {
+            idFuncionario: idFuncionario
+        })
+            .then((response) => {                
                 setIdGrupoPedido(response.data[0][0].idGrupoPedido);
             })
             .catch((error) => {
