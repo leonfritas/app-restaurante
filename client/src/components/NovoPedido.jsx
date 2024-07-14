@@ -1,15 +1,15 @@
 import { useState, useEffect, useContext,useRef } from 'react';
 import { LoginContext } from '../context/LoginContext.jsx';
 import Axios from "axios";
-// import ListaProdutos from './ListaProdutos.jsx';
 import { mensagem } from '../geral.jsx';
 import { useNavigate, Link } from "react-router-dom";
 import Loading from './Loading.jsx';
-import './css/novoPedido.css'
-import seta from '../assets/setaCarousel.png'
+import './css/novoPedido.css';
+import seta from '../assets/setaCarousel.png';
+import { MsgModal } from '../geral.jsx'
 
 export default function NovoPedido() {
-    const { idGrupoPedido, nomeGrupoPedido, setNomeGrupoPedido } = useContext(LoginContext);
+    const { idGrupoPedido, nomeGrupoPedido, setNomeGrupoPedido, msgModal, setMsgModal } = useContext(LoginContext);
     const navigate = useNavigate();
     const [listProduto, setListProduto] = useState([]);
     const [quantidades, setQuantidades] = useState({});
@@ -21,6 +21,7 @@ export default function NovoPedido() {
     const [removeLoading, setRemoveLoading] = useState(false);
     const carousel = useRef(null);    
     const [isProcessing, setIsProcessing] = useState(false);
+    const [textModal, setTextModal ] = useState(); 
 
 
     useEffect(() => {
@@ -87,7 +88,7 @@ export default function NovoPedido() {
                 console.error("Error adding item to order:", error);
             });
         } else {
-            mensagem('Informe o código do pedido.');
+            openModal('Informe o código do pedido.');
         }
         setIsProcessing(false);        
     }
@@ -109,7 +110,7 @@ export default function NovoPedido() {
                 console.error("Error removing item from order:", error);
             });
         } else {
-            mensagem('Informe o código do pedido.');
+            openModal('Informe o código do pedido.');
         }
     }
 
@@ -121,7 +122,7 @@ export default function NovoPedido() {
     
     function salvarGrupoPedido() {
         if (nomeGrupoPedido === '') {
-            return mensagem('Digite o nome do pedido.');
+            return openModal('Digite o nome do pedido.');
         }
 
         if (idGrupoPedido > 0) {
@@ -136,15 +137,16 @@ export default function NovoPedido() {
                     
                 })
                 .then(() => {
-                    mensagem('Pedido salvo com sucesso.');
+                    openModal('Pedido salvo com sucesso.');
                     navigate('/home');
+                    setMsgModal(false);
                 })
                 .catch((error) => {
                     console.error("Error saving order group:", error);
                 });
             }
         } else {
-            mensagem('Informe o código do pedido.');
+            openModal('Informe o código do pedido.');
         }
         
     }
@@ -186,6 +188,19 @@ export default function NovoPedido() {
         }else{
             mensagem('Número de pedido não encontrado');
         }
+    }
+
+    function closeModal(action){
+        alert('2')
+        if (action === 'msg') {
+            alert('1')
+          setMsgModal(false);
+        }
+    }
+
+    function openModal(msg){
+        setTextModal(msg)
+        setMsgModal(true)
     }
         
 
@@ -262,6 +277,15 @@ export default function NovoPedido() {
                     </div>
                 </div>
             }
+            {msgModal?
+                <MsgModal
+                // isOpen={functionModal}                    
+                isClose={() => closeModal('msg')}                
+                contentLabel="Modal de Edição de Produto"                            
+                text={textModal}                    
+                />
+            : ''}
         </div>
+        
     );
 }

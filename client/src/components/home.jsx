@@ -30,10 +30,14 @@ export default function Home() {
   const [link, setLink] = useState();
 
 
-  function closeModal(){
-    setConfirmModal(false);
-    setMsgModal(false);
+  function closeModal(action){
+    if (action === 'msg') {
+      setMsgModal(false);
+    } else {
+      setConfirmModal(false);
+    }
   }
+  
 
   
 
@@ -50,12 +54,8 @@ export default function Home() {
       }
       setConfirmModal(true)
     }else if(action == 'msg'){      
-      setTextModal(msg);
-      console.log(msgModal);
-      setMsgModal(true);
-      console.log(msgModal);
-
-
+      setTextModal(msg);      
+      setMsgModal(true);      
     }
     
   }
@@ -67,8 +67,7 @@ export default function Home() {
       });  
       setGrupoPedido(response.data[0]);
       setRemoveLoading(true);
-    } catch (error) {
-      // console.error('Erro ao buscar dados:', error);
+    } catch (error) {      
       if (error.response) {
         console.error('Erro na resposta:', error.response);
       } else {
@@ -280,7 +279,7 @@ export default function Home() {
                   {msgModal?
                   <MsgModal
                     // isOpen={functionModal}                    
-                    isClose={() => closeModal()}                
+                    isClose={() => closeModal('msg')}                
                     contentLabel="Modal de Edição de Produto"                            
                     text={textModal}                    
                   />

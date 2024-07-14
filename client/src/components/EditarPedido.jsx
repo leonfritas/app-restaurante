@@ -3,19 +3,21 @@ import {LoginContext} from '../context/LoginContext.jsx'
 import Axios from "axios"
 // import ListaProdutos from './ListaProdutos.jsx';
 import './css/novoPedido.css'
-import { mensagem } from '../geral.jsx';
 import { useNavigate } from "react-router-dom";
 import './css/ApagarDepois.css'
 import Loading from './Loading.jsx';
+import { MsgModal } from '../geral.jsx'
 
 
 export default function EditarPedido(){
     const [listProdutoEditar, setListProdutoEditar] = useState();      
-    const { idGrupoPedido, nomeGrupoPedido, setNomeGrupoPedido} = useContext(LoginContext); 
+    const { idGrupoPedido, nomeGrupoPedido, setNomeGrupoPedido, msgModal, setMsgModal} = useContext(LoginContext); 
     const navigate = useNavigate(); 
     const [quantidades, setQuantidades] = useState({});
     const [removeLoading, setRemoveLoading] = useState(false);    
-    const [precoTotal, setPrecoTotal] = useState(0)
+    const [precoTotal, setPrecoTotal] = useState(0);
+    const [textModal, setTextModal ] = useState(); 
+
 
     function atualizaEdicao(){
         Axios.post("http://localhost:3001/orderGroup/orderGroupEdit",{
@@ -54,7 +56,7 @@ export default function EditarPedido(){
             })  
             atualizaEdicao();          
         }else{
-            mensagem('Informe o código do pedido.')
+            openModal('Informe o código do pedido.');
         }        
     }
 
@@ -74,7 +76,7 @@ export default function EditarPedido(){
             }    
             atualizaEdicao(); 
         }else{
-            mensagem('Informe o código do pedido.')
+            openModal('Informe o código do pedido.')
         }        
     }
 
@@ -85,10 +87,11 @@ export default function EditarPedido(){
                 nomeGrupoPedido: nomeGrupoPedido          
             }).then(() => {                                                                                  
             })
-            mensagem('Pedido salvo com sucesso.')
-            navigate('/home')
+            openModal('Pedido salvo com sucesso.');
+            navigate('/home');
+            setMsgModal(false);
         }else{
-            mensagem('Informe o código do pedido.')
+            openModal('Informe o código do pedido.');
         }  
     }
 
@@ -106,7 +109,18 @@ export default function EditarPedido(){
         })
             setPrecoTotal(total);
         }
-    }, [listProdutoEditar, quantidades])
+    }, [listProdutoEditar, quantidades]);
+
+    function closeModal(action){
+        if (action === 'msg') {
+          setMsgModal(false);
+        }
+    }
+
+    function openModal(msg){
+        setTextModal(msg)
+        setMsgModal(true)
+    }
 
     return(
         <div className='NovoPedidoContainer'>
@@ -144,6 +158,14 @@ export default function EditarPedido(){
             </tr>
         ))}
     </tbody>
+    {msgModal?
+        <MsgModal
+        // isOpen={functionModal}                    
+        isClose={() => closeModal('msg')}                
+        contentLabel="Modal de Edição de Produto"                            
+        text={textModal}                    
+        />
+        : ''}
 </table>
         {!removeLoading && <Loading />}
         </div>
