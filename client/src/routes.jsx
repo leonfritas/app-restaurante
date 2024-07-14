@@ -16,10 +16,15 @@ export default function AppRoutes() {
     const [idGrupoPedido, setIdGrupoPedido] = useState();
     const [ativoAdm, setAtivoAdm] = useState();
     const [isCreated, setIsCreated] = useState(false); // Inicializando como false
-    const [nomeGrupoPedido, setNomeGrupoPedido] = useState('');     
+    const [nomeGrupoPedido, setNomeGrupoPedido] = useState('');   
+    const [confirmModal, setConfirmModal] = useState(false);  
+    const [msgModal, setMsgModal] = useState(false);
+    const [idFuncionario, setIdFuncionario] = useState();  
 
     return (
-        <LoginContext.Provider value={{ isLogged, setIsLogged, idGrupoPedido, setIdGrupoPedido, ativoAdm, setAtivoAdm, nomeGrupoPedido, setNomeGrupoPedido }}>
+        <LoginContext.Provider value={{ isLogged, setIsLogged, idGrupoPedido, setIdGrupoPedido, 
+                                        ativoAdm, setAtivoAdm, nomeGrupoPedido, setNomeGrupoPedido, 
+                                        confirmModal, setConfirmModal, msgModal, setMsgModal, idFuncionario, setIdFuncionario }}>
             <RegisterContext.Provider value={{ isCreated, setIsCreated }}>
                 <BrowserRouter>
                     <Routes>

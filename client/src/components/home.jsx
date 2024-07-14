@@ -1,8 +1,7 @@
-import { Link } from "react-router-dom";
 import "./css/novoPedido.css";
 import Axios from "axios";
 import { useState, useEffect } from "react";
-import { mensagem, mensagemPergunta } from "../geral.jsx";
+import { mensagem } from "../geral.jsx";
 import './css/ApagarDepois.css';
 import Navbar from "./Navbar.jsx";
 import { useContext } from "react";
@@ -10,38 +9,55 @@ import { LoginContext } from '../context/LoginContext.jsx';
 import './css/home.css'
 import Loading from "./Loading.jsx";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons'; // Exemplos de ícones
+import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons'; 
 import Menu from "./Menu.jsx";
-import Modal from 'react-modal'
+import { ConfirmModal } from '../geral.jsx'
+import { MsgModal } from '../geral.jsx'
 
 
 
 export default function Home() {
   const [grupoPedido, setGrupoPedido] = useState([]);
   const [removeLoading, setRemoveLoading] = useState(false);
-  const { idGrupoPedido, setIdGrupoPedido, setNomeGrupoPedido } = useContext(LoginContext);
-  const [ verPedido, setVerPedido] = useState(false);
+  const {idGrupoPedido, setIdGrupoPedido, setNomeGrupoPedido, 
+         confirmModal, setConfirmModal, msgModal, setMsgModal } = useContext(LoginContext);
+  const [verPedido, setVerPedido] = useState(false);
   const [listaProduto, setListaProduto] = useState(); 
-  const [cardUnirMesa, setCardUnirMesa] = useState(false) 
+  const [cardUnirMesa, setCardUnirMesa] = useState(false); 
   const [table, setTable] = useState();
-  const [modalEdit, setModalEdit] = useState(false)
-  const [modalCancel, setModalCancel] = useState(false)
+  const [textModal, setTextModal ] = useState(); 
+  const [functionModal, setFunctionModal] = useState(); 
+  const [link, setLink] = useState();
 
 
-  function openModalEdit() {
-    setModalEdit(true)
+  function closeModal(){
+    setConfirmModal(false);
+    setMsgModal(false);
   }
 
-  function closeModalEdit() {
-    setModalEdit(false)
-  }
+  
 
-  function openModalCancel() {
-    setModalCancel(true)
-  }
+  function openModal(action, idGrupoPedido, nomeGrupoPedido, msg){
+    if(action !== 'msg'){
+      if(action == 'edit'){
+        setTextModal('Deseja Editar o Pedido?');
+        setFunctionModal(() => () => editarPedido(idGrupoPedido, nomeGrupoPedido)); 
+        setLink('/editarPedido')     
+      }else 
+      if(action == 'cancel'){      
+        setTextModal('Deseja Cancelar o Pedido?');
+        setFunctionModal(() => () => cancelarPedido(idGrupoPedido)); 
+      }
+      setConfirmModal(true)
+    }else if(action == 'msg'){      
+      setTextModal(msg);
+      console.log(msgModal);
+      setMsgModal(true);
+      console.log(msgModal);
 
-  function closeModalCancel() {
-    setModalCancel(false)
+
+    }
+    
   }
 
   const atualizarLista = async () => {
@@ -71,9 +87,10 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  function editarPedido(idGrupoPedido, nomeGrupoPedido) {
+  function editarPedido(idGrupoPedido, nomeGrupoPedido) {        
     setIdGrupoPedido(idGrupoPedido)    
     setNomeGrupoPedido(nomeGrupoPedido)
+    setConfirmModal(false)
   }
 
   // function finalizarPedido(idGrupoPedido, nomeGrupoPedido, ativoPedidoPronto) {
@@ -93,23 +110,22 @@ export default function Home() {
   //   }
   // }
 
-  function cancelarPedido(idGrupoPedido) {
+  async function cancelarPedido(idGrupoPedido) {    
     if (idGrupoPedido > 0) {
-      if (mensagemPergunta('Deseja cancelar pedido ' + idGrupoPedido)) {
-        Axios.post("http://localhost:3001/orderGroup/orderGroupCancel", {
+        await Axios.post("http://localhost:3001/orderGroup/orderGroupCancel", {
           idGrupoPedido: idGrupoPedido
         });
-        atualizarLista();
-      }
+        atualizarLista();      
     } else {
-      mensagem('Pedido não encontrado');
+      openModal('msg', null, null, 'Pedido não encontrado.');      
     }
+    setConfirmModal(false)
   }
 
-  async function listarProdutos(idGrupoPedido){
+  function listarProdutos(idGrupoPedido){
     if (idGrupoPedido > 0) { 
       setRemoveLoading(false);   
-        await Axios.post("http://localhost:3001/orderGroup/orderGroupListProduct", {
+        Axios.post("http://localhost:3001/orderGroup/orderGroupListProduct", {
           idGrupoPedido: idGrupoPedido
         }).then((response) => {
           setListaProduto(response.data[0])                          
@@ -171,15 +187,13 @@ export default function Home() {
 
   function unirMesa(idMesa){
 
-    if (idGrupoPedido > 0) {
-      
+    if (idGrupoPedido > 0) {      
         Axios.post("http://localhost:3001/table/joinTable", {
           idGrupoPedido: idGrupoPedido,
           idMesa: idMesa
         });
         atualizarLista();
-        setCardUnirMesa(false)
-      
+        setCardUnirMesa(false)      
     } else {
       mensagem('Pedido não encontrado');
     }
@@ -189,7 +203,8 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <Menu />    
+      <Menu />  
+
       <main className="flex justify-center">        
         <div className="">
           { cardUnirMesa == false ?
@@ -227,14 +242,12 @@ export default function Home() {
 
                     {value.ativoBaixa === 'PENDENTE' && (
                       <>
-                        <button className="buttonCancelar" onClick={openModalCancel}>
+                        <button className="buttonCancelar" onClick={() => openModal('cancel', value.idGrupoPedido)}>
                           Cancelar
-                        </button>
-                        
-                          <button className="buttonEditar" onClick={openModalEdit} >
-                            Editar
-                          </button>
-                        
+                        </button>                        
+                        <button className="buttonEditar" onClick={() => openModal('edit', value.idGrupoPedido, value.nomeGrupoPedido)} >
+                          Editar
+                        </button>                        
                       </>
                     )}
                   </div>              
@@ -252,68 +265,26 @@ export default function Home() {
                           </div>             
                         ))}               
                       </div>                      
-                    </div>}
-                    <Modal
-                      isOpen={modalEdit}
-                      onRequestClose={closeModalEdit}
-                      contentLabel="Modal de Edição de Produto"
-                      className="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex"
-                    >
-                      <div className="relative p-5 bg-white w-50  m-auto flex-col flex rounded-lg shadow-lg">
-                        <h1 className="text-xl font-bold mb-4">Deseja Editar o Pedido?</h1>
-                        <div className="flex justify-center">
-                          <Link to="/editarpedido" className="mx-4">
-                            <button 
-                            className="bg-green-500 hover:bg-green-700 text-white font-bold mx-2 py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
-                            onClick={() => editarPedido(value.idGrupoPedido, value.nomeGrupoPedido)}
-                            >
-                              Sim
-                            </button>
-                          </Link>
-                          <button
-                            onClick={closeModalEdit}
-                            className="bg-red-500 hover:bg-red-800 text-white font-bold mx-2 py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
-                          >
-                            Cancelar
-                          </button>
-                        </div>
-                      </div>
-                    </Modal>
+                    </div>
+                  }
 
-                    <Modal
-                      isOpen={modalCancel}
-                      onRequestClose={closeModalCancel}
-                      contentLabel="Modal de Cancelar o PEDIDO!"
-                      className="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex" 
-                      >
-                        <div className="relative p-5 bg-white w-50  m-auto flex-col flex rounded-lg shadow-lg">
-                        <h1 className="text-xl font-bold mb-4">Deseja Cancelar o Pedido?</h1>
-
-                        <div  className="flex justify-center">
-                          <button
-                            className="bg-green-500 hover:bg-blue-700 text-white font-bold mx-2 py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
-                            onClick={() => {
-                              cancelarPedido(value.idGrupoPedido)
-                              closeModalCancel()
-                            }}
-                              >
-                            Sim
-                          </button>
-                          <button
-                            onClick={() => {
-                              closeModalCancel()
-                            }}
-                            className="bg-red-500 hover:bg-red-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mx-2 w-full"
-                          >
-                            Cancelar
-                          </button>
-                        </div>
-                          
-                        </div>
-                      
-                    </Modal>
-
- 
+                  {confirmModal?
+                  <ConfirmModal
+                    isOpen={functionModal}                    
+                    isClose={() => closeModal()}
+                    contentLabel="Modal de Edição de Produto"                      
+                    text={textModal}
+                    link={link}
+                  />
+                  : ''}
+                  {msgModal?
+                  <MsgModal
+                    // isOpen={functionModal}                    
+                    isClose={() => closeModal()}                
+                    contentLabel="Modal de Edição de Produto"                            
+                    text={textModal}                    
+                  />
+                  : ''}
                 </>     
                             
               </div>
@@ -332,6 +303,7 @@ export default function Home() {
           {!removeLoading && <Loading />}  
         </div>        
       </main>
+   
     </>
   );
 }
