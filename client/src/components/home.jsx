@@ -215,7 +215,7 @@ export default function Home() {
           { cardUnirMesa == false ?
           <div>
             {grupoPedido && grupoPedido.map((value, index) => (                         
-              <div key={value.idGrupoPedido} className={`cardContainer   ${index !== 0 ? 'mb-8' : ''}`}>                              
+              <div key={value.idGrupoPedido} className={`cardContainer     ${index !== 0 ? 'mb-8' : ''}`}>                              
                 <>
                   <div className="cardPrincipal">
                     <div className="cardPrincipalTop">    
