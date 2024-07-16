@@ -200,12 +200,9 @@ export default function NovoPedido() {
 
         if (action === 'msg') {  
             setLink(link)
-            setTextModal(msg)
-            alert(msg)
-            setMsgModal(true)
-                        
-        }
-        
+            setTextModal(msg)            
+            setMsgModal(true)                        
+        }        
     }
         
 

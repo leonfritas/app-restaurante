@@ -5,16 +5,18 @@
 .cardContainer{
     border-radius: 20px;
     overflow: hidden;
-    padding: 20px;
-    margin: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;    
-    gap: 30px;    
-    width: 90%;
+    margin: 20px;  
     background-color: #fdfdfd;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;    
     z-index: 0;    
+}
+
+.cardContent{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;    
+    gap: 30px;   
 }
 
 .statusPedido{
@@ -85,6 +87,7 @@
     width: 100%;
     display: flex;
     justify-content: space-around;
+    gap: 10px;
 }
 
 .mainCard{    
@@ -93,7 +96,8 @@
 
 .iconMenu{
     font-size: 20px;        
-    margin-right: -10px;
+    margin-right: -10px;    
+    padding: 5px;
 }
 
 .divCardVerPedido{
@@ -172,3 +176,63 @@
     flex-direction: column;
     align-items: center;
 }
+
+#cardContent{
+    border-radius: 20px;
+    /* overflow: hidden; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;    
+    gap: 30px;    
+}
+
+
+.menuContainer{    
+    overflow: hidden;        
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+    align-items: center;           
+    height: 100%;
+    width: 100%;       
+    border-radius: 20px;     
+}
+
+.menuTop{
+    padding: 15px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; 
+    overflow: hidden;
+    padding-top: 20px;
+     
+}
+
+.closeButtonMenu{
+    font-weight: 300;
+    font-size: 23px;
+    overflow: hidden;
+}
+
+.menuItems{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    
+    
+}
+
+.menuItems button{
+    font-weight: 500;
+    width: 100%;
+    padding: 15px;
+    
+}
+
+.menuItems button:hover{
+    background: #777171;
+
+}
+

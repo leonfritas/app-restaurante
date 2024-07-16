@@ -22,3 +22,14 @@ export const joinTable = (req, res) => {
             else res.send(result)
     })
 }
+
+export const getOrderTable = (req, res) => {
+    const {idGrupoPedido} = req.body;
+    
+    let sql = 'call sp_Mesa_Ocupada(?)'  
+
+    db.query(sql, [idGrupoPedido], (err, result) => {
+        if(err) console.log(err)
+            else res.send(result)
+    })
+}
