@@ -1,17 +1,16 @@
+import { useState, useEffect, useContext } from "react";
 import "./css/novoPedido.css";
-import Axios from "axios";
-import { useState, useEffect } from "react";
-import './css/ApagarDepois.css';
-import Navbar from "./navbar.jsx";
-import { useContext } from "react";
-import { LoginContext } from '../context/LoginContext.jsx';
 import './css/home.css'
-import Loading from "./Loading.jsx";
+import Axios from "axios";
+import { LoginContext } from '../context/LoginContext.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical, faXmark } from '@fortawesome/free-solid-svg-icons'; 
-import Menu from "./Menu.jsx";
 import { ConfirmModal } from '../geral.jsx'
 import { MsgModal } from '../geral.jsx'
+import Menu from "./Menu.jsx";
+import Loading from "./Loading.jsx";
+import Navbar from "./navbar.jsx";
+
 
 export default function Home() {
   const [grupoPedido, setGrupoPedido] = useState([]);
