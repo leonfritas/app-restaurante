@@ -1,4 +1,71 @@
+.mainLogin{
+    background: url('../../assets/bgLogin.png') no-repeat fixed center;     
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .loginContainer{
-    max-width: 85%;
-    /* border:2px solid red; */
+    background: linear-gradient(to top, #0F4C75 10%, white 90%);
+    width: 87%;
+    min-height: 350px;
+    height: 50%;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+    padding-top: 25px;
+    position: relative;
+}
+
+.logoHest{
+    width: 180px;
+}
+
+.divInput, .divButtonEntrar{    
+    width: 80%;
+}
+
+.input{
+    height: 40px;
+    padding: 5px;
+    padding-left: 10px;
+    width: 100%;
+    border-radius: 5px;
+    outline: none;
+}
+
+
+.buttonEntrar{
+    height: 40px;
+    background: #3282B8;
+    color: white;
+    font-weight: 500;
+    width: 100%;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+.version{
+    color: white;
+    font-size: 12px;
+    position: absolute;
+    bottom: 3px;
+    font-weight: 500;
+    left: 5px;
+    opacity: 50%;
+}
+
+.lasoft{
+    color: white;
+    font-size: 12px;
+    position: absolute;
+    bottom: 3px;
+    font-weight: 500;
+    right: 5px;
+    opacity: 50%;
 }

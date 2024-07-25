@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import Loading from "../components/Loading.jsx";
 import './css/login.css'
+import  logoHest  from '../assets/logoHest.png'
 
 export default function Login() {
     const { setIsLogged, setAtivoAdm, setIdFuncionario } = useContext(LoginContext);
@@ -66,11 +67,10 @@ export default function Login() {
 
     return (
         <>
-            <div className="min-h-screen flex items-center justify-center bg-gray-800">
-            
-                <div className=" loginContainer bg-white p-8 rounded-lg shadow-md max-w-85 w-full ">
-                    <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">APP-RESTAURANTE</h2>
-                    <div className="mb-4">
+            <div className="mainLogin">            
+                <div className=" loginContainer ">
+                    <img className="logoHest" src={logoHest} alt="" />
+                    <div className="divInput">
                     { removeLoading ?
                         <input
                             type="text"
@@ -79,10 +79,10 @@ export default function Login() {
                             onChange={(e) => {
                                 setUsuario(e.target.value);
                             }}
-                            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500 text-gray-700 leading-tight focus:bg-white"
+                            className="input"
                         /> : '' }
-                    </div>
-                    <div className="mb-4">
+                    </div>                    
+                    <div className="divInput">
                       { removeLoading ?
                         <input
                             type="password"
@@ -91,23 +91,26 @@ export default function Login() {
                             onChange={(e) => {
                                 setSenha(e.target.value);
                             }}
-                            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500 text-gray-700 leading-tight focus:bg-white"
+                            className="input"
                         /> : '' }
                     </div>
                     { removeLoading ?
-                        <div className="mb-6">
+                        <div className="divButtonEntrar">
                         <button
                             onClick={() => logar()}
-                            className="w-full px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
+                            className="buttonEntrar"
                         >
                             {removeLoading ? "Entrar" : "Carregando..."}
                         </button>
                     </div> 
                         : ''} 
                     {!removeLoading && <Loading />} {/* Exibir o componente de loading se removeLoading for false */}
+                    <p className="version">v1.0.0</p>
+                    <p className="lasoft">L.A.</p>
                 </div>
+                
             </div>
-
+            
             {/* Modal com animação */}
             {modalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center">
