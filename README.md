@@ -4,4 +4,4 @@
   e o terceiro caso de uso, este abaixo, um aplicativo onde os garçons poderão ao se logar anotar, editar ou cancelar pedidos, dar baixa no pagamento e finalizar o pedido, assim liberando uma mesa para ser vinculada a pedidos futuros.
 </p>
 
-<img src='./gifApp.gif' alt='gifApp' />
+<img  src='./gifApp.gif' alt='gifApp' />
