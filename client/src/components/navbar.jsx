@@ -21,9 +21,9 @@ export default function Navbar() {
     }
 
     return (
-        <nav className="bg-[#006769] p-6 zindex">
+        <nav className="bg-[#1B262C] p-6 zindex">
             <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
-                <div className="relative flex items-center justify-between h-16">
+                <div className="relative flex items-center justify-between h-12">
                     {/* Menu button for mobile */}
                     <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                         <button type="button" className="inline-flex items-center justify-center p-2  rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" aria-expanded="false" onClick={() => setIsMenuOpen(!isMenuOpen)}>
@@ -37,7 +37,7 @@ export default function Navbar() {
                     {/* Logo or site name */}
                     <div className="flex-shrink-0">
                         <Link to='/home'>
-                          <button className="text-white text-xl font-semibold ml-12">App Restaurador</button>
+                          <button className="text-white text-xl font-semibold ml-12">HEST</button>
                         </Link>
                     </div>
                     {/* Menu items */}

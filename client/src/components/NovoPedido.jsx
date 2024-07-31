@@ -22,6 +22,7 @@ export default function NovoPedido() {
     const [isProcessing, setIsProcessing] = useState(false);
     const [textModal, setTextModal ] = useState(); 
     const [link, setLink] = useState();
+    const [imgPrincipal, setImgPrincipal] = useState();    
 
 
     useEffect(() => {
@@ -35,16 +36,42 @@ export default function NovoPedido() {
             });
     }, []);
     
+    // useEffect(() => {
+    //     Axios.get("http://localhost:3001/category/getCategory")
+    //         .then((response) => {
+    //             setListCategory(response.data);
+    //             setRemoveLoading(true);                
+    //         })
+    //         .catch((error) => {
+    //             console.error("Error fetching products:", error);
+    //         });
+    // }, []);
+
     useEffect(() => {
         Axios.get("http://localhost:3001/category/getCategory")
-            .then((response) => {
-                setListCategory(response.data);
-                setRemoveLoading(true);                
-            })
-            .catch((error) => {
-                console.error("Error fetching products:", error);
+          .then((response) => {
+            // Mapeia os dados para incluir URLs das imagens
+            const categoriesWithImages = response.data.map((item) => {
+              if (item.imgCategoria && item.imgCategoria.data) {
+                // Cria um Blob a partir dos dados binários
+                const imageBlob = new Blob([new Uint8Array(item.imgCategoria.data)], { type: 'image/jpeg' });
+                // Cria uma URL de objeto para a imagem
+                const imageUrl = URL.createObjectURL(imageBlob);
+                return {
+                  ...item,
+                  imageUrl, // Adiciona a URL da imagem ao objeto do item
+                };
+              }
+              return item; // Retorna o item sem alterações se não houver imagem
             });
-    }, []);
+    
+            setListCategory(categoriesWithImages);
+            setRemoveLoading(true);
+          })
+          .catch((error) => {
+            console.error("Error fetching categories:", error);
+          });
+      }, []);
 
     useEffect(() => {
         Axios.get("http://localhost:3001/table/getTable")
@@ -178,15 +205,16 @@ export default function NovoPedido() {
         carousel.current.scrollLeft += carousel.current.offsetWidth;
     }
 
-    function filterByCategory(idCategory){        
+    function filterByCategory(idCategory, imgCategoria){              
         if(idGrupoPedido > 0){            
             Axios.post("http://localhost:3001/category/filterByCategory", {
                 idCategory: idCategory                
             }).then((response) => {                
                 setListProduto(response.data[0]);
+                setImgPrincipal(imgCategoria)                
             })
-        }else{
-            openModal('Número de pedido não encontrado');
+        }else{            
+            openModal('msg', 'Número de pedido não encontrado',);
         }
     }
 
@@ -204,8 +232,8 @@ export default function NovoPedido() {
             setMsgModal(true)                        
         }        
     }
-        
 
+  console.log(listCategory)
     return (
         
         <div className='NovoPedidoContainer'>
@@ -217,48 +245,61 @@ export default function NovoPedido() {
                     <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2 mt-5' onClick={() => salvarGrupoPedido()}>Salvar Pedido</button>
                     <button className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-2 rounded  mt-5' onClick={() => cancelarGrupoPedido()}>Cancelar Pedido</button>
                     </div>
-                    <input className='border border-blue-700 rounded px-4 py-2 mb-4 w-80 focus:outline-none' placeholder='Digite aqui o nome do pedido' type="text" onChange={(e) => setNomeGrupoPedido(e.target.value)} />
-                    <div className="flex justify-end items-center mt-4">                        
-                        <span className="text-xl font-bold">R$ {precoTotal.toFixed(2)}</span>
-                    </div>
-                    <h2 className='text-lg font-bold mb-2'>Selecione os itens do pedido:</h2>
+                    <input className='border rounded px-4 py-2 mb-4 w-80 focus:outline-none' placeholder='Digite aqui o nome do pedido' type="text" onChange={(e) => setNomeGrupoPedido(e.target.value)} />
                     <div className='carousel' ref={carousel}> 
-                        {listCategory.map((value) => (
+                        
+                        {listCategory?.map((value) => (
                                 <div key={value.idCategoria} className='divCarouselButton'>
-                                    <button className='carouselButton' onClick={() => filterByCategory(value.idCategoria)} role="button">{value.nomeCategoria}</button>                                                                
+                                    <button className='carouselButton' onClick={() => filterByCategory(value.idCategoria, value.imagemCategoria)} role="button">
+                                        {/* <img src={value.imagemCategoria} alt="" />                                           */}
+                                        {value.imageUrl ? (
+                                        <img src={value.imageUrl}  />
+                                        ) : (
+                                        <p>No image available</p>
+                                        )}
+                                    </button>
+                                    <p className='nomeCategoriaButton'>{value.nomeCategoria}</p>                                                                                                   
                                 </div>
                         ))}
                     </div>
+                    <div className="selecionarProduto">
+                        <h2 className='selecionarTexto'>Selecione os itens do pedido:</h2>
+                        <img className='imgSuco' src={imgPrincipal} alt="" />
+                        <div className="selecionarValorTotal">                        
+                            <span className="text-xl font-bold">R$ {precoTotal.toFixed(2)}</span>
+                        </div>
+                        
+                    </div>
+                    
+                    
                     <button className='buttonPrev' onClick={handleLeftClick} ><img src={seta} alt="Scroll Left" /></button>
                     <button className='buttonNext' onClick={handleRightClick}><img src={seta} alt="Scroll Right" /></button>
-                    <table className='table-auto border-collapse w-full'>
-                        <thead>
-                            <tr className='bg-gray-200'>
-                                <th className='w-1/4 py-2 px-4 text-left'>Produto</th>
-                                <th className='w-1/4 py-2 px-4 text-left'>Preço</th>
-                                <th className='w-1/4 py-2 px-4 text-left'>Quantidade</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                    <div className='tableProdutos'>                        
+                        <div className='tableTitle'>
+                            <th className='nomeProduto'>Produto</th>
+                            <th className='precoProduto'>Preço</th>
+                            <th className=''>Quantidade</th>
+                        </div>                        
+                        <div className='tableContent'>
                             {listProduto.map((value) => (
-                            <tr key={value.idProduto} className='border-b border-gray-200'>
-                                <td className='py-2 px-4'>{value.nomeProduto}</td>
-                                <td className='py-2 px-4'>R${value.preco.toFixed(2)}</td>
-                                <td className='py-2 px-4'>
+                            <ul key={value.idProduto} className=' itemProduto'>
+                                <li className=' nomeProduto'>{value.nomeProduto}</li>
+                                <li className=''>R${value.preco.toFixed(2)}</li>
+                                <li className='botoesProduto'>
                                 {isProcessing? <Loading /> :
                                 <>
-                                    <button className='bg-green-600 hover:bg-red-700 text-white font-bold py-1 px-2 rounded'
+                                    <button className='inserirProduto'
                                         onClick={() => pedidoInserir(value.idProduto, value.preco, value.quantidade)}>+</button>
                                     <span className='mx-2'>{quantidades[value.idProduto] || 0}</span>
-                                    <button className='bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-2 rounded'
+                                    <button className='excluirProduto'
                                         onClick={() => pedidoExcluir(value.idProduto)}>-</button>
                                 </>
                                 }
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                                </li>
+                            </ul>
+                            ))}
+                        </div>
+                    </div>
                         {!removeLoading && <Loading />}
                 </>
             }

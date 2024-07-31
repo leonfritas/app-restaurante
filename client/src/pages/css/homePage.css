@@ -1,0 +1,7 @@
+.homePage{
+    background: url('../../assets/bgLogin.png') no-repeat   center;  
+    background-color: #fff;
+    background-size: cover;
+    min-height: 100vh;
+    border: 0.1px solid rgb(255, 255, 255);
+}

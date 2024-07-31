@@ -1,9 +1,10 @@
 import Home from '../components/home.jsx'
+import './css/homePage.css'
 
 export default function HomePage(){
     return(
-        <div className="bg-[#40A578]">
+        <main className="homePage">
             <Home />
-        </div>
+        </main>
     )
 }

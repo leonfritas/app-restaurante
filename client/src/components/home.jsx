@@ -204,7 +204,7 @@ export default function Home() {
       <Navbar />
       <Menu />  
 
-      <main className="flex justify-center">        
+      <main className="">        
         <div className="">
           { mesasOpen === null ?
           <div>
