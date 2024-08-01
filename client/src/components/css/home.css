@@ -3,17 +3,13 @@
 }
 
 
-
 .cardContainer{
     border-radius: 10px;
     overflow: hidden;
     margin: 20px;  
     background: #fff;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;    
-    z-index: 0;     
-    /* border: 1px red solid; */
-    /* height: 320px; */    
-
+    z-index: 0;
 }
 
 .cardContent{
@@ -23,7 +19,6 @@
     justify-content: space-between;    
     gap: 30px; 
     height: 100%; 
-    
 }
 
 .statusPedido{
@@ -34,14 +29,12 @@
 .cardPrincipal{
     display: flex;
     flex-direction: column;
-    /* height: 85px; */
     width: 100%;
     align-items: center;
     justify-content: space-between;
     padding-right: 10px;
     padding-left: 10px;   
     gap:25px;  
-    /* border: 1px solid red;    */
 }
 
 .cardPrincipalTop{
@@ -52,7 +45,6 @@
     font-weight: 700;
     width: 100%;
     align-items: center;
-    /* border: 1px solid red;  */
     font-size: 18px;
 }
 
@@ -115,7 +107,6 @@
     font-size: 25px;        
     margin-right: -10px;    
     padding: 5px;
-    
 }
 
 .divCardVerPedido{
@@ -185,7 +176,6 @@
 
 .divButtonMesa{
     width: 50px;
-    
 }
 
 .butonMesa{
@@ -195,6 +185,9 @@
     border: 1px solid black;
     border-radius: 10px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+    color: #fff;
+    background: #3fa060;
+    font-weight: 500;
 }
 
 .mesaAdicional{
@@ -205,7 +198,6 @@
 
 #cardContent{
     border-radius: 20px;
-    /* overflow: hidden; */
     display: flex;
     flex-direction: column;
     justify-content: space-around;    
@@ -231,8 +223,7 @@
     flex-direction: row;
     justify-content: space-between; 
     overflow: hidden;
-    padding-top: 20px;
-     
+    padding-top: 20px; 
 }
 
 .closeButtonMenu{
@@ -246,19 +237,42 @@
     justify-content: center;
     flex-direction: column;
     width: 100%;
-    
-    
 }
 
 .menuItems button{
     font-weight: 500;
     width: 100%;
     padding: 15px;
-    
 }
 
 .menuItems button:hover{
     background: #777171;
-
 }
 
+.divMostrarObservacao{
+
+    width: 100%;
+    padding: 10px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.textareaObservacao{    
+    height: 90%;
+    outline: none;
+    width: 100%;
+    border: 1px solid #333;
+}
+
+.buttonObservacao{
+    background: #3282B8;
+    padding: 10px;
+    width: 100px;
+    color: #fff;
+    font-weight: 500;
+    border-radius: 5px;
+}

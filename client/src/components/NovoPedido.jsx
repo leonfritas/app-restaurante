@@ -34,18 +34,7 @@ export default function NovoPedido() {
             .catch((error) => {
                 console.error("Error fetching products:", error);
             });
-    }, []);
-    
-    // useEffect(() => {
-    //     Axios.get("http://localhost:3001/category/getCategory")
-    //         .then((response) => {
-    //             setListCategory(response.data);
-    //             setRemoveLoading(true);                
-    //         })
-    //         .catch((error) => {
-    //             console.error("Error fetching products:", error);
-    //         });
-    // }, []);
+    }, []);    
 
     useEffect(() => {
         Axios.get("http://localhost:3001/category/getCategory")
@@ -71,7 +60,7 @@ export default function NovoPedido() {
           .catch((error) => {
             console.error("Error fetching categories:", error);
           });
-      }, []);
+    }, []);
 
     useEffect(() => {
         Axios.get("http://localhost:3001/table/getTable")
@@ -160,7 +149,7 @@ export default function NovoPedido() {
                     idGrupoPedido: idGrupoPedido,
                     nomeGrupoPedido: nomeGrupoPedido,
                     idMesa: idMesa,                
-                    textoObservacao: 'teste'
+                    textoObservacao: null
                     
                 })
                 .then(() => {    
@@ -174,8 +163,7 @@ export default function NovoPedido() {
             }
         } else {
             openModal('Informe o código do pedido.');
-        }
-        
+        }        
     }
 
     
@@ -198,7 +186,7 @@ export default function NovoPedido() {
     const handleLeftClick = (e) => {
         e.preventDefault();
         carousel.current.scrollLeft -= carousel.current.offsetWidth;
-      }
+    }
   
     const handleRightClick = (e) => {
         e.preventDefault();
@@ -237,8 +225,7 @@ export default function NovoPedido() {
     return (
         
         <div className='NovoPedidoContainer'>
-            
-            
+                        
             {mostrarListaMesa === false &&
                 <>
                     <div className='flex mb-4'>
@@ -267,8 +254,7 @@ export default function NovoPedido() {
                         <img className='imgSuco' src={imgPrincipal} alt="" />
                         <div className="selecionarValorTotal">                        
                             <span className="text-xl font-bold">R$ {precoTotal.toFixed(2)}</span>
-                        </div>
-                        
+                        </div>                        
                     </div>
                     
                     

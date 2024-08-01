@@ -76,7 +76,18 @@ export const grupoPedidoListarProduto = (req, res) => {
         if (err) console.log(err)
         else res.send(result)
     console.log(result)        
-    })    
+    })            
+}
+
+export const grupoPedidoSaveObs = (req, res) => {
+    const { idGrupoPedido } = req.body;
+    const { observacao } = req.body;
+
+    let sql = "call sp_GrupoPedido_salvarObservacao(?,?)";
     
-    
+    db.query(sql, [idGrupoPedido, observacao], (err, result) => {
+        if (err) console.log(err)
+        else res.send(result)
+    console.log(result)        
+    })            
 }

@@ -13,7 +13,6 @@
     position: absolute;
     right: 0;
     top: 150px;
-
 }
 
 .NovoPedidoContainer{    
@@ -25,7 +24,6 @@
     display: flex;
     overflow-x: auto;
     scroll-behavior: smooth;
-    /* max-width: 80vw; */
     margin:20px 0;
     gap: 15px;    
     width: 100%;
@@ -35,15 +33,13 @@
 }
 
 .carousel::-webkit-scrollbar{
-    display: none;
-    
+    display: none;    
 }
 
 .buttonPrev, .buttonNext{
     width: 50px;
     display: none;
 }
-
 
 .divCarouselButton{    
     display: flex;
@@ -63,7 +59,7 @@
 
 .carouselButton img{
     width: 100%;
-
+    background-size: cover;
 }
 
 .nomeCategoriaButton{
@@ -73,8 +69,7 @@
 
 .tableProdutos{
     color: #fff;
-    min-width: 100%;
-   
+    min-width: 100%;   
 }
 
 .tableTitle{
@@ -85,14 +80,11 @@
     border-radius: 20px;
     margin: 10px;
     padding: 10px;
-
 }
 
 .tableContent{
-    /* padding: 0 10px; */
     margin: 0 10px;
-    padding: 0 10px;
-    
+    padding: 0 10px;    
 }
 
 .nomeProduto{
@@ -112,22 +104,17 @@
     align-items: center;
     text-align: left;
     margin: 10px 0;
-    padding: 10px 0;
-    /* border-bottom: 1px solid #fff; */
+    padding: 10px 0;    
     font-weight: 500;
-
 }
 
-.inserirProduto, .excluirProduto{
-    
+.inserirProduto, .excluirProduto{    
     width: 30px;
     height: 30px;
     border-radius: 5px;
     font-size: 20px;
     font-weight: 500;    
 }
-
-
 
 .inserirProduto{
     background-color: #32ad2e;
@@ -152,8 +139,7 @@
 }
 
 .imgSuco{
-    width: 250px;
-    
+    width: 250px;    
 }
 
 .selecionarValorTotal{
@@ -163,5 +149,4 @@
     position: absolute;
     bottom: -10px;
     right: -10px;
-
 }

@@ -26,6 +26,8 @@ export default function Home() {
   const [link, setLink] = useState();
   const [menuOpen, setMenuOpen] = useState(null);
   const [mesasOpen, setMesasOpen] = useState(null);
+  const [mostrarObservacao, setMostrarObservacao] = useState(false);
+  const [observacao, setObservacao] = useState();
 
   function closeModal(action){
     if (action === 'msg') {
@@ -40,7 +42,7 @@ export default function Home() {
       if(action === 'edit'){
         setTextModal('Deseja Editar o Pedido?');
         setFunctionModal(() => () => editarPedido(idGrupoPedido, nomeGrupoPedido)); 
-        setLink('/editarPedido')     
+        setLink('/editarPedido');     
       }else if(action === 'cancel'){      
         setTextModal('Deseja Cancelar o Pedido?');
         setFunctionModal(() => () => cancelarPedido(idGrupoPedido));
@@ -81,9 +83,9 @@ export default function Home() {
   }, []);
 
   function editarPedido(idGrupoPedido, nomeGrupoPedido) {        
-    setIdGrupoPedido(idGrupoPedido)    
-    setNomeGrupoPedido(nomeGrupoPedido)
-    setConfirmModal(false)
+    setIdGrupoPedido(idGrupoPedido); 
+    setNomeGrupoPedido(nomeGrupoPedido);
+    setConfirmModal(false);
   }
 
   async function cancelarPedido(idGrupoPedido) {    
@@ -95,7 +97,7 @@ export default function Home() {
     } else {
       openModal('msg', null, null, 'Pedido não encontrado.');      
     }
-    setConfirmModal(false)
+    setConfirmModal(false);
   }
 
   function listarProdutos(idGrupoPedido){
@@ -104,7 +106,7 @@ export default function Home() {
         Axios.post("http://localhost:3001/orderGroup/orderGroupListProduct", {
           idGrupoPedido: idGrupoPedido
         }).then((response) => {
-          setListaProduto(response.data[0])                          
+          setListaProduto(response.data[0]);                        
         })      
         atualizarLista();
       }
@@ -141,6 +143,7 @@ export default function Home() {
 
   function abrirMenu(idGrupoPedido){
     setMenuOpen(menuOpen === idGrupoPedido ? null : idGrupoPedido);
+    setIdGrupoPedido(idGrupoPedido)    
   }
 
   function mostrarMesas(action, idGrupoPedido){
@@ -152,9 +155,8 @@ export default function Home() {
     }else if(action == 'ocupadas'){
       setIdGrupoPedido(idGrupoPedido);
       setMesasOpen(true);
-      getTable('ocupadas', idGrupoPedido)
-    }
-    
+      getTable('ocupadas', idGrupoPedido);
+    }    
   }
 
   function getTable(action, idGrupoPedido){
@@ -199,11 +201,34 @@ export default function Home() {
     getTable('disponiveis', null);
   }
 
+  function adicionarObservacao(){
+    setMostrarObservacao(true);
+  }
+
+  function fecharMenu(){
+    setMenuOpen(null);
+    setMostrarObservacao(false);
+  }
+
+  function salvarObservacao(observacao, idGrupoPedido){
+    if (idGrupoPedido > 0) {      
+      Axios.post("http://localhost:3001/orderGroup/orderGroupSaveObs", {
+        idGrupoPedido: idGrupoPedido,
+        observacao: observacao
+      });
+      atualizarLista();
+      setMesasOpen(null);   
+      setMenuOpen(null);   
+      setMostrarObservacao(false);
+    } else {      
+      openModal('msg', null, null, 'Pedido não encontrado');
+    }
+  }
+
   return (
     <>
       <Navbar />
       <Menu />  
-
       <main className="">        
         <div className="">
           { mesasOpen === null ?
@@ -219,7 +244,7 @@ export default function Home() {
                           <FontAwesomeIcon className="iconMenu" icon={faEllipsisVertical}  />
                         </button>
                       </div>                    
-                      <p className="cardNomeGrupoPedido">{value.nomeGrupoPedido}</p>                               
+                      <p className="cardNomeGrupoPedido">{value.nomeGrupoPedido}</p>                                                      
                     </div>
                     <div className="cardInfo">                  
                       <p className=""> {value.horaPedido}</p>                    
@@ -290,15 +315,23 @@ export default function Home() {
                   <div className="menuContainer">
                     <div className="menuTop">
                       <span></span> 
-                      <button onClick={() => setMenuOpen(null)}>
+                      <button onClick={() => fecharMenu()}>
                         <FontAwesomeIcon className="closeButtonMenu" icon={faXmark} />
                       </button>                     
                       
                     </div>
+                    {!mostrarObservacao?   
                     <div className="menuItems">
                       <button onClick={() => mostrarMesas('disponiveis', value.idGrupoPedido)}>Juntar Mesas</button>
                       <button onClick={() => mostrarMesas('ocupadas', value.idGrupoPedido)}>Ver Mesas</button>
+                      <button onClick={() => adicionarObservacao(value.idGrupoPedido)}>Observação</button>
                     </div>
+                    : 
+                    <div className="divMostrarObservacao">
+                      <textarea onChange={(e) => setObservacao(e.target.value)} className="textareaObservacao" name="" id="">{value.textoObservacao}</textarea>
+                      <button onClick={() => salvarObservacao(observacao, idGrupoPedido)} className="buttonObservacao">Salvar</button>
+                    </div>
+                    }
                   </div> 
                 }   
               </div>
@@ -308,7 +341,7 @@ export default function Home() {
           <div className="divContainerMesa">                                      
             {table.map((value) => (
                 <div key={value.idMesa} >
-                    <button onClick={() => unirMesa(value.idMesa)} className="butonMesa" >{value.nomeMesa}</button>
+                    <button onClick={() => unirMesa(value.idMesa)} className="hover:bg-green-700 butonMesa" >{value.nomeMesa}</button>
                 </div>                
             ))}               
             <button onClick={() => setMesasOpen(null)} className="butonMesa bg-red-500 hover:bg-red-700 text-white font-bold">Voltar</button>                                       
