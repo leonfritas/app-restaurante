@@ -190,6 +190,10 @@
     font-weight: 500;
 }
 
+.mesaOcupada{
+    background: #f15555;
+}
+
 .mesaAdicional{
     display: flex;
     flex-direction: column;

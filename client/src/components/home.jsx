@@ -188,9 +188,9 @@ export default function Home() {
 
   function unirMesa(idMesa){  
     if (idGrupoPedido > 0) {      
-        Axios.post("http://localhost:3001/table/joinTable", {
-          idGrupoPedido: idGrupoPedido,
-          idMesa: idMesa
+        Axios.post("http://localhost:3001/table/joinTable", {          
+          idMesa: idMesa,
+          idGrupoPedido: idGrupoPedido
         });
         atualizarLista();
         setMesasOpen(null);   
@@ -198,7 +198,7 @@ export default function Home() {
     } else {      
       openModal('msg', null, null, 'Pedido não encontrado');
     }
-    getTable('disponiveis', null);
+    getTable('ocupadas', null);
   }
 
   function adicionarObservacao(){
@@ -322,7 +322,7 @@ export default function Home() {
                     </div>
                     {!mostrarObservacao?   
                     <div className="menuItems">
-                      <button onClick={() => mostrarMesas('disponiveis', value.idGrupoPedido)}>Juntar Mesas</button>
+                      {/* <button onClick={() => mostrarMesas('disponiveis', value.idGrupoPedido)}>Juntar Mesas</button> */}
                       <button onClick={() => mostrarMesas('ocupadas', value.idGrupoPedido)}>Ver Mesas</button>
                       <button onClick={() => adicionarObservacao(value.idGrupoPedido)}>Observação</button>
                     </div>
@@ -341,7 +341,7 @@ export default function Home() {
           <div className="divContainerMesa">                                      
             {table.map((value) => (
                 <div key={value.idMesa} >
-                    <button onClick={() => unirMesa(value.idMesa)} className="hover:bg-green-700 butonMesa" >{value.nomeMesa}</button>
+                    <button onClick={() => unirMesa(value.idMesa, value.idGrupoPedido)} className={`hover:bg-green-700 butonMesa ${value.idGrupoPedido > 0 ? 'mesaOcupada' : ''}`} >{value.nomeMesa}</button>
                 </div>                
             ))}               
             <button onClick={() => setMesasOpen(null)} className="butonMesa bg-red-500 hover:bg-red-700 text-white font-bold">Voltar</button>                                       
