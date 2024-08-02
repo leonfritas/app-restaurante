@@ -1,22 +1,27 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useRef } from 'react';
 import {LoginContext} from '../context/LoginContext.jsx'
 import Axios from "axios"
-// import ListaProdutos from './ListaProdutos.jsx';
 import './css/novoPedido.css'
 import { useNavigate } from "react-router-dom";
 import './css/ApagarDepois.css'
 import Loading from './Loading.jsx';
-import { MsgModal } from '../geral.jsx'
+import { MsgModal } from '../geral.jsx';
+import './css/editarPedido.css';
 
 
 export default function EditarPedido(){
     const [listProdutoEditar, setListProdutoEditar] = useState();      
+    const [listProduto, setListProduto] = useState(); 
     const { idGrupoPedido, nomeGrupoPedido, setNomeGrupoPedido, msgModal, setMsgModal} = useContext(LoginContext); 
     const navigate = useNavigate(); 
     const [quantidades, setQuantidades] = useState({});
     const [removeLoading, setRemoveLoading] = useState(false);    
     const [precoTotal, setPrecoTotal] = useState(0);
     const [textModal, setTextModal ] = useState(); 
+    const [listCategory, setListCategory] = useState(); 
+    const carousel = useRef(null);       
+    const [imgPrincipal, setImgPrincipal] = useState();
+    const [isProcessing, setIsProcessing] = useState(false);  
 
 
     function atualizaEdicao(){
@@ -36,11 +41,38 @@ export default function EditarPedido(){
     }
 
     useEffect(() => {
+        Axios.get("http://localhost:3001/category/getCategory")
+          .then((response) => {
+            // Mapeia os dados para incluir URLs das imagens
+            const categoriesWithImages = response.data.map((item) => {
+              if (item.imgCategoria && item.imgCategoria.data) {
+                // Cria um Blob a partir dos dados binários
+                const imageBlob = new Blob([new Uint8Array(item.imgCategoria.data)], { type: 'image/jpeg' });
+                // Cria uma URL de objeto para a imagem
+                const imageUrl = URL.createObjectURL(imageBlob);
+                return {
+                  ...item,
+                  imageUrl, // Adiciona a URL da imagem ao objeto do item
+                };
+              }
+              return item; // Retorna o item sem alterações se não houver imagem
+            });
+    
+            setListCategory(categoriesWithImages);
+            setRemoveLoading(true);
+          })
+          .catch((error) => {
+            console.error("Error fetching categories:", error);
+          });
+    }, []);
+
+    useEffect(() => {
         atualizaEdicao();
            
       }, []);
 
-    function pedidoInserir(idProduto, preco, quantidade){                   
+    function pedidoInserir(idProduto, preco, quantidade){     
+        setIsProcessing(true);              
         if (idGrupoPedido > 0){
             const novaQuantidade = (quantidades[idProduto] || 0) + 1;
             Axios.post("http://localhost:3001/requested/requestInsert", {                
@@ -57,7 +89,8 @@ export default function EditarPedido(){
             atualizaEdicao();          
         }else{
             openModal('Informe o código do pedido.');
-        }        
+        }      
+        setIsProcessing(false);  
     }
 
     function pedidoExcluir(idProduto){         
@@ -122,42 +155,102 @@ export default function EditarPedido(){
         setMsgModal(true)
     }
 
+    function filterByCategory(idCategory, imgCategoria){                  
+        if(idGrupoPedido > 0){            
+            Axios.post("http://localhost:3001/category/filterByCategory", {
+                idCategory: idCategory, 
+                idGrupoPedido: idGrupoPedido                
+            }).then((response) => {                
+                setListProduto(response.data[0]);
+                setImgPrincipal(imgCategoria)                
+            })
+        }else{            
+            openModal('msg', 'Número de pedido não encontrado',);
+        }
+    }
+    console.log(listProdutoEditar?.length)
     return(
         <div className='NovoPedidoContainer'>
-            <h2 className='text-lg font-bold mb-2'>EDITAR PEDIDO</h2>
+            <h2 className='text-lg font-bold mb-2  text-white'>EDITAR PEDIDO</h2>
             <h1></h1>
             <div className='flex justify-between mb-4'>               
                 <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2' onClick={() => salvarGrupoPedido()}>Salvar Pedido</button>             
                 <button className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded' onClick={() => cancelarGrupoPedido()}>Cancelar Pedido</button>                                              
             </div>      
             <input className='border border-gray-300 rounded px-3 py-2 mb-4 w-80' placeholder='Digite aqui o nome do pedido' type="text" value={nomeGrupoPedido} onChange={(e) => setNomeGrupoPedido(e.target.value)}/>               
-            <div className="flex justify-end items-center mt-4">                
-                <span className="text-xl font-bold">R${precoTotal.toFixed(2)}</span>
+            <div className='carousel' ref={carousel}> 
+                        
+                {listCategory?.map((value) => (
+                        <div key={value.idCategoria} className='divCarouselButton'>
+                            <button className='carouselButton' onClick={() => filterByCategory(value.idCategoria, value.imagemCategoria)} role="button">
+                                {/* <img src={value.imagemCategoria} alt="" />                                           */}
+                                {value.imageUrl ? (
+                                <img src={value.imageUrl}  />
+                                ) : (
+                                <p>No image available</p>
+                                )}
+                            </button>
+                            <p className='nomeCategoriaButton'>{value.nomeCategoria}</p>                                                                                                   
+                        </div>
+                ))}
             </div>
-            <h2 className='text-lg font-bold mb-2'>Selecione os items do pedido:</h2>
-            <table className='w-full'>
-    <thead className='bg-gray-200'>
-        <tr className='border-b border-gray-300'>
-            <th className='px-4 py-2 text-left'>Nome</th>
-            <th className='px-4 py-2 text-left'>Preço</th>
-            <th className='px-4 py-2 text-left'>Quantidade</th>
-        </tr>
-    </thead>
-    <tbody>
-        {listProdutoEditar?.map((value) => (
-            <tr key={value.idProduto} className='border-b border-gray-200'>
-                <td className='px-4 py-2'>{value.nomeProduto}</td>
-                <td className='px-4 py-2'>R${value.preco.toFixed(2)}</td>
-                <td className='px-4 py-2 flex items-center'>
-                    <button className='bg-green-600 hover:bg-red-700 text-white font-bold py-1 px-2 rounded'
-                            onClick={() => pedidoInserir(value.idProduto, value.preco, value.quantidade)}>+</button>
-                    <span className='mx-2'>{quantidades[value.idProduto] || 0}</span>
-                    <button className='bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-2 rounded'
-                            onClick={() => pedidoExcluir(value.idProduto)}>-</button>
-                </td>
-            </tr>
-        ))}
-    </tbody>
+            <div className="selecionarProduto">
+                <h2 className='selecionarTexto'>Selecione os itens do pedido:</h2>
+                <img className='imgSuco' src={imgPrincipal} alt="" />
+                <div className="selecionarValorTotal">                        
+                    <span className="text-xl font-bold">R$ {precoTotal.toFixed(2)}</span>
+                </div>                        
+            </div>
+                                                        
+            <div className='tableProdutos'>                        
+                <div className='tableTitle'>
+                    <th className='nomeProduto'>Produto</th>
+                    <th className='precoProduto'>Preço</th>
+                    <th className=''>Quantidade</th>
+                </div>                        
+                <div className='tableContent'>
+                    <h2 className='pedidoAtual'>Pedido atual</h2>
+                    {listProdutoEditar?.map((value) => (
+                    <ul key={value.idProduto} className=' itemProduto'>
+                        <li className=' nomeProduto'>{value.nomeProduto}</li>
+                        <li className=''>R${value.preco.toFixed(2)}</li>
+                        <li className='botoesProduto'>
+                        {isProcessing? <Loading /> :
+                        <>
+                            <button className='inserirProduto'
+                                onClick={() => pedidoInserir(value.idProduto, value.preco, value.quantidade)}>+</button>
+                            <span className='mx-2'>{quantidades[value.idProduto] || 0}</span>
+                            <button className='excluirProduto'
+                                onClick={() => pedidoExcluir(value.idProduto)}>-</button>
+                        </>
+                        }
+                        </li>
+                    </ul>
+                    ))}
+                    {listProdutoEditar?.length == 0? <p className='instrucaoUsuario'>Vazio</p> :''}
+                    <h2 className='adicionarPedido'>Adicionar ao pedido</h2>
+                    
+                    {listProduto?.map((value) => (
+                    <ul key={value.idProduto} className=' itemProduto'>
+                        <li className=' nomeProduto'>{value.nomeProduto}</li>
+                        <li className=''>R${value.preco.toFixed(2)}</li>
+                        <li className='botoesProduto'>
+                        {isProcessing? <Loading /> :
+                        <>
+                            <button className='inserirProduto'
+                                onClick={() => pedidoInserir(value.idProduto, value.preco, value.quantidade)}>+</button>
+                            <span className='mx-2'>{quantidades[value.idProduto] || 0}</span>
+                            <button className='excluirProduto'
+                                onClick={() => pedidoExcluir(value.idProduto)}>-</button>
+                        </>
+                        }
+                        </li>
+                        
+                    </ul>
+                    ))}
+                    {!listProduto? <p className='instrucaoUsuario'>Selecione uma categoria</p> :''}
+                </div>
+            </div>
     {msgModal?
         <MsgModal
         // isOpen={functionModal}                    
@@ -166,7 +259,7 @@ export default function EditarPedido(){
         text={textModal}                    
         />
         : ''}
-</table>
+{/* </table> */}
         {!removeLoading && <Loading />}
         </div>
     )

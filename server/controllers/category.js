@@ -11,10 +11,11 @@ export const getCategory = (req, res) => {
 
 export const filterByCategory = (req, res) => {
     const { idCategory } = req.body;
+    const { idGrupoPedido } = req.body;
 
-    let sql = 'call sp_ProdutoCategoria_Selecionar(?)'    
+    let sql = 'call sp_ProdutoCategoria_Selecionar(?, ?)'    
 
-    db.query(sql, [idCategory],(err, result) => {
+    db.query(sql, [idCategory, idGrupoPedido],(err, result) => {
         if(err) console.log(err)
             else res.send(result)
     })

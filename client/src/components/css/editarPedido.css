@@ -1,0 +1,165 @@
+.inputNomeGrupoPedido{
+    width: 500px;
+}
+
+.buttonPrev{
+    transform: rotate(180deg);
+    position: absolute;
+    left: 0;
+    top: 150px;
+}
+
+.buttonNext{
+    position: absolute;
+    right: 0;
+    top: 150px;
+}
+
+.NovoPedidoContainer{    
+    padding: 0;
+    background-color: #1B262C;
+}
+
+.carousel{
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    margin:20px 0;
+    gap: 15px;    
+    width: 100%;
+    padding: 5px;
+    height: 120px;
+    padding: 0 20px;
+}
+
+.carousel::-webkit-scrollbar{
+    display: none;    
+}
+
+.buttonPrev, .buttonNext{
+    width: 50px;
+    display: none;
+}
+
+.divCarouselButton{    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;          
+}
+
+.carouselButton{
+    color: #fff; 
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    width: 80px;   
+    background-color: white;
+}
+
+.carouselButton img{
+    width: 100%;
+    background-size: cover;
+}
+
+.nomeCategoriaButton{
+    color: #fff;
+    font-weight: 500;
+}
+
+.tableProdutos{
+    color: #fff;
+    min-width: 100%;   
+}
+
+.tableTitle{
+    display: flex;
+    justify-content: space-between;
+    background-color: #3282B7;
+    color: #fff;
+    border-radius: 20px;
+    margin: 10px;
+    padding: 10px;
+}
+
+.tableContent{
+    margin: 0 10px;
+    padding: 0 10px;    
+}
+
+.nomeProduto{
+    min-width: 170px;
+    max-width: 100px;    
+    text-align: left;
+    padding: 0;  
+}
+
+.precoProduto{
+    text-align: left;
+}
+
+.itemProduto{    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+    margin: 10px 0;
+    padding: 10px 0;    
+    font-weight: 500;
+}
+
+.inserirProduto, .excluirProduto{    
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: 500;    
+}
+
+.inserirProduto{
+    background-color: #32ad2e;
+}
+
+.excluirProduto{
+    background-color: #e94343;
+}
+
+.selecionarProduto{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    margin-bottom: 40px;
+}
+
+.selecionarTexto{
+    color: white;
+    font-weight: 500;
+}
+
+.imgSuco{
+    width: 250px;    
+}
+
+.selecionarValorTotal{
+    background-color: #fff;
+    padding: 18px;
+    border-radius: 20px;
+    position: absolute;
+    bottom: -10px;
+    right: -10px;
+}
+
+.pedidoAtual, .adicionarPedido{
+    text-align: center;
+    border-bottom: 2px solid #fff;
+    padding-bottom: 10px;
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.instrucaoUsuario{
+    padding: 20px;
+    text-align: center;
+}
