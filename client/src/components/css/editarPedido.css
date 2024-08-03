@@ -128,13 +128,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    position: relative;
-    margin-bottom: 40px;
+    gap: 10px;    
+    margin-bottom: 40px;    
 }
 
-.selecionarTexto{
-    color: white;
+.selecionarTexto{    
     font-weight: 500;
 }
 
@@ -143,12 +141,10 @@
 }
 
 .selecionarValorTotal{
-    background-color: #fff;
-    padding: 18px;
-    border-radius: 20px;
-    position: absolute;
-    bottom: -10px;
-    right: -10px;
+    background-color: #fff; 
+    padding: 18px; 
+    border-radius: 5px; 
+
 }
 
 .pedidoAtual, .adicionarPedido{

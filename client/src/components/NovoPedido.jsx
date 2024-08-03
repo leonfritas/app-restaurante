@@ -77,8 +77,6 @@ export default function NovoPedido() {
         listProduto.forEach((produto) => {
             const quantidade = quantidades[produto.idProduto] || 0;
             total += produto.preco * quantidade;
-            console.log(quantidade)
-            console.log(produto.preco)
         })
         
         setPrecoTotal(total);
@@ -193,13 +191,29 @@ export default function NovoPedido() {
         carousel.current.scrollLeft += carousel.current.offsetWidth;
     }
 
-    function filterByCategory(idCategory, imgCategoria){              
+    function filterByCategory(idCategory){              
         if(idGrupoPedido > 0){            
             Axios.post("http://localhost:3001/category/filterByCategory", {
                 idCategory: idCategory                
             }).then((response) => {                
                 setListProduto(response.data[0]);
-                setImgPrincipal(imgCategoria)                
+                
+                    let imgCategoria = response.data[0].imgCategoria
+
+                    
+                    if (imgCategoria && imgCategoria.data) {
+                      // Cria um Blob a partir dos dados binários
+                      const imageBlob = new Blob([new Uint8Array(imgCategoria.data)], { type: 'image/jpeg' });
+                      // Cria uma URL de objeto para a imagem
+                      const imageUrl = URL.createObjectURL(imageBlob);
+                      return {
+                        ...imgCategoria,
+                        imageUrl, // Adiciona a URL da imagem ao objeto do item
+                      };
+                    }
+                    // return imgCategoria; // Retorna o item sem alterações se não houver imagem
+                    
+                  setImgPrincipal(imgCategoria)               
             })
         }else{            
             openModal('msg', 'Número de pedido não encontrado',);
@@ -221,7 +235,6 @@ export default function NovoPedido() {
         }        
     }
 
-  console.log(listCategory)
     return (
         
         <div className='NovoPedidoContainer'>
@@ -256,15 +269,14 @@ export default function NovoPedido() {
                             <span className="text-xl font-bold">R$ {precoTotal.toFixed(2)}</span>
                         </div>                        
                     </div>
-                    
-                    
+                                        
                     <button className='buttonPrev' onClick={handleLeftClick} ><img src={seta} alt="Scroll Left" /></button>
                     <button className='buttonNext' onClick={handleRightClick}><img src={seta} alt="Scroll Right" /></button>
                     <div className='tableProdutos'>                        
                         <div className='tableTitle'>
-                            <th className='nomeProduto'>Produto</th>
-                            <th className='precoProduto'>Preço</th>
-                            <th className=''>Quantidade</th>
+                            <p className='nomeProduto'>Produto</p>
+                            <p className='precoProduto'>Preço</p>
+                            <p className=''>Quantidade</p>
                         </div>                        
                         <div className='tableContent'>
                             {listProduto.map((value) => (

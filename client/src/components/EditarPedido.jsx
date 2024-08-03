@@ -19,8 +19,7 @@ export default function EditarPedido(){
     const [precoTotal, setPrecoTotal] = useState(0);
     const [textModal, setTextModal ] = useState(); 
     const [listCategory, setListCategory] = useState(); 
-    const carousel = useRef(null);       
-    const [imgPrincipal, setImgPrincipal] = useState();
+    const carousel = useRef(null);           
     const [isProcessing, setIsProcessing] = useState(false);  
 
 
@@ -155,20 +154,18 @@ export default function EditarPedido(){
         setMsgModal(true)
     }
 
-    function filterByCategory(idCategory, imgCategoria){                  
+    function filterByCategory(idCategory){                  
         if(idGrupoPedido > 0){            
             Axios.post("http://localhost:3001/category/filterByCategory", {
                 idCategory: idCategory, 
                 idGrupoPedido: idGrupoPedido                
             }).then((response) => {                
-                setListProduto(response.data[0]);
-                setImgPrincipal(imgCategoria)                
+                setListProduto(response.data[0]);                                                      
             })
         }else{            
             openModal('msg', 'Número de pedido não encontrado',);
         }
-    }
-    console.log(listProdutoEditar?.length)
+    }    
     return(
         <div className='NovoPedidoContainer'>
             <h2 className='text-lg font-bold mb-2  text-white'>EDITAR PEDIDO</h2>
@@ -183,7 +180,7 @@ export default function EditarPedido(){
                 {listCategory?.map((value) => (
                         <div key={value.idCategoria} className='divCarouselButton'>
                             <button className='carouselButton' onClick={() => filterByCategory(value.idCategoria, value.imagemCategoria)} role="button">
-                                {/* <img src={value.imagemCategoria} alt="" />                                           */}
+                                                                       
                                 {value.imageUrl ? (
                                 <img src={value.imageUrl}  />
                                 ) : (
@@ -195,8 +192,8 @@ export default function EditarPedido(){
                 ))}
             </div>
             <div className="selecionarProduto">
-                <h2 className='selecionarTexto'>Selecione os itens do pedido:</h2>
-                <img className='imgSuco' src={imgPrincipal} alt="" />
+                {/* <h2 className='selecionarTexto'>Selecione os itens do pedido:</h2> */}
+                {/* <img className='imgSuco' src={imgPrincipal} alt="" /> */}
                 <div className="selecionarValorTotal">                        
                     <span className="text-xl font-bold">R$ {precoTotal.toFixed(2)}</span>
                 </div>                        
@@ -204,9 +201,9 @@ export default function EditarPedido(){
                                                         
             <div className='tableProdutos'>                        
                 <div className='tableTitle'>
-                    <th className='nomeProduto'>Produto</th>
-                    <th className='precoProduto'>Preço</th>
-                    <th className=''>Quantidade</th>
+                    <p className='nomeProduto'>Produto</p>
+                    <p className='precoProduto'>Preço</p>
+                    <p className=''>Quantidade</p>
                 </div>                        
                 <div className='tableContent'>
                     <h2 className='pedidoAtual'>Pedido atual</h2>
