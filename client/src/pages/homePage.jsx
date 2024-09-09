@@ -4,7 +4,9 @@ import './css/homePage.css'
 export default function HomePage(){
     return(
         <main className="homePage">
-            <Home />
+            
+                <Home />
+            
         </main>
     )
 }

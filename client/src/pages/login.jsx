@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import { LoginContext } from "../context/LoginContext.jsx";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
-import Loading from "../components/Loading.jsx";
+import Loading from "../components/loading.jsx";
 import './css/login.css'
 import  logoHest  from '../assets/logoHest.png'
 

@@ -8,7 +8,7 @@ import { faEllipsisVertical, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { ConfirmModal } from '../geral.jsx'
 import { MsgModal } from '../geral.jsx'
 import Menu from "./Menu.jsx";
-import Loading from "./Loading.jsx";
+import Loading from "./loading.jsx";
 import Navbar from "./navbar.jsx";
 
 
@@ -228,8 +228,8 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <Menu />  
-      <main className="">        
+      <main className="lg:my-20 xl:my-20"> 
+        <Menu />       
         <div className="">
           { mesasOpen === null ?
           <div>
