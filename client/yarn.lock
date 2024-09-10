@@ -2207,10 +2207,10 @@ path-scurry@^1.11.1:
     lru-cache "^10.2.0"
     minipass "^5.0.0 || ^6.0.2 || ^7.0.0"
 
-pdfmake@^0.2.10:
-  version "0.2.10"
-  resolved "https://registry.npmjs.org/pdfmake/-/pdfmake-0.2.10.tgz"
-  integrity sha512-doipFnmE1UHSk+Z3wfQuVweVQqx2pE/Ns2G5gCqZmWwqjDj+mZHnZYH/ryXWoIfD+iVdZUAutgI/VHkTCN+Xrw==
+pdfmake@^0.2.12:
+  version "0.2.12"
+  resolved "https://registry.npmjs.org/pdfmake/-/pdfmake-0.2.12.tgz"
+  integrity sha512-TFsqaG6KVtk+TWermmJNNwom3wmB/xiz07prM74KBhdM+7pz3Uwq2b0uoqhhQRn6cYUTpL8lXZY6xF011o1YcQ==
   dependencies:
     "@foliojs-fork/linebreak" "^1.1.1"
     "@foliojs-fork/pdfkit" "^0.14.0"

@@ -19,6 +19,8 @@ export default function Menu() {
                 console.error("Erro ao criar novo pedido: ", error);
             });
     }
+
+
     return (
         <div className="flex justify-center items-center mt-9">
             <Link to='/novopedido'>
