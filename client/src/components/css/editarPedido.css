@@ -5,14 +5,14 @@
 .buttonPrev{
     transform: rotate(180deg);
     position: absolute;
-    left: 0;
-    top: 150px;
+    left: 20px;
+    top: 130px;
 }
 
 .buttonNext{
     position: absolute;
-    right: 0;
-    top: 150px;
+    right: 20px;
+    top: 130px;
 }
 
 .NovoPedidoContainer{    
@@ -37,8 +37,7 @@
 }
 
 .buttonPrev, .buttonNext{
-    width: 50px;
-    display: none;
+    width: 20px;
 }
 
 .divCarouselButton{    
@@ -144,7 +143,6 @@
     background-color: #fff; 
     padding: 18px; 
     border-radius: 5px; 
-
 }
 
 .pedidoAtual, .adicionarPedido{

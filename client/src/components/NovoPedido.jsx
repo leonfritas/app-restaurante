@@ -2,7 +2,7 @@ import { useState, useEffect, useContext, useRef } from 'react';
 import { LoginContext } from '../context/LoginContext.jsx';
 import Axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import Loading from './loading.jsx';
+import Loading from './Loading.jsx';
 import './css/novoPedido.css';
 import seta from '../assets/setaCarousel.png';
 import { MsgModal } from '../geral.jsx'
@@ -147,13 +147,10 @@ export default function NovoPedido() {
                     idGrupoPedido: idGrupoPedido,
                     nomeGrupoPedido: nomeGrupoPedido,
                     idMesa: idMesa,                
-                    textoObservacao: null
-                    
+                    textoObservacao: null                    
                 })
                 .then(() => {    
-                    openModal('msg', 'Pedido salvo com sucesso.', '/home');                                     
-                    // navigate('/home');
-                                       
+                    openModal('msg', 'Pedido salvo com sucesso.', '/home');                                                                            
                 })
                 .catch((error) => {
                     console.error("Error saving order group:", error);
@@ -210,8 +207,7 @@ export default function NovoPedido() {
                         ...imgCategoria,
                         imageUrl, // Adiciona a URL da imagem ao objeto do item
                       };
-                    }
-                    // return imgCategoria; // Retorna o item sem alterações se não houver imagem
+                    }                    
                     
                   setImgPrincipal(imgCategoria)               
             })
@@ -233,9 +229,7 @@ export default function NovoPedido() {
             setTextModal(msg)            
             setMsgModal(true)                        
         }        
-    }
-
-    console.log(idGrupoPedido)
+    }    
 
     return (
         
@@ -252,8 +246,7 @@ export default function NovoPedido() {
                         
                         {listCategory?.map((value) => (
                                 <div key={value.idCategoria} className='divCarouselButton'>
-                                    <button className='carouselButton' onClick={() => filterByCategory(value.idCategoria, value.imagemCategoria)} role="button">
-                                        {/* <img src={value.imagemCategoria} alt="" />                                           */}
+                                    <button className='carouselButton' onClick={() => filterByCategory(value.idCategoria, value.imagemCategoria)} role="button">                                        
                                         {value.imageUrl ? (
                                         <img src={value.imageUrl}  />
                                         ) : (
@@ -321,8 +314,7 @@ export default function NovoPedido() {
                 </div>
             }
             {msgModal?
-                <MsgModal
-                // isOpen={functionModal}                    
+                <MsgModal                  
                 isClose={() => closeModal('msg')}                
                 contentLabel="Modal de Edição de Produto"                            
                 text={textModal}    

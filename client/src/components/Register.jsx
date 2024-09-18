@@ -20,7 +20,6 @@ export default function Register() {
     const ativoFuncionarioValue = userCheck ? 1 : 0;
 
 
-
     if (realName !== "" && userName !== "" && senha !== "" && cpf !== "") {
       Axios.post("http://localhost:3001/users/register", {
         realName: realName,
@@ -60,7 +59,6 @@ export default function Register() {
     } else {
       openModal("msg","Preencha seu nome, usuário e senha para continuar.");
     }
-    // setMsgModal(false)
   }
 
   const formatCPF = (value) => {

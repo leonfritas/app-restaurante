@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import { LoginContext } from "../context/LoginContext.jsx";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
-import Loading from "../components/loading.jsx";
+import Loading from "../components/Loading.jsx";
 import './css/login.css'
 import  logoHest  from '../assets/logoHest.png'
 
@@ -104,14 +104,13 @@ export default function Login() {
                         </button>
                     </div> 
                         : ''} 
-                    {!removeLoading && <Loading />} {/* Exibir o componente de loading se removeLoading for false */}
+                    {!removeLoading && <Loading />}
                     <p className="version">v1.0.0</p>
                     <p className="lasoft">L.A.</p>
                 </div>
                 
             </div>
             
-            {/* Modal com animação */}
             {modalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center">
                     <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity" onClick={closeModal}></div>

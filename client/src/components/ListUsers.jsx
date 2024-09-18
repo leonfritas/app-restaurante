@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import Axios from 'axios';
 import './css/novoPedido.css';
-import Loading from './loading.jsx';
-
+import Loading from './Loading.jsx';
 import Modal from 'react-modal'
 import Register from './Register.jsx';
 
@@ -23,7 +21,6 @@ export default function ListUser() {
         setModalRegister(false)
     }
 
-
     function openModalDelete() {
         setModalDelete(true)
     }
@@ -31,7 +28,6 @@ export default function ListUser() {
     function closeModalDelete() {
         setModalDelete(false)
     }
-
 
     const buscarUsers = () => {
         Axios.get('http://localhost:3001/users/userList')
@@ -157,7 +153,6 @@ export default function ListUser() {
             )}
         </ul>
             {!removeLoading && <Loading />}
-            {/* Modal de confirmação */}
         </div>
     );
 }

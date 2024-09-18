@@ -4,7 +4,7 @@ import Axios from "axios"
 import './css/novoPedido.css'
 import { useNavigate } from "react-router-dom";
 import './css/ApagarDepois.css'
-import Loading from './loading.jsx';
+import Loading from './Loading.jsx';
 import { MsgModal } from '../geral.jsx';
 import './css/editarPedido.css';
 
@@ -192,8 +192,6 @@ export default function EditarPedido(){
                 ))}
             </div>
             <div className="selecionarProduto">
-                {/* <h2 className='selecionarTexto'>Selecione os itens do pedido:</h2> */}
-                {/* <img className='imgSuco' src={imgPrincipal} alt="" /> */}
                 <div className="selecionarValorTotal">                        
                     <span className="text-xl font-bold">R$ {precoTotal.toFixed(2)}</span>
                 </div>                        
@@ -249,14 +247,12 @@ export default function EditarPedido(){
                 </div>
             </div>
     {msgModal?
-        <MsgModal
-        // isOpen={functionModal}                    
+        <MsgModal                 
         isClose={() => closeModal('msg')}                
         contentLabel="Modal de Edição de Produto"                            
         text={textModal}                    
         />
         : ''}
-{/* </table> */}
         {!removeLoading && <Loading />}
         </div>
     )
