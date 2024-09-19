@@ -19,12 +19,12 @@ export default function Register() {
     const ativoAdminValue = checkAdmin ? 1 : 0;
     const ativoFuncionarioValue = userCheck ? 1 : 0;
 
+    const cpfNumerico = cpf.replace(/\D/g, "");
 
-
-    if (realName !== "" && userName !== "" && senha !== "" && cpf !== "") {
+    if (realName !== "" && userName !== "" && senha !== "" && cpfNumerico !== "") {
       Axios.post("http://localhost:3001/users/register", {
         realName: realName,
-        cpf: cpf,
+        cpf: cpfNumerico,
         userName: userName,
         senha: senha,
         checkAdmin: ativoAdminValue,
@@ -60,7 +60,6 @@ export default function Register() {
     } else {
       openModal("msg","Preencha seu nome, usuário e senha para continuar.");
     }
-    // setMsgModal(false)
   }
 
   const formatCPF = (value) => {

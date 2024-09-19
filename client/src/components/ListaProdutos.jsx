@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function ListaProdutos(props) {
     return (
         <div className="max-w-screen-lg mx-auto">

@@ -1,23 +1,11 @@
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { LoginContext } from '../context/LoginContext';
-import Axios from "axios";
 import './css/navbar.css'
 
 export default function Navbar() {
-    const { ativoAdm, setIdGrupoPedido, idFuncionario } = useContext(LoginContext);
+    const { ativoAdm } = useContext(LoginContext);
 
-    function CriarNovoPedido() {
-        Axios.post("http://localhost:3001/orderGroup/orderGroupInsert", {
-            idFuncionario: idFuncionario
-        })
-            .then((response) => {                
-                setIdGrupoPedido(response.data[0][0].idGrupoPedido);
-            })
-            .catch((error) => {
-                console.error("Erro ao criar novo pedido: ", error);
-            });
-    }
 
     return (
         <nav className="xl:bg-[#1B262C] lg:bg-[rgb(27,38,44)] p-4 sm:py-6 sm:px-8 fixed inset-x-0 z-50">
@@ -28,14 +16,14 @@ export default function Navbar() {
                 <div className="flex space-x-4 mx-2 my-2">
                     {ativoAdm && (
                         <Link to='/lista'>
-                            <button className="bg-[#234b19] hover:bg-[#485322] text-white font-bold py-2 px-4 rounded">
+                            <button className="bg-[#3282B8] hover:bg-[#0E4C75] text-white font-bold py-2 px-4 rounded">
                                 Lista de usuários
                             </button>
                         </Link>
                     )}
                     {ativoAdm && (
                         <Link to='/financeiro'>
-                            <button className="bg-[#234b19] hover:bg-[#485322] text-white font-bold py-2 px-5 rounded">
+                            <button className="bg-[#3282B8] hover:bg-[#0E4C75] text-white font-bold py-2 px-5 rounded">
                                 Financeiro
                             </button>
                         </Link>
@@ -52,14 +40,14 @@ export default function Navbar() {
         <>
             <Link to='/lista'>
                 <button
-                    className="px-4 py-2 text-center text-sm font-medium text-white bg-[#234b19] hover:bg-[#485322]"
+                    className="px-4 py-2 text-center text-sm font-medium text-white bg-[#3282B8] hover:bg-[#0E4C75]"
                 >
                     Lista de usuários
                 </button>
             </Link>
             <Link to='/financeiro'>
                 <button
-                    className="px-4 py-2 text-center text-sm font-medium text-white bg-[#234b19] hover:bg-[#485322]"
+                    className="px-4 py-2 text-center text-sm font-medium text-white bg-[#3282B8] hover:bg-[#0E4C75]"
                 >
                     Financeiro
                 </button>
@@ -67,7 +55,6 @@ export default function Navbar() {
         </>
     )}
 </div>
-
 
     </div>
             </div>

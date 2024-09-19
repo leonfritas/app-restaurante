@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import Axios from 'axios';
 import './css/novoPedido.css';
-import Loading from './loading.jsx';
-
+import Loading from './Loading.jsx';
 import Modal from 'react-modal'
 import Register from './Register.jsx';
 
@@ -23,7 +21,6 @@ export default function ListUser() {
         setModalRegister(false)
     }
 
-
     function openModalDelete() {
         setModalDelete(true)
     }
@@ -31,7 +28,6 @@ export default function ListUser() {
     function closeModalDelete() {
         setModalDelete(false)
     }
-
 
     const buscarUsers = () => {
         Axios.get('http://localhost:3001/users/userList')
@@ -71,10 +67,10 @@ export default function ListUser() {
     
 
     return (
-        <div className="p-6 bg-[#40A578] min-h-screen">
+        <div className="p-6 xl:bg-[#1B262C] lg:bg-[rgb(27,38,44)] min-h-screen">
             <h1 className="text-3xl font-bold mb-6 text-center text-white">Lista de Usuários</h1>
                 <button 
-                className="text-white w-60 py-3 my-2 ml-12 mb-4  leading-none bg-[#9DDE8B] hover:bg-[#E6FF94] font-semibold rounded shadow transition duration-300 ease-in-out transform hover:scale-105"
+                className="text-white w-60 py-3 my-2 ml-12 mb-4  leading-none bg-indigo-600 hover:bg-indigo-700 font-semibold rounded shadow transition duration-300 ease-in-out transform hover:scale-105"
                 onClick={openModalRegister}>
                     Cadastrar novos usuários!
                 </button>
@@ -157,7 +153,6 @@ export default function ListUser() {
             )}
         </ul>
             {!removeLoading && <Loading />}
-            {/* Modal de confirmação */}
         </div>
     );
 }

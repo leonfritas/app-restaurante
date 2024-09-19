@@ -1,5 +1,4 @@
 import loading from '../assets/loading.svg'
-
 import styles from './css/loading.module.css'
 
 function Loading() {

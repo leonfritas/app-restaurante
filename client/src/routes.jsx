@@ -7,15 +7,14 @@ import EditarPedidoPage from './pages/editarPedidoPage.jsx';
 import NovoPedidoPage from './pages/novoPedidoPage.jsx';
 import FinanceiroPage from './pages/Financeiro.jsx'
 import ListUserPage from './pages/ListUserPage.jsx';
-
 import Login from './pages/login.jsx';
-// import Err from './components/err';
+
 
 export default function AppRoutes() {
     const [isLogged, setIsLogged] = useState(false);
     const [idGrupoPedido, setIdGrupoPedido] = useState();
     const [ativoAdm, setAtivoAdm] = useState();
-    const [isCreated, setIsCreated] = useState(false); // Inicializando como false
+    const [isCreated, setIsCreated] = useState(false); 
     const [nomeGrupoPedido, setNomeGrupoPedido] = useState('');   
     const [confirmModal, setConfirmModal] = useState(false);  
     const [msgModal, setMsgModal] = useState(false);

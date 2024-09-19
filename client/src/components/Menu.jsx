@@ -20,7 +20,6 @@ export default function Menu() {
             });
     }
 
-
     return (
         <div className="flex justify-center items-center mt-9">
             <Link to='/novopedido'>

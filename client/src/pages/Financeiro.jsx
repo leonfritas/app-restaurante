@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import Axios from "axios";
 import Navbar from "../components/navbar.jsx"
-import Loading from "../components/loading.jsx";
-import financeiroPDF from "../components/pdf.jsx";
+import Loading from "../components/Loading.jsx";
+import financeiroPDF from "../components/Pdf.jsx";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilePdf } from '@fortawesome/free-solid-svg-icons'; // Exemplos de ícones
+import { faFilePdf } from '@fortawesome/free-solid-svg-icons'; 
 
 export default function FinanceiroPage() {
 

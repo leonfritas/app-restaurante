@@ -8,7 +8,7 @@ import { faEllipsisVertical, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { ConfirmModal } from '../geral.jsx'
 import { MsgModal } from '../geral.jsx'
 import Menu from "./Menu.jsx";
-import Loading from "./loading.jsx";
+import Loading from "./Loading.jsx";
 import Navbar from "./navbar.jsx";
 
 
@@ -260,8 +260,8 @@ export default function Home() {
                     </div>                                           
                     <div className="cardButton">
                       {value.ativoBaixa === 'PAGO' && (
-                        <button className="">
-                          Finalizar Pedido
+                        <button className="cardInfo">
+                          Pedido Pago
                         </button>
                       )}
 
