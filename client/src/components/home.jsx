@@ -8,7 +8,7 @@ import { faEllipsisVertical, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { ConfirmModal } from '../geral.jsx'
 import { MsgModal } from '../geral.jsx'
 import Menu from "./Menu.jsx";
-import Loading from "./Loading.jsx";
+import Loading from "./loading.jsx";
 import Navbar from "./navbar.jsx";
 
 

@@ -2,7 +2,7 @@ import { useState, useEffect, useContext, useRef } from 'react';
 import { LoginContext } from '../context/LoginContext.jsx';
 import Axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import Loading from './Loading.jsx';
+import Loading from './loading.jsx';
 import './css/novoPedido.css';
 import seta from '../assets/setaCarousel.png';
 import { MsgModal } from '../geral.jsx'

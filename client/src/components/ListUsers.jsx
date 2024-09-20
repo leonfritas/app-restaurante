@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Axios from 'axios';
 import './css/novoPedido.css';
-import Loading from './Loading.jsx';
+import Loading from './loading.jsx';
 import Modal from 'react-modal'
 import Register from './Register.jsx';
 

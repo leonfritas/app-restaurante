@@ -1,4 +1,4 @@
-import ListUser from "../components/ListUsers"
+import ListUser from "../components/ListUsers.jsx"
 import Navbar from "../components/navbar.jsx"
 
 

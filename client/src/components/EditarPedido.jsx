@@ -4,7 +4,7 @@ import Axios from "axios"
 import './css/novoPedido.css'
 import { useNavigate } from "react-router-dom";
 import './css/ApagarDepois.css'
-import Loading from './Loading.jsx';
+import Loading from './loading.jsx';
 import { MsgModal } from '../geral.jsx';
 import './css/editarPedido.css';
 
