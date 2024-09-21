@@ -16,6 +16,8 @@ function executeQuery(database, sql, params, res) {
     });
 }
 
+
+
 export const getTable = (req, res) => {
     const database = req.body.database;
 

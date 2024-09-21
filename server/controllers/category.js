@@ -21,6 +21,18 @@ export const getCategory = (req, res) => {
     executeQuery(database, sql, [], res);
 }
 
+export const categoryRegister = (req, res) => {
+    const { nomeCategoria } = req.body;
+
+        let insertSql = "INSERT INTO dev.Categoria(nomeCategoria) VALUES (?)";
+        db.query(insertSql, [nomeCategoria], (err, result) => {
+            if (err) {
+                console.log(err);
+                return res.status(500).send({ message: "Erro ao registrar Categoria." });
+            }
+        });
+    };
+
 export const filterByCategory = (req, res) => {
     const { idCategory } = req.body;
     const { idGrupoPedido } = req.body;
