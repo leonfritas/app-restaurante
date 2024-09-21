@@ -7,7 +7,6 @@ dotenv.config();
 
 // Função para criar a conexão
 export function conectDB(database){
-    console.log(database);
     return mysql.createPool({
             host: process.env.DB_HOST,
             user: process.env.DB_USER,

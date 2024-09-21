@@ -16,6 +16,25 @@ export default function Login() {
     const [modalOpen, setModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState("");
 
+
+    function getCompany(idEmpresa){
+        Axios.post("http://localhost:3001/company/getCompany", {
+                idEmpresa: idEmpresa,            
+                database: database
+        }).then((response) => {    
+            console.log(response.data[0][0].nomeEmpresa)
+            if (response.data) {
+                
+            }
+        }).catch((error) => {
+            console.error('Erro ao fazer login:', error);
+            setModalMessage(error.response?.data?.message || 'Erro ao buscar dados da empresa.');
+            setModalOpen(true);
+        }).finally(() => {
+            setRemoveLoading(true);
+        });
+    }
+
     const logar = () => {
         if (usuario !== '' && senha !== '') {
             setRemoveLoading(false);                        
@@ -23,10 +42,11 @@ export default function Login() {
                 name: usuario,
                 senha: senha,
                 database: database
-            }).then((response) => {
-                console.log('Resposta do servidor:', response); // Log da resposta
-    
+            }).then((response) => {    
                 if (response.data && response.data[0] && response.data[0][0]) {
+                    /* Buscando dados da empresa cadastrada */ 
+                    getCompany(1);
+                    /* Consumindo dados do usuário */ 
                     let user = response.data[0][0];
                     let ativoFuncionario = user.ativoFuncionario;
     

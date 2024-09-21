@@ -13,6 +13,7 @@ import orderGroupRoute from "./routes/ordersgroup.js";
 import financierRoute from "./routes/Financiers.js";
 import getTableRoute  from "./routes/tables.js";
 import getCategoryRoute  from "./routes/categories.js";
+import getCompanyRoute  from "./routes/company.js";
 
 
 
@@ -32,6 +33,7 @@ app.use('/orderGroup', orderGroupRoute)
 app.use('/financier', financierRoute)
 app.use('/table', getTableRoute)
 app.use('/category', getCategoryRoute)
+app.use('/company', getCompanyRoute)
 
 
 app.listen(3001, () => console.log('RODANDO SERVIDOR'))
