@@ -1,18 +1,28 @@
-import { response } from "express";
+
 import { conectDB } from '../db.js';
 
 
 function executeQuery(database, sql, params, res) {
     const db = conectDB(database);    
-    
-    db.query(sql, params, (err, result) => {
+    db.getConnection((err, connection) => {
         if (err) {
-            console.log(err);
-            res.status(500).send('Erro ao executar a query');
-        } else {
-            res.send(result);
-        }
-    });
+            console.error('Erro ao obter conexão:', err);
+            res.status(500).send('Erro ao obter a conexão');
+            return;
+        } 
+                
+        connection.query(sql, params, (err, result) => {
+            
+            connection.release();
+            
+            if (err) {
+                console.log(err);
+                res.status(500).send('Erro ao executar a query');
+            } else {
+                res.send(result);
+            }            
+        });
+    })
 }
 
 export const login = (req, res) => {
@@ -49,5 +59,6 @@ export const deleteUser = (req, res) => {
     const database = req.body.database;
 
     let sql = 'CALL sp_Funcionario_Cancelar(?);';
+
     executeQuery(database, sql, [id], res);
 }
