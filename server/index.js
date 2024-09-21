@@ -1,5 +1,8 @@
 import express from "express"
+
 import cors from 'cors'
+
+import bodyParser from 'body-parser';
 
 import 'dotenv/config'
 
@@ -14,8 +17,10 @@ import getCategoryRoute  from "./routes/categories.js";
 
 
 const app = express();
+const JWT_SECRET = '66ee87a985073'
 
 app.use(express.json());
+
 app.use(express.urlencoded({ extended: true}));
 
 app.use(cors());
@@ -27,7 +32,6 @@ app.use('/orderGroup', orderGroupRoute)
 app.use('/financier', financierRoute)
 app.use('/table', getTableRoute)
 app.use('/category', getCategoryRoute)
-''
 
 
 app.listen(3001, () => console.log('RODANDO SERVIDOR'))

@@ -14,20 +14,11 @@ export default function Navbar() {
                   <button className="text-white text-xl font-semibold ml-4">HEST</button>
                 </Link>
                 <div className="flex space-x-4 mx-2 my-2">
-                    {ativoAdm && (
-                        <Link to='/lista'>
+                        <Link to='/painelAdministrador'>
                             <button className="bg-[#3282B8] hover:bg-[#0E4C75] text-white font-bold py-2 px-4 rounded">
-                                Lista de usuários
+                                Painel Administrador
                             </button>
                         </Link>
-                    )}
-                    {ativoAdm && (
-                        <Link to='/financeiro'>
-                            <button className="bg-[#3282B8] hover:bg-[#0E4C75] text-white font-bold py-2 px-5 rounded">
-                                Financeiro
-                            </button>
-                        </Link>
-                    )}
                 </div>
             </div>
 
@@ -38,18 +29,11 @@ export default function Navbar() {
         <div className="flex flex-row space-x-2 items-center justify-center bg-[#1b262c] p-2">
     {ativoAdm && (
         <>
-            <Link to='/lista'>
+            <Link to='/painelAdministrador'>
                 <button
                     className="px-4 py-2 text-center text-sm font-medium text-white bg-[#3282B8] hover:bg-[#0E4C75]"
                 >
-                    Lista de usuários
-                </button>
-            </Link>
-            <Link to='/financeiro'>
-                <button
-                    className="px-4 py-2 text-center text-sm font-medium text-white bg-[#3282B8] hover:bg-[#0E4C75]"
-                >
-                    Financeiro
+                    Painel Administrador
                 </button>
             </Link>
         </>

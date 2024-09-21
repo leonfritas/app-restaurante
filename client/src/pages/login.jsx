@@ -22,21 +22,30 @@ export default function Login() {
                 name: usuario,
                 senha: senha
             }).then((response) => {
-                let ativoFuncionario = response.data[0][0].ativoFuncionario;
-                if (ativoFuncionario === 1) {
-                    let ativoAdm = response.data[0][0].ativoAdm;                    
-                    let idFuncionario = response.data[0][0].idFuncionario;
-                    setIdFuncionario(idFuncionario)                    
-                    setAtivoAdm(ativoAdm);
-                    setIsLogged(true);
-                    navigate('/home');
+                console.log('Resposta do servidor:', response); // Log da resposta
+    
+                if (response.data && response.data[0] && response.data[0][0]) {
+                    let user = response.data[0][0];
+                    let ativoFuncionario = user.ativoFuncionario;
+    
+                    if (ativoFuncionario) {
+                        let ativoAdm = user.ativoAdm;                    
+                        let idFuncionario = user.idFuncionario;
+                        setIdFuncionario(idFuncionario);                    
+                        setAtivoAdm(ativoAdm);
+                        setIsLogged(true);
+                        navigate('/home');
+                    } else {
+                        setModalMessage('Acesso negado');
+                        setModalOpen(true);
+                    }
                 } else {
-                    setModalMessage('Acesso negado');
+                    setModalMessage('Usuário ou senha incorretos.');
                     setModalOpen(true);
                 }
             }).catch((error) => {
                 console.error('Erro ao fazer login:', error);
-                setModalMessage('Erro ao fazer login. Verifique suas credenciais.');
+                setModalMessage(error.response?.data?.message || 'Erro ao fazer login. Verifique suas credenciais.');
                 setModalOpen(true);
             }).finally(() => {
                 setRemoveLoading(true);
@@ -46,6 +55,7 @@ export default function Login() {
             setModalOpen(true);
         }
     };
+    
 
     useEffect(() => {
         const handleKeyDown = (event) => {

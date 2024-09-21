@@ -25,7 +25,7 @@ export default function Menu() {
             <Link to='/novopedido'>
                 <button onClick={CriarNovoPedido}
                     type="button"
-                    className="w-60 bg-[#3282B8] hover:bg-[#0E4C75] text-white font-bold py-2 px-4 rounded flex items-center justify-center">
+                    className="w-60 bg-[#3282B8] hover:bg-[#0E4C75] text-white font-bold py-2 px-4 md:mt-0 sm:mt-10 rounded flex items-center justify-center">
                         <FontAwesomeIcon icon={faShoppingCart} className="mr-2" />
                     <span className="text-center">Novo Pedido</span>
                 </button>

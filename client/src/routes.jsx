@@ -8,6 +8,8 @@ import NovoPedidoPage from './pages/novoPedidoPage.jsx';
 import FinanceiroPage from './pages/Financeiro.jsx'
 import ListUserPage from './pages/ListUserPage.jsx';
 import Login from './pages/login.jsx';
+import Painel from './components/painelADM/painel.jsx';
+import PainelLogin from './components/painelADM/loginPainel.jsx';
 
 
 export default function AppRoutes() {
@@ -32,8 +34,10 @@ export default function AppRoutes() {
                         <Route exact path='/home' element={<HomePage />} />
                         <Route exact path="/novopedido" element={<NovoPedidoPage />} />
                         <Route exact path="/editarpedido" element={<EditarPedidoPage />} />
-                        <Route exact path='/lista' element={<ListUserPage />}></Route>
+                        <Route exact path='/usuarios' element={<ListUserPage />}></Route>
                         <Route exact path='/financeiro' element={<FinanceiroPage />}></Route>
+                        <Route exact path='/painelAdministrador' element={<Painel />}></Route>
+                        <Route exact path='/loginPainel' element={<PainelLogin />}></Route>
                     </Routes>
                 </BrowserRouter>
             </RegisterContext.Provider>
