@@ -8,7 +8,6 @@ function executeQuery(database, sql, params, res) {
 
     db.query(sql, params, (err, result) => {
         if (err) {
-            console.log('chegou aqui');
             console.log(err);
             res.status(500).send('Erro ao executar a query');
         } else {

@@ -7,7 +7,6 @@ function executeQuery(database, sql, params, res) {
     
     db.query(sql, params, (err, result) => {
         if (err) {
-            console.log('chegou aqui');
             console.log(err);
             res.status(500).send('Erro ao executar a query');
         } else {
@@ -17,7 +16,6 @@ function executeQuery(database, sql, params, res) {
 }
 
 export const login = (req, res) => {
-    console.log(req)
     const { name } = req.body;
     const { senha } = req.body; 
     const database = req.body.database;
