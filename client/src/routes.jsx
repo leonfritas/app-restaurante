@@ -10,6 +10,7 @@ import ListUserPage from './pages/ListUserPage.jsx';
 import Login from './pages/login.jsx';
 import Painel from './components/painelADM/painel.jsx';
 import PainelLogin from './components/painelADM/loginPainel.jsx';
+import Gerenciamento from './components/painelADM/gerenciamento/gerenciamento.jsx';
 
 
 export default function AppRoutes() {
@@ -38,6 +39,7 @@ export default function AppRoutes() {
                         <Route exact path='/financeiro' element={<FinanceiroPage />}></Route>
                         <Route exact path='/painelAdministrador' element={<Painel />}></Route>
                         <Route exact path='/loginPainel' element={<PainelLogin />}></Route>
+                        <Route exact path='/gerenciador' element={<Gerenciamento />}></Route>
                     </Routes>
                 </BrowserRouter>
             </RegisterContext.Provider>

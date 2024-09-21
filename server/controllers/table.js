@@ -2,6 +2,8 @@ import { response } from 'express';
 
 import { db } from "../db.js";
 
+
+
 export const getTable = (req, res) => {
     
     let sql = 'call sp_Mesa_Disponivel'    
