@@ -1,93 +1,92 @@
 import {response} from "express";
-import { db } from '../db.js'
+import { conectDB } from '../db.js';
+
+
+function executeQuery(database, sql, params, res) {
+    const db = conectDB(database); 
+
+    db.query(sql, params, (err, result) => {
+        if (err) {
+            console.log('chegou aqui');
+            console.log(err);
+            res.status(500).send('Erro ao executar a query');
+        } else {
+            res.send(result);
+        }
+    });
+}
 
 export const grupoPedidoSalvar = (req, res) => {
     const { idGrupoPedido } = req.body;
     const { nomeGrupoPedido } = req.body;
     const { idMesa } = req.body;
     const { textoObservacao } = req.body;
+    const database = req.body.database;
     let sql = "call sp_grupoPedido_salvar(?,?,?,?)";
     
-    db.query(sql, [idGrupoPedido, nomeGrupoPedido, idMesa, textoObservacao], (err, result) => {
-        if (err) console.log(err)
-        else res.send(result)        
-    })        
+    executeQuery(database, sql, [idGrupoPedido, nomeGrupoPedido, idMesa, textoObservacao], res);        
 }
 
 export const grupoPedidoCancelar =  (req, res) => {
     const { idGrupoPedido } = req.body;
+    const database = req.body.database;
 
     let sql = "call sp_GrupoPedido_Cancelar(?)";
     
-    db.query(sql, [idGrupoPedido], (err, result) => {
-        if (err) console.log(err)
-        else res.send(result)        
-    })        
+    executeQuery(database, sql, [idGrupoPedido], res);           
 }
 
 export const grupoPedidoInserir = (req, res) => {
     const { idFuncionario } = req.body;
+    const database = req.body.database;
+
     let sql = "call sp_GrupoPedido_Inserir(?)";
-    db.query(sql,[ idFuncionario ], (err, result) => {
-        if(err) console.log(err)
-        else res.send(result)
-    })
+
+    executeQuery(database, sql, [idFuncionario], res); 
 }
 
 export const grupoPedidoListar = (req, res) => {
     const {dataEntrada, ativoPedidoPronto} = req.body;
+    const database = req.body.database;
+
     let sql = "call sp_GrupoPedido_Listar(?)";
 
-    db.query(sql, [dataEntrada, ativoPedidoPronto], (err, result) => {
-        if (err) console.log(err)
-        else res.send(result)
-    })
+    executeQuery(database, sql, [dataEntrada, ativoPedidoPronto], res); 
 }
 
 export const grupoPedidoFinalizar = (req, res) => {
     const { idGrupoPedido } = req.body;
+    const database = req.body.database;    
 
     let sql = "call sp_GrupoPedido_Finalizar(?)";
     
-    db.query(sql, [idGrupoPedido], (err, result) => {
-        if (err) console.log(err)
-        else res.send(result)        
-    })        
+    executeQuery(database, sql, [idGrupoPedido], res);        
 }
 
 export const grupoPedidoEditar = (req, res) => {
     const { idGrupoPedido } = req.body;
+    const database = req.body.database;
 
     let sql = "call sp_GrupoPedido_Editar(?)";
     
-    db.query(sql, [idGrupoPedido], (err, result) => {
-        if (err) console.log(err)
-        else res.send(result)
-    console.log(result)        
-    })            
+    executeQuery(database, sql, [idGrupoPedido], res);            
 }
 
 export const grupoPedidoListarProduto = (req, res) => {
     const { idGrupoPedido } = req.body;
+    const database = req.body.database;
 
     let sql = "call sp_GrupoPedido_ListarProduto(?)";
     
-    db.query(sql, [idGrupoPedido], (err, result) => {
-        if (err) console.log(err)
-        else res.send(result)
-    console.log(result)        
-    })            
+    executeQuery(database, sql, [idGrupoPedido], res);           
 }
 
 export const grupoPedidoSaveObs = (req, res) => {
     const { idGrupoPedido } = req.body;
     const { observacao } = req.body;
+    const database = req.body.database;
 
     let sql = "call sp_GrupoPedido_salvarObservacao(?,?)";
     
-    db.query(sql, [idGrupoPedido, observacao], (err, result) => {
-        if (err) console.log(err)
-        else res.send(result)
-    console.log(result)        
-    })            
+    executeQuery(database, sql, [idGrupoPedido, observacao], res);            
 }

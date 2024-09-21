@@ -4,7 +4,7 @@ import { listaProduto, productRegister } from '../controllers/product.js'
 
 const productRoute = express.Router()
 
-productRoute.get('/listProduct', listaProduto)
+productRoute.post('/listProduct', listaProduto)
 productRoute.post('/productRegister', productRegister)
 
 

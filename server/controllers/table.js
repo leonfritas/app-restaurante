@@ -1,35 +1,44 @@
 import { response } from 'express';
+import { conectDB } from '../db.js';
 
-import { db } from "../db.js";
+
+function executeQuery(database, sql, params, res) {
+    const db = conectDB(database); 
+
+    db.query(sql, params, (err, result) => {
+        if (err) {
+
+            console.log(err);
+            res.status(500).send('Erro ao executar a query');
+        } else {
+            res.send(result);
+        }
+    });
+}
 
 export const getTable = (req, res) => {
-    
-    let sql = 'call sp_Mesa_Disponivel'    
-    db.query(sql, (err, result) => {
-        if(err) console.log(err)
-            else res.send(result)
-    })
+    const database = req.body.database;
+
+    let sql = 'call sp_Mesa_Disponivel';
+
+    executeQuery(database, sql, [], res);
 }
 
 export const joinTable = (req, res) => {
     const {idMesa } = req.body;
     const {idGrupoPedido} = req.body;
+    const database = req.body.database;
     
-    let sql = 'call sp_Mesa_Inserir(?,?)'  
+    let sql = 'call sp_Mesa_Inserir(?,?)'; 
 
-    db.query(sql, [idMesa, idGrupoPedido], (err, result) => {
-        if(err) console.log(err)
-            else res.send(result)
-    })
+    executeQuery(database, sql, [idMesa, idGrupoPedido], res);
 }
 
 export const getOrderTable = (req, res) => {
     const {idGrupoPedido} = req.body;
+    const database = req.body.database;
     
-    let sql = 'call sp_Mesa_Ocupada(?)'  
+    let sql = 'call sp_Mesa_Ocupada(?)';  
 
-    db.query(sql, [idGrupoPedido], (err, result) => {
-        if(err) console.log(err)
-            else res.send(result)
-    })
+    executeQuery(database, sql, [idGrupoPedido], res);
 }

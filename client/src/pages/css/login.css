@@ -10,7 +10,7 @@
 .loginContainer{
     background: linear-gradient(to top, #0F4C75 10%, white 90%);
     width: 87%;
-    min-height: 350px;
+    min-height: 430px;
     height: 50%;
     border-radius: 12px;
     display: flex;

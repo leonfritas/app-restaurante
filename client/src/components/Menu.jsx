@@ -6,11 +6,12 @@ import { LoginContext } from '../context/LoginContext';
 import Axios from "axios";
 
 export default function Menu() {
-    const { setIdGrupoPedido, idFuncionario } = useContext(LoginContext);
+    const { setIdGrupoPedido, idFuncionario, database } = useContext(LoginContext);
     
     function CriarNovoPedido() {
         Axios.post("http://localhost:3001/orderGroup/orderGroupInsert", {
-            idFuncionario: idFuncionario
+            idFuncionario: idFuncionario,
+            database: database
         })
             .then((response) => {                
                 setIdGrupoPedido(response.data[0][0].idGrupoPedido);

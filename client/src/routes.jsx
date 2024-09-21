@@ -21,11 +21,12 @@ export default function AppRoutes() {
     const [confirmModal, setConfirmModal] = useState(false);  
     const [msgModal, setMsgModal] = useState(false);
     const [idFuncionario, setIdFuncionario] = useState();  
+    const [database, setDataBase] = useState(); 
 
     return (
         <LoginContext.Provider value={{ isLogged, setIsLogged, idGrupoPedido, setIdGrupoPedido, 
                                         ativoAdm, setAtivoAdm, nomeGrupoPedido, setNomeGrupoPedido, 
-                                        confirmModal, setConfirmModal, msgModal, setMsgModal, idFuncionario, setIdFuncionario }}>
+                                        confirmModal, setConfirmModal, msgModal, setMsgModal, idFuncionario, setIdFuncionario, database, setDataBase }}>
             <RegisterContext.Provider value={{ isCreated, setIsCreated }}>
                 <BrowserRouter>
                     <Routes>

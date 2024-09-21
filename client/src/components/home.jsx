@@ -16,7 +16,7 @@ export default function Home() {
   const [grupoPedido, setGrupoPedido] = useState([]);
   const [removeLoading, setRemoveLoading] = useState(false);
   const { idGrupoPedido, setIdGrupoPedido, setNomeGrupoPedido, 
-         confirmModal, setConfirmModal, msgModal, setMsgModal } = useContext(LoginContext);
+         confirmModal, setConfirmModal, msgModal, setMsgModal, database } = useContext(LoginContext);
   const [verPedido, setVerPedido] = useState(false);
   const [listaProduto, setListaProduto] = useState(); 
   const [setCardUnirMesa] = useState(false); 
@@ -59,7 +59,8 @@ export default function Home() {
   const atualizarLista = async () => {
     try {      
       const response = await Axios.post('http://localhost:3001/orderGroup/orderGroupList', {
-        dataEntrada: '2024-01-01'
+        dataEntrada: '2024-01-01',
+        database: database
       });  
       setGrupoPedido(response.data[0]);
       setRemoveLoading(true);
@@ -91,7 +92,8 @@ export default function Home() {
   async function cancelarPedido(idGrupoPedido) {    
     if (idGrupoPedido > 0) {
         await Axios.post("http://localhost:3001/orderGroup/orderGroupCancel", {
-          idGrupoPedido: idGrupoPedido
+          idGrupoPedido: idGrupoPedido,
+          database: database
         });
         atualizarLista();      
     } else {
@@ -104,7 +106,8 @@ export default function Home() {
     if (idGrupoPedido > 0) { 
       setRemoveLoading(false);   
         Axios.post("http://localhost:3001/orderGroup/orderGroupListProduct", {
-          idGrupoPedido: idGrupoPedido
+          idGrupoPedido: idGrupoPedido,
+          database: database
         }).then((response) => {
           setListaProduto(response.data[0]);                        
         })      
@@ -161,7 +164,9 @@ export default function Home() {
 
   function getTable(action, idGrupoPedido){
     if(action == 'disponiveis'){
-      Axios.get("http://localhost:3001/table/getTable")
+      Axios.post("http://localhost:3001/table/getTable", {
+        database: database
+      })
       .then((response) => {
           setTable(response.data[0]);        
       })

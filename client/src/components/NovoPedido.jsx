@@ -8,7 +8,7 @@ import seta from '../assets/setaCarousel.png';
 import { MsgModal } from '../geral.jsx'
 
 export default function NovoPedido() {
-    const { idGrupoPedido, nomeGrupoPedido, setNomeGrupoPedido, msgModal, setMsgModal } = useContext(LoginContext);
+    const { idGrupoPedido, nomeGrupoPedido, setNomeGrupoPedido, msgModal, setMsgModal, database } = useContext(LoginContext);
     const navigate = useNavigate();
     const [listProduto, setListProduto] = useState([]);
     const [quantidades, setQuantidades] = useState({});
@@ -26,7 +26,9 @@ export default function NovoPedido() {
 
 
     useEffect(() => {
-        Axios.get("http://localhost:3001/products/listProduct")
+        Axios.post("http://localhost:3001/products/listProduct", {
+            database: database
+        })
             .then((response) => {
                 setListProduto(response.data);
                 setRemoveLoading(true);
@@ -37,7 +39,9 @@ export default function NovoPedido() {
     }, []);    
 
     useEffect(() => {
-        Axios.get("http://localhost:3001/category/getCategory")
+        Axios.post("http://localhost:3001/category/getCategory", {
+            database: database
+        })
           .then((response) => {
             // Mapeia os dados para incluir URLs das imagens
             const categoriesWithImages = response.data.map((item) => {
@@ -63,7 +67,9 @@ export default function NovoPedido() {
     }, []);
 
     useEffect(() => {
-        Axios.get("http://localhost:3001/table/getTable")
+        Axios.post("http://localhost:3001/table/getTable", {
+            database: database
+        })
             .then((response) => {
                 setTable(response.data[0]);
             })
@@ -90,6 +96,7 @@ export default function NovoPedido() {
                 idProduto: idProduto,
                 quantidade: quantidade,
                 preco: preco,
+                database: database
             })
             .then(() => {
                 setQuantidades((prev) => ({
@@ -112,7 +119,8 @@ export default function NovoPedido() {
         if (idGrupoPedido > 0) {
             Axios.post("http://localhost:3001/requested/requestDelete", {
                 idGrupoPedido: idGrupoPedido,
-                idProduto: idProduto
+                idProduto: idProduto,
+                database: database
             })
             .then(() => {
                 setQuantidades((prev) => ({
@@ -147,7 +155,8 @@ export default function NovoPedido() {
                     idGrupoPedido: idGrupoPedido,
                     nomeGrupoPedido: nomeGrupoPedido,
                     idMesa: idMesa,                
-                    textoObservacao: null                    
+                    textoObservacao: null,
+                    database: database                   
                 })
                 .then(() => {    
                     openModal('msg', 'Pedido salvo com sucesso.', '/home');                                                                            
@@ -165,7 +174,8 @@ export default function NovoPedido() {
     function cancelarGrupoPedido() {
         if (idGrupoPedido > 0) {
             Axios.post("http://localhost:3001/orderGroup/orderGroupCancel", {
-                idGrupoPedido: idGrupoPedido
+                idGrupoPedido: idGrupoPedido,
+                database: database
             })
             .then(() => {
                 navigate('/home');
@@ -191,7 +201,8 @@ export default function NovoPedido() {
     function filterByCategory(idCategory){              
         if(idGrupoPedido > 0){            
             Axios.post("http://localhost:3001/category/filterByCategory", {
-                idCategory: idCategory                
+                idCategory: idCategory,
+                database: database                
             }).then((response) => {                
                 setListProduto(response.data[0]);
                 

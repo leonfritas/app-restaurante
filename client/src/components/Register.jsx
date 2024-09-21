@@ -12,7 +12,7 @@ export default function Register() {
   const [checkAdmin, setUserAdmin] = useState(false);
   const [userCheck, setUserCheck] = useState(false);
   const navigate = useNavigate();
-  const { msgModal, setMsgModal} = useContext(LoginContext);
+  const { msgModal, setMsgModal, database} = useContext(LoginContext);
   const [textModal, setTextoModal ] = useState();
 
   function register (){
@@ -29,6 +29,7 @@ export default function Register() {
         senha: senha,
         checkAdmin: ativoAdminValue,
         userCheck: ativoFuncionarioValue,
+        database: database
       })
         .then((response) => {
           if (!response.data) {

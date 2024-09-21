@@ -6,8 +6,9 @@ import Loading from "../components/loading.jsx";
 import './css/login.css'
 import  logoHest  from '../assets/logoHest.png'
 
+
 export default function Login() {
-    const { setIsLogged, setAtivoAdm, setIdFuncionario } = useContext(LoginContext);
+    const { setIsLogged, setAtivoAdm, setIdFuncionario, database, setDataBase } = useContext(LoginContext);
     const [usuario, setUsuario] = useState("");
     const [senha, setSenha] = useState("");
     const navigate = useNavigate();
@@ -17,10 +18,11 @@ export default function Login() {
 
     const logar = () => {
         if (usuario !== '' && senha !== '') {
-            setRemoveLoading(false);
+            setRemoveLoading(false);                        
             Axios.post("http://localhost:3001/users/login", {
                 name: usuario,
-                senha: senha
+                senha: senha,
+                database: database
             }).then((response) => {
                 console.log('Resposta do servidor:', response); // Log da resposta
     
@@ -80,6 +82,18 @@ export default function Login() {
             <div className="mainLogin">            
                 <div className=" loginContainer ">
                     <img className="logoHest" src={logoHest} alt="" />
+                    <div className="divInput">
+                    { removeLoading ?
+                        <input
+                            type="text"
+                            name="name"
+                            placeholder="Empresa"
+                            onChange={(e) => {
+                                setDataBase(e.target.value);
+                            }}
+                            className="input"
+                        /> : '' }
+                    </div>
                     <div className="divInput">
                     { removeLoading ?
                         <input

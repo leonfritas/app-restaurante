@@ -1,54 +1,55 @@
-import {response} from "express";
-import { db } from '../db.js'
+import { response } from "express";
+import { conectDB } from '../db.js';
+
+
+function executeQuery(database, sql, params, res) {
+    const db = conectDB(database);    
+    
+    db.query(sql, params, (err, result) => {
+        if (err) {
+            console.log('chegou aqui');
+            console.log(err);
+            res.status(500).send('Erro ao executar a query');
+        } else {
+            res.send(result);
+        }
+    });
+}
+
+export const login = (req, res) => {
+    console.log(req)
+    const { name } = req.body;
+    const { senha } = req.body; 
+    const database = req.body.database;
+
+    let sql = "CALL sp_funcionario_verificar(?, ?)";
+
+    executeQuery(database, sql, [name, senha], res);
+}
 
 export const listar = (req, res) => {
+    const database = req.body.database; 
 
-    let sql = "select * from Funcionario"
+    let sql = "SELECT * FROM Funcionario";
 
-    db.query(sql, (err, result) => {
-        if(err) console.log(err)
-        else res.send(result)
-    })
+    executeQuery(database, sql, [], res);
 }
 
 export const cadastrar = (req, res) => {
-    const { realName, userName, senha, cpf, checkAdmin, userCheck } = req.body;
+    const { realName, userName, senha, cpf, checkAdmin, userCheck } = req.body; // Inclua 'database' se for dinâmico
     const ativoAdminValue = checkAdmin ? 1 : 0;
-    const ativoFuncionarioValue = userCheck ? 1 : 0
+    const ativoFuncionarioValue = userCheck ? 1 : 0;
+    const database = req.body.database;
 
     let sql = "CALL sp_Funcionario_Inserir (?, ?, ?, ?, ?, ?)";
 
-    db.query(sql, [realName, userName, senha, cpf, ativoAdminValue, ativoFuncionarioValue], (err, result) => {
-        if (err) {
-            console.log(err);
-            res.status(500).send('Erro ao tentar cadastrar funcionário.');
-        } else {
-            res.status(200).json(result);
-        }
-    });    
-}
-
-
-
-export const login =  (req, res) => {
-    const { name } = req.body;
-    const { senha } = req.body;
-    let sql = "call sp_funcionario_verificar(?,?)";
-    
-    db.query(sql, [name, senha], (err, result) => {
-        if (err) console.log(err)
-        else res.send(result)        
-    })    
+    executeQuery(database, sql, [realName, userName, senha, cpf, ativoAdminValue, ativoFuncionarioValue], res);
 }
 
 export const deleteUser = (req, res) => {
-    const idFuncionario = req.params.id
+    const { id } = req.params;
+    const database = req.body.database;
 
-    let sql = 'CALL sp_Funcionario_Cancelar(?);'
-
-    db.query(sql, [idFuncionario], (err, result) => {
-        if (err) console.log(err)
-            else res.send(result)
-    })
-
+    let sql = 'CALL sp_Funcionario_Cancelar(?);';
+    executeQuery(database, sql, [id], res);
 }

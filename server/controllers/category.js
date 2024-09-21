@@ -1,24 +1,33 @@
-import { db } from "../db.js";
+import { conectDB } from '../db.js';
+
+
+function executeQuery(database, sql, params, res) {
+    const db = conectDB(database); 
+
+    db.query(sql, params, (err, result) => {
+        if (err) {
+            console.log('chegou aqui');
+            console.log(err);
+            res.status(500).send('Erro ao executar a query');
+        } else {
+            res.send(result);
+        }
+    });
+}
 
 export const getCategory = (req, res) => {
-    
+    const database = req.body.database;
     let sql = 'select * from Categoria'        
-    db.query(sql, (err, result) => {
-        if(err) console.log(err)
-            else res.send(result)
-    })
+    executeQuery(database, sql, [], res);
 }
 
 export const filterByCategory = (req, res) => {
     const { idCategory } = req.body;
     const { idGrupoPedido } = req.body;
-
+    const database = req.body.database;
     let sql = 'call sp_ProdutoCategoria_Selecionar(?, ?)'    
 
-    db.query(sql, [idCategory, idGrupoPedido],(err, result) => {
-        if(err) console.log(err)
-            else res.send(result)
-    })
+    executeQuery(database, sql, [idCategory, idGrupoPedido], res);
 }
 
 

@@ -1,15 +1,15 @@
-import { useState, useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import Axios from "axios";
 import Navbar from "../components/navbar.jsx"
 import Loading from "../components/loading.jsx";
 import financeiroPDF from "../components/pdf.jsx";
-
+import { LoginContext } from "../context/LoginContext.jsx";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-solid-svg-icons'; 
 
 export default function FinanceiroPage() {
 
-
+  const { database } = useContext(LoginContext);
   const [financeiro, setFinanceiro] = useState([]);
 
   useEffect(() => {
@@ -19,7 +19,8 @@ export default function FinanceiroPage() {
   const listaFinanceiro = async () => {
     try {
       const response = await Axios.post('http://localhost:3001/financier/movimentoRealizado', {
-        dataEntrada: '2024-01-01'        
+        dataEntrada: '2024-01-01',
+        database: database       
       });      
       const financeiroFormatado = response.data[0].map(item => ({
         ...item,

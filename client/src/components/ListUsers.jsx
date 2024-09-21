@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { LoginContext } from '../context/LoginContext.jsx';
 import Axios from 'axios';
 import './css/novoPedido.css';
 import Loading from './loading.jsx';
@@ -10,8 +11,9 @@ Modal.setAppElement('#root')
 export default function ListUser() {
     const [listUser, setListUser] = useState([]);
     const [removeLoading, setRemoveLoading] = useState(false);
-    const [modalDelete, setModalDelete] = useState(false)
-    const [modalRegister, setModalRegister] = useState(false)
+    const [modalDelete, setModalDelete] = useState(false);
+    const [modalRegister, setModalRegister] = useState(false);
+    const { database } = useContext(LoginContext);
 
     function openModalRegister() {
         setModalRegister(true)
@@ -30,7 +32,9 @@ export default function ListUser() {
     }
 
     const buscarUsers = () => {
-        Axios.get('http://localhost:3001/users/userList')
+        Axios.post('http://localhost:3001/users/userList',{
+            database: database
+        })
             .then((response) => {
                 setListUser(response.data);
                 setRemoveLoading(true);

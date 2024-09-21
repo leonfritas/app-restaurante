@@ -12,7 +12,7 @@ import './css/editarPedido.css';
 export default function EditarPedido(){
     const [listProdutoEditar, setListProdutoEditar] = useState();      
     const [listProduto, setListProduto] = useState(); 
-    const { idGrupoPedido, nomeGrupoPedido, setNomeGrupoPedido, msgModal, setMsgModal} = useContext(LoginContext); 
+    const { idGrupoPedido, nomeGrupoPedido, setNomeGrupoPedido, msgModal, setMsgModal, database} = useContext(LoginContext); 
     const navigate = useNavigate(); 
     const [quantidades, setQuantidades] = useState({});
     const [removeLoading, setRemoveLoading] = useState(false);    
@@ -25,7 +25,8 @@ export default function EditarPedido(){
 
     function atualizaEdicao(){
         Axios.post("http://localhost:3001/orderGroup/orderGroupEdit",{
-            idGrupoPedido: idGrupoPedido
+            idGrupoPedido: idGrupoPedido,
+            database: database
           }        
           ).then((response) => {
             const produtos = response.data[0];
@@ -40,7 +41,9 @@ export default function EditarPedido(){
     }
 
     useEffect(() => {
-        Axios.get("http://localhost:3001/category/getCategory")
+        Axios.post("http://localhost:3001/category/getCategory"), {
+            database: database
+        }
           .then((response) => {
             // Mapeia os dados para incluir URLs das imagens
             const categoriesWithImages = response.data.map((item) => {
@@ -78,7 +81,8 @@ export default function EditarPedido(){
                 idGrupoPedido: idGrupoPedido,
                 idProduto: idProduto,   
                 quantidade: quantidade,             
-                preco: preco,            
+                preco: preco, 
+                database: database           
             }).then(() => {                                               
                 setQuantidades(prev => ({
                     ...prev,
@@ -98,7 +102,8 @@ export default function EditarPedido(){
             if (novaQuantidade >= 0) {
                 Axios.post("http://localhost:3001/requested/requestDelete", {                
                     idGrupoPedido: idGrupoPedido,
-                    idProduto: idProduto         
+                    idProduto: idProduto,
+                    database: database         
                 }).then(() => {                                              
                     setQuantidades(prev => ({
                         ...prev,
@@ -116,7 +121,8 @@ export default function EditarPedido(){
         if (idGrupoPedido > 0){
             Axios.post("http://localhost:3001/orderGroup/orderGroupSave", {                
                 idGrupoPedido: idGrupoPedido,
-                nomeGrupoPedido: nomeGrupoPedido          
+                nomeGrupoPedido: nomeGrupoPedido,
+                database: database          
             }).then(() => {                                                                                  
             })
             openModal('Pedido salvo com sucesso.');
@@ -158,7 +164,8 @@ export default function EditarPedido(){
         if(idGrupoPedido > 0){            
             Axios.post("http://localhost:3001/category/filterByCategory", {
                 idCategory: idCategory, 
-                idGrupoPedido: idGrupoPedido                
+                idGrupoPedido: idGrupoPedido,
+                database: database                
             }).then((response) => {                
                 setListProduto(response.data[0]);                                                      
             })
