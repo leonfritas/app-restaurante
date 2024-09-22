@@ -38,9 +38,9 @@ export default function AppRoutes() {
                         <Route exact path="/editarpedido" element={<EditarPedidoPage />} />
                         <Route exact path='/usuarios' element={<ListUserPage />}></Route>
                         <Route exact path='/financeiro' element={<FinanceiroPage />}></Route>
-                        <Route exact path='/painelAdministrador' element={<Painel />}></Route>
+                        <Route exact path='/painelAdmin' element={<Painel />}></Route>
                         <Route exact path='/loginPainel' element={<PainelLogin />}></Route>
-                        <Route exact path='/gerenciador' element={<Gerenciamento />}></Route>
+                        <Route exact path='/painelAdmin/estoque' element={<Gerenciamento />}></Route>
                     </Routes>
                 </BrowserRouter>
             </RegisterContext.Provider>

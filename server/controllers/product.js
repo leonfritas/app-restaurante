@@ -24,15 +24,15 @@ function executeQuery(database, sql, params, res) {
 }
 
 export const productRegister = (req, res) => {
-    const { name } = req.body;
-    const { cost } = req.body;
-    const { category } = req.body;
+    const { nomeProduto } = req.body;
+    const { preco } = req.body;
+    const { idCategoria } = req.body;
     const { quantidade } = req.body;
     const database = req.body.database;
 
-    let sql = "insert into produto(nomeProduto, idCategoria, quantidade, preco)values(?,?,?,?)";
+    let sql = "insert into Produto(nomeProduto, idCategoria, quantidade, preco)values(?,?,?,?)";
 
-    executeQuery(database, sql, [name, cost, category, quantidade], res);
+    executeQuery(database, sql, [nomeProduto, idCategoria, preco, quantidade], res);
 }
 
 export const listaProduto = (req, res) => {

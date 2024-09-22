@@ -8,12 +8,12 @@ export default function Painel() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const userToken = localStorage.getItem("userToken") || sessionStorage.getItem("userToken"); 
+        const isLogged = sessionStorage.getItem("isLogged");
 
-        if (userToken === "loggedIn") {
-            setIsAuthenticated(true);
+        if (isLogged === "true") {
+            setIsAuthenticated(true); 
         } else {
-            navigate("/loginPainel");
+            navigate("/loginPainel"); 
         }
 
         setLoading(false);
@@ -22,11 +22,11 @@ export default function Painel() {
     const functionsAdmin = [
         { title: "Lista de Usuários", description: "Adicionar e remover usuários", url: "/usuarios" },
         { title: "Painel Financeiro", description: "Visualizar movimentação financeira", url: "/financeiro" },
-        { title: "Gerenciamento de Estoque", description: "Atualizar e Gerenciar cardápios", url: "#" },
+        { title: "Gerenciamento de Estoque", description: "Atualizar e Gerenciar cardápios", url: "/painelAdmin/estoque" },
     ];
 
     if (loading) {
-        return <Loading />;
+        return <Loading />; 
     }
 
     return (

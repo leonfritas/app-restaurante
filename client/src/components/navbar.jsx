@@ -14,7 +14,7 @@ export default function Navbar() {
                   <button className="text-white text-xl font-semibold ml-4">HEST</button>
                 </Link>
                 <div className="flex space-x-4 mx-2 my-2">
-                        <Link to='/painelAdministrador'>
+                        <Link to='/painelAdmin'>
                             <button className="bg-[#3282B8] hover:bg-[#0E4C75] text-white font-bold py-2 px-4 rounded">
                                 Painel Administrador
                             </button>
@@ -29,7 +29,7 @@ export default function Navbar() {
         <div className="flex flex-row space-x-2 items-center justify-center bg-[#1b262c] p-2">
     {ativoAdm && (
         <>
-            <Link to='/painelAdministrador'>
+            <Link to='/painelAdmin'>
                 <button
                     className="px-4 py-2 text-center text-sm font-medium text-white bg-[#3282B8] hover:bg-[#0E4C75]"
                 >

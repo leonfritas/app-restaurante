@@ -1,7 +1,8 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../css/novoPedido.css";
+import { LoginContext } from "../../../context/LoginContext";
 
 export default function Gerenciamento() {
     const [listProduct, setListProduct] = useState([]);
@@ -13,44 +14,68 @@ export default function Gerenciamento() {
     const [message, setMessage] = useState("");
     const [newCategoryName, setNewCategoryName] = useState("");
     const navigate = useNavigate();
+    const { database } = useContext(LoginContext);
+
+    const fetchProducts = async () => {
+        try {
+            const response = await axios.post("http://localhost:3001/products/listProduct", {
+                database: sessionStorage.getItem('database')
+            });
+            setListProduct(response.data);
+        } catch (error) {
+            console.error("Error fetching products:", error);
+        }
+    };
+
+    const fetchCategories = async () => {
+        try {
+            const response = await axios.post("http://localhost:3001/category/getCategory", { 
+                database: sessionStorage.getItem('database') });
+            setListCategory(response.data);
+        } catch (error) {
+            console.error("Error fetching categories:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchProducts();
+        fetchCategories();
+    }, []);
 
     const registerProduct = async () => {
         if (!nameProduto || !quantidade || !preco || !selectedCategory) {
             setMessage("Preencha todos os campos para continuar.");
             return;
         }
-
+    
         if (quantidade <= 0 || preco <= 0) {
             setMessage("Quantidade e preço devem ser positivos.");
             return;
         }
-
+    
         const normalizedProductName = nameProduto.trim().toLowerCase();
         const produtoExistente = listProduct.some(product => 
             product.nomeProduto.trim().toLowerCase() === normalizedProductName
         );
-
+    
         if (produtoExistente) {
             setMessage("Nome do produto já existe.");
             return;
         }
-
+    
         try {
             const response = await axios.post("http://localhost:3001/products/productRegister", {
                 nomeProduto: nameProduto,
                 quantidade,
                 preco,
-                idCategoria: selectedCategory 
+                idCategoria: selectedCategory,
+                database: sessionStorage.getItem('database')
             });
-
+    
             if (response.data.produtoDuplicado === 0) {
                 setMessage("Produto cadastrado com sucesso!");
-                setListProduct(prev => [...prev, {
-                    idProduto: response.data.idProduto,
-                    nomeProduto: nameProduto,
-                    quantidade,
-                    preco
-                }]);
+                // Aguarde a atualização da lista de produtos
+                await fetchProducts(); // Aguarde aqui
                 setNameProduct("");
                 setQuantidade("");
                 setPreco("");
@@ -63,54 +88,34 @@ export default function Gerenciamento() {
             setMessage("Erro ao tentar cadastrar. Tente novamente mais tarde.");
         }
     };
+    
 
     const registerCategory = async () => {
         if (!newCategoryName) {
             setMessage("Preencha o nome da categoria.");
             return;
         }
-
+    
         try {
             const response = await axios.post("http://localhost:3001/category/addCategory", {
                 nomeCategoria: newCategoryName,
+                database: sessionStorage.getItem('database')
+                
             });
-            setMessage("Categoria cadastrada com sucesso!");
-            setListCategory(prev => [...prev, response.data]);
-            setNewCategoryName("");
-            setSelectedCategory(response.data.idCategoria); 
+    
+            if (response.data.success) {
+                setMessage("Categoria cadastrada com sucesso!");
+                fetchCategories(); 
+                setNewCategoryName(""); 
+            } else {
+                setMessage("Erro ao cadastrar categoria: " + response.data.message);
+            }
         } catch (error) {
             console.error("Erro ao cadastrar categoria:", error);
             setMessage("Erro ao cadastrar categoria. Tente novamente.");
         }
     };
-
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const response = await axios.get("http://localhost:3001/products/listProduct");
-                setListProduct(response.data);
-            } catch (error) {
-                console.error("Erro ao buscar produtos:", error);
-                setMessage("Erro ao buscar produtos: " + error.message);
-            }
-        };
-
-        fetchProducts();
-    }, []);
-
-    useEffect(() => {
-        const fetchCategories = async () => {
-            try {
-                const response = await axios.get("http://localhost:3001/category/getCategory");
-                setListCategory(response.data);
-            } catch (error) {
-                console.error("Erro ao buscar categorias:", error);
-                setMessage("Erro ao buscar categorias: " + error.message);
-            }
-        };
-
-        fetchCategories();
-    }, []);
+    
 
     return (
         <div className="flex flex-col items-center justify-center h-screen bg-gray-900 p-6">
