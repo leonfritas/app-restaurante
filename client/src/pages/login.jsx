@@ -8,13 +8,14 @@ import  logoHest  from '../assets/logoHest.png'
 
 
 export default function Login() {
-    const { setIsLogged, setAtivoAdm, setIdFuncionario, database, setDataBase } = useContext(LoginContext);
+    const { setIsLogged, setAtivoAdm, setIdFuncionario, database, setDataBase, setNomeEmpresa, setNomeFuncionario } = useContext(LoginContext);
     const [usuario, setUsuario] = useState("");
     const [senha, setSenha] = useState("");
     const navigate = useNavigate();
     const [removeLoading, setRemoveLoading] = useState(true);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState("");
+    
 
 
     function getCompany(idEmpresa){
@@ -22,9 +23,8 @@ export default function Login() {
                 idEmpresa: idEmpresa,            
                 database: database
         }).then((response) => {    
-            console.log(response.data[0][0].nomeEmpresa)
-            if (response.data) {
-                
+            if (response.data[0][0].nomeEmpresa) {
+                setNomeEmpresa(response.data[0][0].nomeEmpresa);  
             }
         }).catch((error) => {
             console.error('Erro ao fazer login:', error);
@@ -36,7 +36,7 @@ export default function Login() {
     }
 
     const logar = () => {
-        if (usuario !== '' && senha !== '') {
+        if (usuario !== '' && senha !== '' ) {
             setRemoveLoading(false);                        
             Axios.post("http://localhost:3001/users/login", {
                 name: usuario,
@@ -44,15 +44,18 @@ export default function Login() {
                 database: database
             }).then((response) => {    
                 if (response.data && response.data[0] && response.data[0][0]) {
-                    /* Buscando dados da empresa cadastrada */ 
-                    getCompany(1);
-                    /* Consumindo dados do usuário */ 
+                        
                     let user = response.data[0][0];
                     let ativoFuncionario = user.ativoFuncionario;
-    
-                    if (ativoFuncionario) {
+                    
+                    if (ativoFuncionario) {                       
+                        /* Buscando dados da empresa cadastrada */ 
+                        getCompany(1);
+                        /* Consumindo dados do usuário */ 
+                        const nomeFuncionario = user.nomeFuncionario;                                            
                         let ativoAdm = user.ativoAdm;                    
                         let idFuncionario = user.idFuncionario;
+                        setNomeFuncionario(nomeFuncionario);
                         setIdFuncionario(idFuncionario);                    
                         setAtivoAdm(ativoAdm);
                         setIsLogged(true);
