@@ -81,7 +81,7 @@ export default function Home() {
     }, 2000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [idGrupoPedido]);
 
   function editarPedido(idGrupoPedido, nomeGrupoPedido) {        
     setIdGrupoPedido(idGrupoPedido); 
@@ -117,7 +117,7 @@ export default function Home() {
 
   useEffect(() => {
     listarProdutos();
-  }, [])
+  }, [idGrupoPedido])
   
   function mostrarPedido(index, idGrupoPedido){
     const divCardVerPedido = document.getElementsByClassName('divCardVerPedido');
@@ -189,7 +189,7 @@ export default function Home() {
 
   useEffect(() => {    
       getTable('disponiveis', null);      
-  }, []);
+  }, [idGrupoPedido]);
 
   function unirMesa(idMesa){  
     if (idGrupoPedido > 0) {      
