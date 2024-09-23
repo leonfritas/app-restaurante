@@ -78,7 +78,7 @@ export default function Home() {
 
     const interval = setInterval(() => {
       atualizarLista();
-    }, 2000);
+    }, 20000);
 
     return () => clearInterval(interval);
   }, [idGrupoPedido]);

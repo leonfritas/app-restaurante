@@ -167,7 +167,7 @@ export default function loginPainel() {
                                 className="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
                             >
                                 Fechar
-                            </button>
+                            </button>b
                         </div>
                     </div>
                 </div>

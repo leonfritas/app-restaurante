@@ -35,8 +35,27 @@ export const categoryRegister = (req, res) => {
     }
 
     const insertSql = "INSERT INTO Categoria(nomeCategoria) VALUES (?)"; 
-    executeQuery(database, insertSql, [nomeCategoria], res);
-}
+    const db = conectDB(database);
+    
+    db.getConnection((err, connection) => {
+        if (err) {
+            console.error('Erro ao obter conexão:', err);
+            res.status(500).send({ message: 'Erro ao obter a conexão' });
+            return;
+        }
+
+        connection.query(insertSql, [nomeCategoria], (err, result) => {
+            connection.release();
+            if (err) {
+                console.log(err);
+                res.status(500).send({ message: 'Erro ao executar a query' });
+            } else {
+                res.status(201).send({ success: true, message: "Categoria cadastrada com sucesso!" });
+            }
+        });
+    });
+};
+
 
 export const filterByCategory = (req, res) => {
     const { idCategory, idGrupoPedido, database } = req.body;
