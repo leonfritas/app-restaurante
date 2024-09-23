@@ -23,7 +23,7 @@ export default function Navbar() {
                 </div>
                
                 <div className="flex space-x-4 mx-2 my-2">
-                        <Link  to='/painelAdmin'>
+                        <Link  to='/loginPainel'>
                             <button className="bg-[#3282B8] hover:bg-[#0E4C75] text-white font-bold py-2 px-4 rounded ">
                                 Painel Administrador
                             </button>

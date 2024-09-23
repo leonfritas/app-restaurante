@@ -13,7 +13,6 @@ export default function ListUser() {
     const [removeLoading, setRemoveLoading] = useState(false);
     const [modalDelete, setModalDelete] = useState(false);
     const [modalRegister, setModalRegister] = useState(false);
-    const { database } = useContext(LoginContext);
 
     function openModalRegister() {
         setModalRegister(true)
@@ -33,7 +32,7 @@ export default function ListUser() {
 
     const buscarUsers = () => {
         Axios.post('http://localhost:3001/users/userList',{
-            database: database
+            database: sessionStorage.getItem('database')
         })
             .then((response) => {
                 setListUser(response.data);

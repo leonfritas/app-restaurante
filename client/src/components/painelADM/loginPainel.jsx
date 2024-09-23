@@ -5,7 +5,7 @@ import Axios from "axios";
 import Loading from "../loading.jsx";
 import logoHest from '../../assets/logoHest.png';
 
-export default function loginPainel() {
+export default function LoginPainel() {
     const { setIsLogged, setAtivoAdm, setIdFuncionario, database, setDataBase } = useContext(LoginContext);
     const [usuario, setUsuario] = useState("");
     const [senha, setSenha] = useState("");
@@ -14,7 +14,7 @@ export default function loginPainel() {
     const [modalOpen, setModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState("");
 
-    function getCompany(idEmpresa) {
+    const getCompany = (idEmpresa) => {
         Axios.post("http://localhost:3001/company/getCompany", {
             idEmpresa: idEmpresa,
             database: database
@@ -27,7 +27,7 @@ export default function loginPainel() {
         }).finally(() => {
             setRemoveLoading(true);
         });
-    }
+    };
 
     const logar = () => {
         if (usuario !== '' && senha !== '') {
@@ -38,8 +38,6 @@ export default function loginPainel() {
                 database: database
             }).then((response) => {
                 if (response.data && response.data[0] && response.data[0][0]) {
-                    getCompany(1);
-
                     let user = response.data[0][0];
                     let ativoFuncionario = user.ativoFuncionario;
 
@@ -55,9 +53,15 @@ export default function loginPainel() {
                         setAtivoAdm(ativoAdm);
                         setIsLogged(true);
 
-                        navigate('/painelAdmin');
+                        // Navegue apenas se for admin
+                        if (ativoAdm) {
+                            navigate('/painelAdmin');
+                        } else {
+                            setModalMessage('Acesso negado: você não é um administrador.');
+                            setModalOpen(true);
+                        }
                     } else {
-                        setModalMessage('Acesso negado');
+                        setModalMessage('Acesso negado: você não está ativo.');
                         setModalOpen(true);
                     }
                 } else {
@@ -82,9 +86,9 @@ export default function loginPainel() {
         const ativoAdm = sessionStorage.getItem('ativoAdm');
         const idFuncionario = sessionStorage.getItem('idFuncionario');
 
-        if (isLogged) {
+        if (isLogged === "true" && ativoAdm === "true") {
             setIsLogged(true);
-            setAtivoAdm(ativoAdm === 'true');  
+            setAtivoAdm(true);  
             setIdFuncionario(idFuncionario);
             navigate('/painelAdmin');
         }
@@ -98,7 +102,6 @@ export default function loginPainel() {
         };
 
         document.addEventListener("keydown", handleKeyDown);
-
         return () => {
             document.removeEventListener("keydown", handleKeyDown);
         };
@@ -167,7 +170,7 @@ export default function loginPainel() {
                                 className="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
                             >
                                 Fechar
-                            </button>b
+                            </button>
                         </div>
                     </div>
                 </div>
