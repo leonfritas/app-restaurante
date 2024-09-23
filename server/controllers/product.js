@@ -46,4 +46,28 @@ export const listaProduto = (req, res) => {
 };
 
 
+export const productDelete = (req, res) => {
+    const { idProduto } = req.params;
+    const { database } = req.body;
+
+    if (!idProduto) {
+        return res.status(400).send({ message: "ID do produto é obrigatório." });
+    }
+
+    const sql = "DELETE FROM Produto WHERE idProduto = ?";
+
+    executeQuery(database, sql, [idProduto], (err, result) => {
+        if (err) {
+            return res.status(500).send({ message: "Erro ao tentar excluir a categoria." });
+        }
+
+        // Verifica se alguma linha foi afetada
+        if (result.affectedRows === 0) {
+            return res.status(404).send({ message: "Categoria não encontrada." });
+        }
+        res.status(200).send({ message: "Categoria excluída com sucesso!" });
+    });
+};
+
+
 
