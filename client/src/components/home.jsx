@@ -28,6 +28,7 @@ export default function Home() {
   const [mesasOpen, setMesasOpen] = useState(null);
   const [mostrarObservacao, setMostrarObservacao] = useState(false);
   const [observacao, setObservacao] = useState();
+  
 
   function closeModal(action){
     if (action === 'msg') {
