@@ -2,21 +2,20 @@ import { useContext, useState, useEffect } from "react";
 import { LoginContext } from "../context/LoginContext.jsx";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
-import Loading from "../components/loading.jsx";
+import Loading from "../components/Loading.jsx";
 import './css/login.css'
 import  logoHest  from '../assets/logoHest.png'
 
 
 export default function Login() {
     const { setIsLogged, setAtivoAdm, setIdFuncionario, database, setDataBase, setNomeEmpresa, setNomeFuncionario } = useContext(LoginContext);
-    const [usuario, setUsuario] = useState("");
-    const [senha, setSenha] = useState("");
+    const [ usuario, setUsuario ] = useState("");
+    const [ senha, setSenha ] = useState("");    
+    const [ removeLoading, setRemoveLoading ] = useState(true);
+    const [ modalOpen, setModalOpen ] = useState(false);
+    const [ modalMessage, setModalMessage ] = useState("");
     const navigate = useNavigate();
-    const [removeLoading, setRemoveLoading] = useState(true);
-    const [modalOpen, setModalOpen] = useState(false);
-    const [modalMessage, setModalMessage] = useState("");
     
-
 
     function getCompany(idEmpresa){
         Axios.post("http://localhost:3001/company/getCompany", {
@@ -36,12 +35,13 @@ export default function Login() {
     }
 
     const logar = () => {
+        sessionStorage.setItem('database', database);        
         if (usuario !== '' && senha !== '' ) {
             setRemoveLoading(false);                        
             Axios.post("http://localhost:3001/users/login", {
                 name: usuario,
                 senha: senha,
-                database: database
+                database: sessionStorage.getItem("database")
             }).then((response) => {    
                 if (response.data && response.data[0] && response.data[0][0]) {
                         

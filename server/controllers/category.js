@@ -1,7 +1,7 @@
 import { conectDB } from '../db.js';
 
 function executeQuery(database, sql, params, callback) {
-    const db = conectDB(database);
+    const db = conectDB(database); // Conecta ao banco correto dinamicamente
     db.getConnection((err, connection) => {
         if (err) {
             console.error('Erro ao obter conexão:', err);
@@ -9,7 +9,7 @@ function executeQuery(database, sql, params, callback) {
         }
 
         connection.query(sql, params, (err, result) => {
-            connection.release();
+            connection.release(); // Libera a conexão de volta à pool
             if (err) {
                 console.log(err);
                 return callback(err, null);
@@ -21,7 +21,7 @@ function executeQuery(database, sql, params, callback) {
 
 export const categoryDelete = (req, res) => {
     const { idCategoria } = req.params;
-    const { database } = req.body;
+    const { database } = req.body; // Agora, você pode passar o banco de dados dinamicamente
 
     if (!idCategoria) {
         return res.status(400).send({ message: "ID da categoria é obrigatório." });
@@ -34,7 +34,6 @@ export const categoryDelete = (req, res) => {
             return res.status(500).send({ message: "Erro ao tentar excluir a categoria." });
         }
 
-        // Verifica se alguma linha foi afetada
         if (result.affectedRows === 0) {
             return res.status(404).send({ message: "Categoria não encontrada." });
         }
@@ -43,10 +42,9 @@ export const categoryDelete = (req, res) => {
     });
 };
 
-// Outros métodos
-
+// Outros métodos seguem a mesma estrutura
 export const getCategory = (req, res) => {
-    const database = req.body.database;
+    const { database } = req.body; // Banco de dados passado dinamicamente
     let sql = 'SELECT * FROM Categoria';
     executeQuery(database, sql, [], (err, result) => {
         if (err) {
@@ -54,7 +52,7 @@ export const getCategory = (req, res) => {
         }
         res.status(200).send(result);
     });
-}
+};
 
 export const categoryRegister = (req, res) => {
     const { nomeCategoria, database } = req.body;

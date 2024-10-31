@@ -4,7 +4,7 @@ import Axios from "axios"
 import './css/novoPedido.css'
 import { useNavigate } from "react-router-dom";
 import './css/ApagarDepois.css'
-import Loading from './loading.jsx';
+import Loading from './Loading.jsx';
 import { MsgModal } from '../geral.jsx';
 import './css/editarPedido.css';
 
@@ -71,7 +71,7 @@ export default function EditarPedido(){
     useEffect(() => {
         atualizaEdicao();
            
-      }, []);
+    }, []);
 
     function pedidoInserir(idProduto, preco, quantidade){     
         setIsProcessing(true);              

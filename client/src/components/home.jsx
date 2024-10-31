@@ -8,7 +8,7 @@ import { faEllipsisVertical, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { ConfirmModal } from '../geral.jsx'
 import { MsgModal } from '../geral.jsx'
 import Menu from "./Menu.jsx";
-import Loading from "./loading.jsx";
+import Loading from "./Loading.jsx";
 import Navbar from "./navbar.jsx";
 
 
@@ -82,7 +82,7 @@ export default function Home() {
     }, 20000);
 
     return () => clearInterval(interval);
-  }, [idGrupoPedido]);
+  }, []);
 
   function editarPedido(idGrupoPedido, nomeGrupoPedido) {        
     setIdGrupoPedido(idGrupoPedido); 
@@ -118,7 +118,7 @@ export default function Home() {
 
   useEffect(() => {
     listarProdutos();
-  }, [idGrupoPedido])
+  }, [])
   
   function mostrarPedido(index, idGrupoPedido){
     const divCardVerPedido = document.getElementsByClassName('divCardVerPedido');
@@ -163,10 +163,10 @@ export default function Home() {
     }    
   }
 
-  function getTable(action, idGrupoPedido){
+  function getTable(action, idGrupoPedido){    
     if(action == 'disponiveis'){
       Axios.post("http://localhost:3001/table/getTable", {
-        database: database
+        database: sessionStorage.getItem("database")
       })
       .then((response) => {
           setTable(response.data[0]);        
@@ -176,7 +176,8 @@ export default function Home() {
       });
     }else if(action == 'ocupadas'){      
       Axios.post("http://localhost:3001/table/getOrderTable", {
-        idGrupoPedido: idGrupoPedido
+        idGrupoPedido: idGrupoPedido,
+        database: sessionStorage.getItem("database")
       })
       .then((response) => {
           setTable(response.data[0]);        
@@ -190,13 +191,14 @@ export default function Home() {
 
   useEffect(() => {    
       getTable('disponiveis', null);      
-  }, [idGrupoPedido]);
+  }, []);
 
   function unirMesa(idMesa){  
     if (idGrupoPedido > 0) {      
         Axios.post("http://localhost:3001/table/joinTable", {          
           idMesa: idMesa,
-          idGrupoPedido: idGrupoPedido
+          idGrupoPedido: idGrupoPedido,
+          database: sessionStorage.getItem("database")
         });
         atualizarLista();
         setMesasOpen(null);   
@@ -220,7 +222,8 @@ export default function Home() {
     if (idGrupoPedido > 0) {      
       Axios.post("http://localhost:3001/orderGroup/orderGroupSaveObs", {
         idGrupoPedido: idGrupoPedido,
-        observacao: observacao
+        observacao: observacao,
+        database: sessionStorage.getItem("database")
       });
       atualizarLista();
       setMesasOpen(null);   
@@ -230,7 +233,7 @@ export default function Home() {
       openModal('msg', null, null, 'Pedido não encontrado');
     }
   }
-
+  
   return (
     <>
       <Navbar />

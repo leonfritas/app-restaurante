@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Loading from "../loading";
+import Loading from "../Loading";
 
 export default function Painel() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -23,6 +23,7 @@ export default function Painel() {
         { title: "Lista de Usuários", description: "Adicionar e remover usuários", url: "/usuarios" },
         { title: "Painel Financeiro", description: "Visualizar movimentação financeira", url: "/financeiro" },
         { title: "Gerenciamento de Estoque", description: "Atualizar e Gerenciar cardápios", url: "/painelAdmin/estoque" },
+        { title: "Cadastrar Empresa", description: "Inserir e editar informações da empresa", url: "/painelAdmin/empresa" }
     ];
 
     if (loading) {

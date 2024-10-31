@@ -2,7 +2,7 @@ import { useState, useEffect, useContext, useRef } from 'react';
 import { LoginContext } from '../context/LoginContext.jsx';
 import Axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import Loading from './loading.jsx';
+import Loading from './Loading.jsx';
 import './css/novoPedido.css';
 import seta from '../assets/setaCarousel.png';
 import { MsgModal } from '../geral.jsx'
@@ -29,8 +29,8 @@ export default function NovoPedido() {
         Axios.post("http://localhost:3001/products/listProduct", {
             database: database
         })
-            .then((response) => {
-                setListProduto(response.data);
+            .then((response) => {                
+                setListProduto(response.data[0]);
                 setRemoveLoading(true);
             })
             .catch((error) => {
@@ -234,7 +234,6 @@ export default function NovoPedido() {
     }
 
     function openModal(action, msg, link){
-
         if (action === 'msg') {  
             setLink(link)
             setTextModal(msg)            
@@ -286,21 +285,23 @@ export default function NovoPedido() {
                         </div>                        
                         <div className='tableContent'>
                             {listProduto.map((value) => (
-                            <ul key={value.idProduto} className=' itemProduto'>
-                                <li className=' nomeProduto'>{value.nomeProduto}</li>
-                                <li className=''>R${value.preco.toFixed(2)}</li>
-                                <li className='botoesProduto'>
-                                {isProcessing? <Loading /> :
-                                <>
-                                    <button className='inserirProduto'
-                                        onClick={() => pedidoInserir(value.idProduto, value.preco, value.quantidade)}>+</button>
-                                    <span className='mx-2'>{quantidades[value.idProduto] || 0}</span>
-                                    <button className='excluirProduto'
-                                        onClick={() => pedidoExcluir(value.idProduto)}>-</button>
-                                </>
-                                }
-                                </li>
-                            </ul>
+                                <ul key={value.idProduto} className=' itemProduto'>
+                                    <li className=' nomeProduto'>{value.nomeProduto}</li>                                    
+                                    <li className=''>
+                                        R${Number(value.preco).toFixed(2)}
+                                    </li>
+                                    <li className='botoesProduto'>
+                                    {isProcessing? <Loading /> :
+                                    <>
+                                        <button className='inserirProduto'
+                                            onClick={() => pedidoInserir(value.idProduto, value.preco, value.quantidade)}>+</button>
+                                        <span className='mx-2'>{quantidades[value.idProduto] || 0}</span>
+                                        <button className='excluirProduto'
+                                            onClick={() => pedidoExcluir(value.idProduto)}>-</button>
+                                    </>
+                                    }
+                                    </li>
+                                </ul>
                             ))}
                         </div>
                     </div>

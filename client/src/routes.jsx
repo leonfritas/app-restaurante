@@ -11,6 +11,7 @@ import Login from './pages/login.jsx';
 import Painel from './components/painelADM/painel.jsx';
 import PainelLogin from './components/painelADM/loginPainel.jsx';
 import Gerenciamento from './components/painelADM/gerenciamento/gerenciamento.jsx';
+import Empresa from './components/painelADM/gerenciamento/empresa.jsx';
 
 
 export default function AppRoutes() {
@@ -45,6 +46,7 @@ export default function AppRoutes() {
                         <Route exact path='/painelAdmin' element={<Painel />}></Route>
                         <Route exact path='/loginPainel' element={<PainelLogin />}></Route>
                         <Route exact path='/painelAdmin/estoque' element={<Gerenciamento />}></Route>
+                        <Route exact path='/painelAdmin/empresa' element={<Empresa />}></Route>
                     </Routes>
                 </BrowserRouter>
             </RegisterContext.Provider>
