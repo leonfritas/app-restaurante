@@ -72,6 +72,8 @@ export default function NovoPedido() {
         })
             .then((response) => {
                 setTable(response.data[0]);
+                console.log(response.data[0])
+                console.log(database)
             })
             .catch((error) => {
                 console.error("Error fetching tables:", error);

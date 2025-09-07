@@ -10,6 +10,9 @@ import { MsgModal } from '../geral.jsx'
 import Menu from "./Menu.jsx";
 import Loading from "./Loading.jsx";
 import Navbar from "./navbar.jsx";
+import { getTable, joinTable } from "../service/tables-service.jsx";
+import { cancelOrder, getOrderList, saveObsOrder } from "../service/group-service.jsx";
+import { productList } from "../service/product-service.jsx";
 
 
 export default function Home() {
@@ -27,7 +30,9 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(null);
   const [mesasOpen, setMesasOpen] = useState(null);
   const [mostrarObservacao, setMostrarObservacao] = useState(false);
-  const [observacao, setObservacao] = useState();
+  const [observacao, setObservacao] = useState("");
+
+
   
 
   function closeModal(action){
@@ -58,21 +63,15 @@ export default function Home() {
   }
 
   const atualizarLista = async () => {
-    try {      
-      const response = await Axios.post('http://localhost:3001/orderGroup/orderGroupList', {
-        dataEntrada: '2024-01-01',
-        database: database
-      });  
-      setGrupoPedido(response.data[0]);
+    try {
+      const lista = await getOrderList(database); 
+      setGrupoPedido(lista); 
       setRemoveLoading(true);
-    } catch (error) {      
-      if (error.response) {
-        console.error('Erro na resposta:', error.response);
-      } else {
-        console.error('Erro desconhecido:', error.message);
-      }
+    } catch (error) {
+      console.error("Erro ao atualizar lista:", error);
     }
   };
+
 
   useEffect(() => {
     atualizarLista();
@@ -92,10 +91,7 @@ export default function Home() {
 
   async function cancelarPedido(idGrupoPedido) {    
     if (idGrupoPedido > 0) {
-        await Axios.post("http://localhost:3001/orderGroup/orderGroupCancel", {
-          idGrupoPedido: idGrupoPedido,
-          database: database
-        });
+       await cancelOrder(database, idGrupoPedido);
         atualizarLista();      
     } else {
       openModal('msg', null, null, 'Pedido não encontrado.');      
@@ -155,58 +151,35 @@ export default function Home() {
     if (action == 'disponiveis'){
       setIdGrupoPedido(idGrupoPedido);
       setMesasOpen(true);
-      getTable('disponiveis', null)
+      setTable(getTable('disponiveis', null));
+      setRemoveLoading(true);
     }else if(action == 'ocupadas'){
       setIdGrupoPedido(idGrupoPedido);
-      setMesasOpen(true);
-      getTable('ocupadas', idGrupoPedido);
+      setMesasOpen(true);      
+      setTable(getTable('ocupadas', idGrupoPedido));
+      setRemoveLoading(true);
     }    
   }
 
-  function getTable(action, idGrupoPedido){    
-    if(action == 'disponiveis'){
-      Axios.post("http://localhost:3001/table/getTable", {
-        database: sessionStorage.getItem("database")
-      })
-      .then((response) => {
-          setTable(response.data[0]);        
-      })
-      .catch((error) => {
-          console.error("Error fetching tables:", error);
-      });
-    }else if(action == 'ocupadas'){      
-      Axios.post("http://localhost:3001/table/getOrderTable", {
-        idGrupoPedido: idGrupoPedido,
-        database: sessionStorage.getItem("database")
-      })
-      .then((response) => {
-          setTable(response.data[0]);        
-      })
-      .catch((error) => {
-          console.error("Error fetching tables:", error);
-      });
+  useEffect(() => {
+    async function fetchData() {
+      const data = await getTable("disponiveis");
+      setTable(data);
     }
-    setRemoveLoading(true);
-  }
-
-  useEffect(() => {    
-      getTable('disponiveis', null);      
+    fetchData();
   }, []);
 
   function unirMesa(idMesa){  
     if (idGrupoPedido > 0) {      
-        Axios.post("http://localhost:3001/table/joinTable", {          
-          idMesa: idMesa,
-          idGrupoPedido: idGrupoPedido,
-          database: sessionStorage.getItem("database")
-        });
+        joinTable(idGrupoPedido, idMesa);
         atualizarLista();
         setMesasOpen(null);   
         setMenuOpen(null);   
     } else {      
       openModal('msg', null, null, 'Pedido não encontrado');
     }
-    getTable('ocupadas', null);
+    setTable(getTable('ocupadas', null));
+    setRemoveLoading(true);
   }
 
   function adicionarObservacao(){
@@ -220,11 +193,7 @@ export default function Home() {
 
   function salvarObservacao(observacao, idGrupoPedido){
     if (idGrupoPedido > 0) {      
-      Axios.post("http://localhost:3001/orderGroup/orderGroupSaveObs", {
-        idGrupoPedido: idGrupoPedido,
-        observacao: observacao,
-        database: sessionStorage.getItem("database")
-      });
+      saveObsOrder(idGrupoPedido, observacao, database)
       atualizarLista();
       setMesasOpen(null);   
       setMenuOpen(null);   
@@ -337,8 +306,18 @@ export default function Home() {
                     </div>
                     : 
                     <div className="divMostrarObservacao">
-                      <textarea onChange={(e) => setObservacao(e.target.value)} className="textareaObservacao" name="" id="">{value.textoObservacao}</textarea>
-                      <button onClick={() => salvarObservacao(observacao, idGrupoPedido)} className="buttonObservacao">Salvar</button>
+                    <textarea
+                      className="textareaObservacao"
+                      value={observacao}
+                      onChange={(e) => setObservacao(e.target.value)}
+                    />
+
+                      <button 
+                        onClick={() => salvarObservacao(observacao, idGrupoPedido)} 
+                        className="buttonObservacao"
+                      >
+                        Salvar
+                      </button>
                     </div>
                     }
                   </div> 
@@ -347,12 +326,21 @@ export default function Home() {
             ))}
           </div>  
           :           
-          <div className="divContainerMesa">                                      
-            {table.map((value) => (
-                <div key={value.idMesa} >
-                    <button onClick={() => unirMesa(value.idMesa, value.idGrupoPedido)} className={`hover:bg-green-700 butonMesa ${value.idGrupoPedido > 0 ? 'mesaOcupada' : ''}`} >{value.nomeMesa}</button>
-                </div>                
-            ))}               
+          <div className="divContainerMesa">   
+            {
+              Array.isArray(table) && table.length > 0 ? (
+                table?.map((value) => (
+                  <div key={value.idMesa}>
+                    <button
+                      onClick={() => unirMesa(value.idMesa, value.idGrupoPedido)}
+                      className={`hover:bg-green-700 butonMesa ${value.idGrupoPedido > 0 ? 'mesaOcupada' : ''}`}
+                    >
+                      {value.nomeMesa}
+                    </button>
+                  </div>
+                ))
+              ) : null
+            }                                                         
             <button onClick={() => setMesasOpen(null)} className="butonMesa bg-red-500 hover:bg-red-700 text-white font-bold">Voltar</button>                                       
           </div>}                                   
           {!removeLoading && <Loading />}  
