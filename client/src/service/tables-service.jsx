@@ -3,12 +3,12 @@ import Axios from "axios";
 export async function getTable(action, idGrupoPedido) {
   try {
     if (action === "disponiveis") {
-      const response = await Axios.post("http://localhost:3001/table/getTable", {
+      const response = await Axios.post("https://f8d3a9035cb7.ngrok-free.app/table/getTable", {
         database: sessionStorage.getItem("database"),
       });
       return response.data;
     } else if (action === "ocupadas") {
-      const response = await Axios.post("http://localhost:3001/table/getOrderTable", {
+      const response = await Axios.post("https://f8d3a9035cb7.ngrok-free.app/table/getOrderTable", {
         idGrupoPedido: idGrupoPedido,
         database: sessionStorage.getItem("database"),
       });
@@ -22,7 +22,7 @@ export async function getTable(action, idGrupoPedido) {
 
   export async function joinTable(idGrupoPedido, idMesa){  
     if (idGrupoPedido > 0) {      
-        await Axios.post("http://localhost:3001/table/joinTable", {          
+        await Axios.post("https://f8d3a9035cb7.ngrok-free.app/table/joinTable", {          
           idMesa: idMesa,
           idGrupoPedido: idGrupoPedido,
           database: sessionStorage.getItem("database")

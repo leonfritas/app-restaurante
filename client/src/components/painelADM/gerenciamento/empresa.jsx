@@ -18,7 +18,7 @@ export default function Empresa() {
     const [ modalMessage, setModalMessage ] = useState("");
 
     function getCompany(idEmpresa){
-        Axios.post("http://localhost:3001/company/getCompany", {
+        Axios.post("https://f8d3a9035cb7.ngrok-free.app/company/getCompany", {
                 idEmpresa: idEmpresa,            
                 database: sessionStorage.getItem("database")
         }).then((response) => {    

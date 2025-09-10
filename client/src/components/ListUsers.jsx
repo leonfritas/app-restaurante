@@ -31,7 +31,7 @@ export default function ListUser() {
     }
 
     const buscarUsers = () => {
-        Axios.post('http://localhost:3001/users/userList',{
+        Axios.post('https://f8d3a9035cb7.ngrok-free.app/users/userList',{
             database: sessionStorage.getItem('database')
         })
             .then((response) => {
@@ -54,7 +54,7 @@ export default function ListUser() {
 
     const deleteUser = (idFuncionario) => {
         if (idFuncionario > 0) {
-                Axios.delete(`http://localhost:3001/users/deleteUser/${idFuncionario}`)
+                Axios.delete(`https://f8d3a9035cb7.ngrok-free.app/users/deleteUser/${idFuncionario}`)
                     .then(() => {                        
                         buscarUsers(); 
                     })

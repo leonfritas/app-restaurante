@@ -1,31 +1,37 @@
 import { conectDB } from '../db.js';
 
+// Função genérica para executar queries no SQL Server
+async function executeQuery(database, sql, params = {}) {
+    try {
+        const pool = await conectDB(database); // Conecta ao banco de dados
+        const request = pool.request();
 
-function executeQuery(database, sql, params, res) {
-    const db = conectDB(database);    
-    db.getConnection((err, connection) => {
-        if (err) {
-            console.error('Erro ao obter conexão:', err);
-            res.status(500).send('Erro ao obter a conexão');
-            return;
-        } 
-                
-        connection.query(sql, params, (err, result) => {
-            
-            connection.release();
-            if (err) {
-                console.log(err);
-                res.status(500).send('Erro ao executar a query');
-            } else {
-                res.send(result);
-            }            
-        });
-    })
+        // Adiciona os parâmetros dinamicamente
+        for (const key in params) {
+            request.input(key, params[key]);
+        }
+
+        const result = await request.query(sql);
+        return result.recordset; // Retorna os registros
+    } catch (err) {
+        console.error("Erro ao executar a query:", err);
+        throw err;
+    }
 }
 
-export const getCompany = (req, res) => {
-    const { idEmpresa } = req.body;
-    const database = req.body.database;
-    let sql = 'call sp_Empresa_Selecionar(?)'        
-    executeQuery(database, sql, [idEmpresa], res);
-}
+// Controller adaptado
+export const getCompany = async (req, res) => {
+    const { idEmpresa, database } = req.body;
+
+    if (!idEmpresa || !database) {
+        return res.status(400).send({ message: "ID da empresa e database são obrigatórios." });
+    }
+
+    try {
+        const sql = 'EXEC sp_Empresa_Selecionar @idEmpresa';
+        const result = await executeQuery(database, sql, { idEmpresa });
+        res.status(200).send(result);
+    } catch (err) {
+        res.status(500).send({ message: "Erro ao buscar a empresa." });
+    }
+};

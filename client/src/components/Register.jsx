@@ -22,7 +22,7 @@ export default function Register() {
     const cpfNumerico = cpf.replace(/\D/g, "");
 
     if (realName !== "" && userName !== "" && senha !== "" && cpfNumerico !== "") {
-      Axios.post("http://localhost:3001/users/register", {
+      Axios.post("https://f8d3a9035cb7.ngrok-free.app/users/register", {
         realName: realName,
         cpf: cpfNumerico,
         userName: userName,

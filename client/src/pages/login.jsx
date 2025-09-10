@@ -18,12 +18,12 @@ export default function Login() {
     
 
     function getCompany(idEmpresa){
-        Axios.post("http://localhost:3001/company/getCompany", {
+        Axios.post("https://f8d3a9035cb7.ngrok-free.app/company/getCompany", {
                 idEmpresa: idEmpresa,            
                 database: database
         }).then((response) => {    
-            if (response.data[0][0].nomeEmpresa) {
-                setNomeEmpresa(response.data[0][0].nomeEmpresa);  
+            if (response.data[0].nomeEmpresa) {
+                setNomeEmpresa(response.data[0].nomeEmpresa);  
             }
         }).catch((error) => {
             console.error('Erro ao fazer login:', error);
@@ -40,14 +40,15 @@ export default function Login() {
         setSenha('123');
         if (usuario !== '' && senha !== '' ) {
             setRemoveLoading(false);                        
-            Axios.post("http://localhost:3001/users/login", {
+            Axios.post("https://f8d3a9035cb7.ngrok-free.app/users/login", {
                 name: usuario,
                 senha: senha,
                 database: sessionStorage.getItem("database")
             }).then((response) => {    
-                if (response.data && response.data[0] && response.data[0][0]) {
+                console.log(response.data)
+                if (response.data && response.data[0]) {
                         
-                    let user = response.data[0][0];
+                    let user = response.data[0];
                     let ativoFuncionario = user.ativoFuncionario;
                     
                     if (ativoFuncionario) {                       

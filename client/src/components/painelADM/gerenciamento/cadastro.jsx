@@ -20,7 +20,7 @@ export default function Cadastro() {
   const fetchProducts = async () => {
       try {
         const response = await axios.post(
-          "http://localhost:3001/products/listProduct",
+          "https://f8d3a9035cb7.ngrok-free.app/products/listProduct",
           {
             database: sessionStorage.getItem("database"),
           }
@@ -34,7 +34,7 @@ export default function Cadastro() {
     const fetchCategories = async () => {
       try {
         const response = await axios.post(
-          "http://localhost:3001/category/getCategory",
+          "https://f8d3a9035cb7.ngrok-free.app/category/getCategory",
           {
             database: sessionStorage.getItem("database"),
           }
@@ -75,7 +75,7 @@ export default function Cadastro() {
       }
   
       try {
-        await axios.post("http://localhost:3001/products/productRegister", {
+        await axios.post("https://f8d3a9035cb7.ngrok-free.app/products/productRegister", {
           nomeProduto: nameProduto,
           quantidade,
           preco,
@@ -99,7 +99,7 @@ export default function Cadastro() {
   
       try {
         const response = await axios.post(
-          "http://localhost:3001/category/addCategory",
+          "https://f8d3a9035cb7.ngrok-free.app/category/addCategory",
           {
             nomeCategoria: newCategoryName,
             database: sessionStorage.getItem("database"),
@@ -130,7 +130,7 @@ export default function Cadastro() {
       }
   
       try {
-        await axios.put("http://localhost:3001/products/productUpdate", {
+        await axios.put("https://f8d3a9035cb7.ngrok-free.app/products/productUpdate", {
           idProduto: editingProduct.idProduto,
           nomeProduto: nameProduto,
           quantidade,

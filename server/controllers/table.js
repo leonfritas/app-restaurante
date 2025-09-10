@@ -1,54 +1,62 @@
 import { conectDB } from '../db.js';
 
+// Função genérica para executar queries no SQL Server
+async function executeQuery(database, sql, params = {}) {
+    try {
+        const pool = await conectDB(database);
+        const request = pool.request();
 
-function executeQuery(database, sql, params, res) {
-    const db = conectDB(database);    
-    db.getConnection((err, connection) => {
-        if (err) {
-            console.error('Erro ao obter conexão:', err);
-            res.status(500).send('Erro ao obter a conexão');
-            return;
-        } 
-                
-        connection.query(sql, params, (err, result) => {
-            
-            connection.release();
-            
-            if (err) {
-                console.log(err);
-                res.status(500).send('Erro ao executar a query');
-            } else {
-                res.send(result);
-            }            
-        });
-    })
+        // Adiciona os parâmetros dinamicamente
+        for (const key in params) {
+            request.input(key, params[key]);
+        }
+
+        const result = await request.query(sql);
+        return result.recordset; // Retorna registros
+    } catch (err) {
+        console.error("Erro ao executar a query:", err);
+        throw err;
+    }
 }
 
+// Listar mesas disponíveis
+export const getTable = async (req, res) => {
+    const { database } = req.body;
+    if (!database) return res.status(400).send({ message: "Database obrigatório" });
 
+    try {
+        const sql = 'EXEC sp_Mesa_Disponivel';
+        const result = await executeQuery(database, sql);
+        res.status(200).send(result);
+    } catch (err) {
+        res.status(500).send({ message: "Erro ao listar mesas disponíveis." });
+    }
+};
 
-export const getTable = (req, res) => {
-    const database = req.body.database;
+// Inserir grupo de pedido na mesa
+export const joinTable = async (req, res) => {
+    const { idMesa, idGrupoPedido, database } = req.body;
+    if (!database) return res.status(400).send({ message: "Database obrigatório" });
 
-    let sql = 'call sp_Mesa_Disponivel';
+    try {
+        const sql = 'EXEC sp_Mesa_Inserir @idMesa, @idGrupoPedido';
+        const result = await executeQuery(database, sql, { idMesa, idGrupoPedido });
+        res.status(200).send(result);
+    } catch (err) {
+        res.status(500).send({ message: "Erro ao associar grupo de pedido à mesa." });
+    }
+};
 
-    executeQuery(database, sql, [], res);
-}
+// Consultar mesa ocupada
+export const getOrderTable = async (req, res) => {
+    const { idGrupoPedido, database } = req.body;
+    if (!database) return res.status(400).send({ message: "Database obrigatório" });
 
-export const joinTable = (req, res) => {
-    const {idMesa } = req.body;
-    const {idGrupoPedido} = req.body;
-    const database = req.body.database;
-    
-    let sql = 'call sp_Mesa_Inserir(?,?)'; 
-
-    executeQuery(database, sql, [idMesa, idGrupoPedido], res);
-}
-
-export const getOrderTable = (req, res) => {
-    const {idGrupoPedido} = req.body;
-    const database = req.body.database;
-    
-    let sql = 'call sp_Mesa_Ocupada(?)';  
-
-    executeQuery(database, sql, [idGrupoPedido], res);
-}
+    try {
+        const sql = 'EXEC sp_Mesa_Ocupada @idGrupoPedido';
+        const result = await executeQuery(database, sql, { idGrupoPedido });
+        res.status(200).send(result);
+    } catch (err) {
+        res.status(500).send({ message: "Erro ao consultar mesa ocupada." });
+    }
+};

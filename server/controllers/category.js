@@ -1,84 +1,85 @@
-import { conectDB } from '../db.js';
+import { conectDB } from '../db.js'; // Sua função já adaptada para SQL Server
 
-function executeQuery(database, sql, params, callback) {
-    const db = conectDB(database); // Conecta ao banco correto dinamicamente
-    db.getConnection((err, connection) => {
-        if (err) {
-            console.error('Erro ao obter conexão:', err);
-            return callback(err, null);
+// Função genérica para executar queries
+export async function executeQuery(database, query, params = {}) {
+    try {
+        const pool = await conectDB(database); // Conecta ao banco
+        const request = pool.request();
+
+        // Adiciona os parâmetros dinamicamente
+        for (const key in params) {
+            request.input(key, params[key]);
         }
 
-        connection.query(sql, params, (err, result) => {
-            connection.release(); // Libera a conexão de volta à pool
-            if (err) {
-                console.log(err);
-                return callback(err, null);
-            }
-            callback(null, result);
-        });
-    });
+        const result = await request.query(query);
+        return result.recordset; // Retorna os registros
+    } catch (err) {
+        console.error("Erro na query:", err);
+        throw err;
+    }
 }
 
-export const categoryDelete = (req, res) => {
-    const { idCategoria } = req.params;
-    const { database } = req.body; // Agora, você pode passar o banco de dados dinamicamente
+export const categoryDelete = async (req, res) => {
+    const { idCategoria, database } = req.body;
 
     if (!idCategoria) {
         return res.status(400).send({ message: "ID da categoria é obrigatório." });
     }
 
-    const sql = "DELETE FROM Categoria WHERE idCategoria = ?";
+    try {
+        const sql = "DELETE FROM Categoria WHERE idCategoria = @idCategoria";
+        const result = await executeQuery(database, sql, { idCategoria });
 
-    executeQuery(database, sql, [idCategoria], (err, result) => {
-        if (err) {
-            return res.status(500).send({ message: "Erro ao tentar excluir a categoria." });
-        }
-
-        if (result.affectedRows === 0) {
+        if (result.rowsAffected[0] === 0) {
             return res.status(404).send({ message: "Categoria não encontrada." });
         }
 
         res.status(200).send({ message: "Categoria excluída com sucesso!" });
-    });
+    } catch (err) {
+        res.status(500).send({ message: "Erro ao tentar excluir a categoria." });
+    }
 };
 
-// Outros métodos seguem a mesma estrutura
-export const getCategory = (req, res) => {
-    const { database } = req.body; // Banco de dados passado dinamicamente
-    let sql = 'SELECT * FROM Categoria';
-    executeQuery(database, sql, [], (err, result) => {
-        if (err) {
-            return res.status(500).send({ message: "Erro ao buscar categorias." });
-        }
+
+export const getCategory = async (req, res) => {
+    const { database } = req.body;
+
+    try {
+        const sql = 'SELECT * FROM Categoria';
+        const result = await executeQuery(database, sql);
         res.status(200).send(result);
-    });
+    } catch (err) {
+        res.status(500).send({ message: "Erro ao buscar categorias." });
+    }
 };
 
-export const categoryRegister = (req, res) => {
+
+export const categoryRegister = async (req, res) => {
     const { nomeCategoria, database } = req.body;
 
     if (!nomeCategoria) {
         return res.status(400).send({ message: "Nome da categoria é obrigatório." });
     }
 
-    const insertSql = "INSERT INTO Categoria(nomeCategoria) VALUES (?)"; 
-    
-    executeQuery(database, insertSql, [nomeCategoria], (err, result) => {
-        if (err) {
-            return res.status(500).send({ message: 'Erro ao executar a query' });
-        }
+    try {
+        const sql = "INSERT INTO Categoria(nomeCategoria) VALUES (@nomeCategoria)";
+        await executeQuery(database, sql, { nomeCategoria });
         res.status(201).send({ success: true, message: "Categoria cadastrada com sucesso!" });
-    });
+    } catch (err) {
+        res.status(500).send({ message: 'Erro ao executar a query' });
+    }
 };
 
-export const filterByCategory = (req, res) => {
+
+export const filterByCategory = async (req, res) => {
     const { idCategory, idGrupoPedido, database } = req.body;
-    let sql = 'CALL sp_ProdutoCategoria_Selecionar(?, ?)';
 
-    executeQuery(database, sql, [idCategory, idGrupoPedido], (err, result) => {
-        if (err) {
-            return res.status(500).send({ message: "Erro ao filtrar categorias." });
-        }
+    try {
+        const sql = 'EXEC sp_ProdutoCategoria_Selecionar @idCategory, @idGrupoPedido';
+        const result = await executeQuery(database, sql, { idCategory, idGrupoPedido });
         res.status(200).send(result);
-    });
+    } catch (err) {
+        res.status(500).send({ message: "Erro ao filtrar categorias." });
+    }
 };
+

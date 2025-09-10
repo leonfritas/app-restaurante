@@ -15,7 +15,7 @@ export default function LoginPainel() {
     const [modalMessage, setModalMessage] = useState("");
 
     const getCompany = (idEmpresa) => {
-        Axios.post("http://localhost:3001/company/getCompany", {
+        Axios.post("https://f8d3a9035cb7.ngrok-free.app/company/getCompany", {
             idEmpresa: idEmpresa,
             database: database
         }).then((response) => {
@@ -32,7 +32,7 @@ export default function LoginPainel() {
     const logar = () => {
         if (usuario !== '' && senha !== '') {
             setRemoveLoading(false);
-            Axios.post("http://localhost:3001/users/login", {
+            Axios.post("https://f8d3a9035cb7.ngrok-free.app/users/login", {
                 name: usuario,
                 senha: senha,
                 database: database

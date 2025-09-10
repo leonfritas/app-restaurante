@@ -1,64 +1,90 @@
-
 import { conectDB } from '../db.js';
 
+// Função genérica para executar queries no SQL Server
+async function executeQuery(database, sql, params = {}) {
+    try {
+        const pool = await conectDB(database);
+        const request = pool.request();
 
-function executeQuery(database, sql, params, res) {
-    const db = conectDB(database);    
-    db.getConnection((err, connection) => {
-        if (err) {
-            console.error('Erro ao obter conexão:', err);
-            res.status(500).send('Erro ao obter a conexão');
-            return;
-        } 
-                
-        connection.query(sql, params, (err, result) => {
-            
-            connection.release();
-            
-            if (err) {
-                console.log(err);
-                res.status(500).send('Erro ao executar a query');
-            } else {
-                res.send(result);
-            }            
-        });
-    })
+        // Adiciona os parâmetros dinamicamente
+        for (const key in params) {
+            request.input(key, params[key]);
+        }
+
+        const result = await request.query(sql);
+        return result.recordset; // Retorna registros
+    } catch (err) {
+        console.error("Erro ao executar a query:", err);
+        throw err;
+    }
 }
 
-export const login = (req, res) => {
-    const { name } = req.body;
-    const { senha } = req.body; 
-    const database = req.body.database;
+// Login de funcionário
+export const login = async (req, res) => {
+    const { name, senha, database } = req.body;
+    if (!database) return res.status(400).send({ message: "Database obrigatório" });
 
-    let sql = "CALL sp_funcionario_verificar(?, ?)";
+    try {
+        const sql = 'EXEC sp_funcionario_verificar @name, @senha';
+        const result = await executeQuery(database, sql, { name, senha });
+        res.status(200).send(result);
+    } catch (err) {
+        res.status(500).send({ message: "Erro ao verificar login." });
+    }
+};
 
-    executeQuery(database, sql, [name, senha], res);
-}
+// Listar funcionários
+export const listar = async (req, res) => {
+    const { database } = req.body;
+    if (!database) return res.status(400).send({ message: "Database obrigatório" });
 
-export const listar = (req, res) => {
-    const database = req.body.database; 
+    try {
+        const sql = 'SELECT * FROM Funcionario';
+        const result = await executeQuery(database, sql);
+        res.status(200).send(result);
+    } catch (err) {
+        res.status(500).send({ message: "Erro ao listar funcionários." });
+    }
+};
 
-    let sql = "SELECT * FROM Funcionario";
+// Cadastrar funcionário
+export const cadastrar = async (req, res) => {
+    const { realName, userName, senha, cpf, checkAdmin, userCheck, database } = req.body;
+    if (!database) return res.status(400).send({ message: "Database obrigatório" });
 
-    executeQuery(database, sql, [], res);
-}
-
-export const cadastrar = (req, res) => {
-    const { realName, userName, senha, cpf, checkAdmin, userCheck } = req.body; // Inclua 'database' se for dinâmico
     const ativoAdminValue = checkAdmin ? 1 : 0;
     const ativoFuncionarioValue = userCheck ? 1 : 0;
-    const database = req.body.database;
 
-    let sql = "CALL sp_Funcionario_Inserir (?, ?, ?, ?, ?, ?)";
+    try {
+        const sql = `
+            EXEC sp_Funcionario_Inserir 
+                @realName, @userName, @senha, @cpf, @ativoAdmin, @ativoFuncionario
+        `;
+        const result = await executeQuery(database, sql, {
+            realName,
+            userName,
+            senha,
+            cpf,
+            ativoAdmin: ativoAdminValue,
+            ativoFuncionario: ativoFuncionarioValue
+        });
+        res.status(200).send(result);
+    } catch (err) {
+        res.status(500).send({ message: "Erro ao cadastrar funcionário." });
+    }
+};
 
-    executeQuery(database, sql, [realName, userName, senha, cpf, ativoAdminValue, ativoFuncionarioValue], res);
-}
-
-export const deleteUser = (req, res) => {
+// Deletar funcionário
+export const deleteUser = async (req, res) => {
     const { id } = req.params;
-    const database = req.body.database;
+    const { database } = req.body;
+    if (!database) return res.status(400).send({ message: "Database obrigatório" });
 
-    let sql = 'CALL sp_Funcionario_Cancelar(?);';
-
-    executeQuery(database, sql, [id], res);
-}
+    try {
+        const sql = 'EXEC sp_Funcionario_Cancelar @id';
+        const result = await executeQuery(database, sql, { id });
+        res.status(200).send(result);
+    } catch (err) {
+        res.status(500).send({ message: "Erro ao deletar funcionário." });
+    }
+};

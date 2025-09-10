@@ -2,7 +2,7 @@ import axios from "axios";
 
 export async function productList(database, idGrupoPedido) {
   try {   
-    const response = await axios.post("http://localhost:3001/orderGroup/orderGroupListProduct", {
+    const response = await axios.post("https://f8d3a9035cb7.ngrok-free.app/orderGroup/orderGroupListProduct", {
       idGrupoPedido: idGrupoPedido,
       database: database
     });

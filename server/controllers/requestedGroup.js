@@ -1,100 +1,133 @@
 import { conectDB } from '../db.js';
 
+// Função genérica para executar queries no SQL Server
+async function executeQuery(database, sql, params = {}) {
+    try {
+        const pool = await conectDB(database);
+        const request = pool.request();
 
-function executeQuery(database, sql, params, res) {
-    const db = conectDB(database);    
-    db.getConnection((err, connection) => {
-        if (err) {
-            console.error('Erro ao obter conexão:', err);
-            res.status(500).send('Erro ao obter a conexão');
-            return;
-        } 
-                
-        connection.query(sql, params, (err, result) => {
-            
-            connection.release();
-            
-            if (err) {
-                console.log(err);
-                res.status(500).send('Erro ao executar a query');
-            } else {
-                res.send(result);
-            }            
-        });
-    })
+        // Adiciona parâmetros dinamicamente
+        for (const key in params) {
+            request.input(key, params[key]);
+        }
+
+        const result = await request.query(sql);
+        return result.recordset;
+    } catch (err) {
+        console.error("Erro ao executar a query:", err);
+        throw err;
+    }
 }
 
-export const grupoPedidoSalvar = (req, res) => {
-    const { idGrupoPedido } = req.body;
-    const { nomeGrupoPedido } = req.body;
-    const { idMesa } = req.body;
-    const { textoObservacao } = req.body;
-    const database = req.body.database;
-    let sql = "call sp_grupoPedido_salvar(?,?,?,?)";
-    
-    executeQuery(database, sql, [idGrupoPedido, nomeGrupoPedido, idMesa, textoObservacao], res);        
-}
+// Salvar grupo de pedido
+export const grupoPedidoSalvar = async (req, res) => {
+    const { idGrupoPedido, nomeGrupoPedido, idMesa, textoObservacao, database } = req.body;
 
-export const grupoPedidoCancelar =  (req, res) => {
-    const { idGrupoPedido } = req.body;
-    const database = req.body.database;
+    if (!database) return res.status(400).send({ message: "Database obrigatório" });
 
-    let sql = "call sp_GrupoPedido_Cancelar(?)";
-    
-    executeQuery(database, sql, [idGrupoPedido], res);           
-}
+    try {
+        const sql = 'EXEC sp_grupoPedido_salvar @idGrupoPedido, @nomeGrupoPedido, @idMesa, @textoObservacao';
+        const result = await executeQuery(database, sql, { idGrupoPedido, nomeGrupoPedido, idMesa, textoObservacao });
+        res.status(200).send(result);
+    } catch (err) {
+        res.status(500).send({ message: "Erro ao salvar grupo de pedido." });
+    }
+};
 
-export const grupoPedidoInserir = (req, res) => {
-    const { idFuncionario } = req.body;
-    const database = req.body.database;
+// Cancelar grupo de pedido
+export const grupoPedidoCancelar = async (req, res) => {
+    const { idGrupoPedido, database } = req.body;
+    if (!database) return res.status(400).send({ message: "Database obrigatório" });
 
-    let sql = "call sp_GrupoPedido_Inserir(?)";
+    try {
+        const sql = 'EXEC sp_GrupoPedido_Cancelar @idGrupoPedido';
+        const result = await executeQuery(database, sql, { idGrupoPedido });
+        res.status(200).send(result);
+    } catch (err) {
+        res.status(500).send({ message: "Erro ao cancelar grupo de pedido." });
+    }
+};
 
-    executeQuery(database, sql, [idFuncionario], res); 
-}
+// Inserir grupo de pedido
+export const grupoPedidoInserir = async (req, res) => {
+    const { idFuncionario, database } = req.body;
+    if (!database) return res.status(400).send({ message: "Database obrigatório" });
 
-export const grupoPedidoListar = (req, res) => {
-    const {dataEntrada, ativoPedidoPronto} = req.body;
-    const database = req.body.database;
+    try {
+        const sql = 'EXEC sp_GrupoPedido_Inserir @idFuncionario';
+        const result = await executeQuery(database, sql, { idFuncionario });
+        res.status(200).send(result);
+    } catch (err) {
+        res.status(500).send({ message: "Erro ao inserir grupo de pedido." });
+    }
+};
 
-    let sql = "call sp_GrupoPedido_Listar(?)";
+// Listar grupos de pedido
+export const grupoPedidoListar = async (req, res) => {
+    const { dataEntrada, ativoPedidoPronto, database } = req.body;
+    if (!database) return res.status(400).send({ message: "Database obrigatório" });
 
-    executeQuery(database, sql, [dataEntrada, ativoPedidoPronto], res); 
-}
+    try {
+        const sql = 'EXEC sp_GrupoPedido_Listar @dataEntrada;'//, @ativoPedidoPronto';
+        const result = await executeQuery(database, sql, { dataEntrada, ativoPedidoPronto });
+        res.status(200).send(result);
+    } catch (err) {
+        res.status(500).send({ message: "Erro ao listar grupos de pedido." });
+    }
+};
 
-export const grupoPedidoFinalizar = (req, res) => {
-    const { idGrupoPedido } = req.body;
-    const database = req.body.database;    
+// Finalizar grupo de pedido
+export const grupoPedidoFinalizar = async (req, res) => {
+    const { idGrupoPedido, database } = req.body;
+    if (!database) return res.status(400).send({ message: "Database obrigatório" });
 
-    let sql = "call sp_GrupoPedido_Finalizar(?)";
-    
-    executeQuery(database, sql, [idGrupoPedido], res);        
-}
+    try {
+        const sql = 'EXEC sp_GrupoPedido_Finalizar @idGrupoPedido';
+        const result = await executeQuery(database, sql, { idGrupoPedido });
+        res.status(200).send(result);
+    } catch (err) {
+        res.status(500).send({ message: "Erro ao finalizar grupo de pedido." });
+    }
+};
 
-export const grupoPedidoEditar = (req, res) => {
-    const { idGrupoPedido } = req.body;
-    const database = req.body.database;
+// Editar grupo de pedido
+export const grupoPedidoEditar = async (req, res) => {
+    const { idGrupoPedido, database } = req.body;
+    if (!database) return res.status(400).send({ message: "Database obrigatório" });
 
-    let sql = "call sp_GrupoPedido_Editar(?)";
-    
-    executeQuery(database, sql, [idGrupoPedido], res);            
-}
+    try {
+        const sql = 'EXEC sp_GrupoPedido_Editar @idGrupoPedido';
+        const result = await executeQuery(database, sql, { idGrupoPedido });
+        res.status(200).send(result);
+    } catch (err) {
+        res.status(500).send({ message: "Erro ao editar grupo de pedido." });
+    }
+};
 
-export const grupoPedidoListarProduto = (req, res) => {
-    const { idGrupoPedido } = req.body;
-    const database = req.body.database;
+// Listar produtos do grupo de pedido
+export const grupoPedidoListarProduto = async (req, res) => {
+    const { idGrupoPedido, database } = req.body;
+    if (!database) return res.status(400).send({ message: "Database obrigatório" });
 
-    let sql = "call sp_GrupoPedido_ListarProduto(?)";
-    
-    executeQuery(database, sql, [idGrupoPedido], res);           
-}
+    try {
+        const sql = 'EXEC sp_GrupoPedido_ListarProduto @idGrupoPedido';
+        const result = await executeQuery(database, sql, { idGrupoPedido });
+        res.status(200).send(result);
+    } catch (err) {
+        res.status(500).send({ message: "Erro ao listar produtos do grupo de pedido." });
+    }
+};
 
-export const grupoPedidoSaveObs = (req, res) => {
-    const { idGrupoPedido } = req.body;
-    const { observacao } = req.body;
-    const database = req.body.database;
+// Salvar observação do grupo de pedido
+export const grupoPedidoSaveObs = async (req, res) => {
+    const { idGrupoPedido, observacao, database } = req.body;
+    if (!database) return res.status(400).send({ message: "Database obrigatório" });
 
-    let sql = "call sp_GrupoPedido_salvarObservacao(?,?)";
-    
-    executeQuery(database, sql, [idGrupoPedido, observacao], res);            
-}
+    try {
+        const sql = 'EXEC sp_GrupoPedido_salvarObservacao @idGrupoPedido, @observacao';
+        const result = await executeQuery(database, sql, { idGrupoPedido, observacao });
+        res.status(200).send(result);
+    } catch (err) {
+        res.status(500).send({ message: "Erro ao salvar observação do grupo de pedido." });
+    }
+};

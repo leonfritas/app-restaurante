@@ -9,7 +9,7 @@ export default function Menu() {
     const { setIdGrupoPedido, idFuncionario, database } = useContext(LoginContext);
     
     function CriarNovoPedido() {
-        Axios.post("http://localhost:3001/orderGroup/orderGroupInsert", {
+        Axios.post("https://f8d3a9035cb7.ngrok-free.app/orderGroup/orderGroupInsert", {
             idFuncionario: idFuncionario,
             database: database
         })

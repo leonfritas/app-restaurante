@@ -2,7 +2,7 @@ import Axios from "axios";
 
 export async function getOrderList(database) {
     try {      
-        const response = await Axios.post('http://localhost:3001/orderGroup/orderGroupList', {
+        const response = await Axios.post('https://f8d3a9035cb7.ngrok-free.app/orderGroup/orderGroupList', {
         dataEntrada: '2024-01-01',
         database: database
         });  
@@ -18,7 +18,7 @@ export async function getOrderList(database) {
 
 export async function cancelOrder(database, idGrupoPedido) {
     try {      
-        await Axios.post("http://localhost:3001/orderGroup/orderGroupCancel", {
+        await Axios.post("https://f8d3a9035cb7.ngrok-free.app/orderGroup/orderGroupCancel", {
           idGrupoPedido: idGrupoPedido,
           database: database
         });     
@@ -33,7 +33,7 @@ export async function cancelOrder(database, idGrupoPedido) {
 
 export async function saveObsOrder(idGrupoPedido, observacao, database) {
     try {      
-        await Axios.post("http://localhost:3001/orderGroup/orderGroupSaveObs", {
+        await Axios.post("https://f8d3a9035cb7.ngrok-free.app/orderGroup/orderGroupSaveObs", {
             idGrupoPedido: idGrupoPedido,
             observacao: observacao,
             database: database

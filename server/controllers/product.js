@@ -1,73 +1,80 @@
 import { conectDB } from '../db.js';
 
-function executeQuery(database, sql, params, res) {
-    const db = conectDB(database);
-    db.getConnection((err, connection) => {
-        if (err) {
-            console.error('Erro ao obter conexão:', err);
-            res.status(500).send('Erro ao obter a conexão: ' + err.message);
-            return;
+// Função genérica para executar queries no SQL Server
+async function executeQuery(database, sql, params = {}) {
+    try {
+        const pool = await conectDB(database); // Conecta ao banco
+        const request = pool.request();
+
+        // Adiciona parâmetros dinamicamente
+        for (const key in params) {
+            request.input(key, params[key]);
         }
 
-        connection.query(sql, params, (err, result) => {
-            connection.release();
-            if (err) {
-                console.error('Erro na consulta:', err);
-                res.status(500).send('Erro ao executar a query: ' + err.message);
-            } else {
-                res.send(result);
-            }
-        });
-    });
+        const result = await request.query(sql);
+        return result.recordset; // Retorna registros
+    } catch (err) {
+        console.error("Erro ao executar a query:", err);
+        throw err;
+    }
 }
 
-export const productRegister = (req, res) => {
+// Registrar produto
+export const productRegister = async (req, res) => {
     const { nomeProduto, preco, idCategoria, quantidade, database } = req.body;
 
-    if (!nomeProduto || !preco || !idCategoria || !quantidade || !database) {
-        return res.status(400).send('Parâmetros inválidos');
+    if (!nomeProduto || preco == null || !idCategoria || quantidade == null || !database) {
+        return res.status(400).send({ message: 'Parâmetros inválidos' });
     }
 
-    const sql = "INSERT INTO Produto(nomeProduto, idCategoria, quantidade, preco) VALUES (?, ?, ?, ?)";
-    executeQuery(database, sql, [nomeProduto, idCategoria, quantidade, preco], res);
-}
+    try {
+        const sql = `
+            INSERT INTO Produto(nomeProduto, idCategoria, quantidade, preco)
+            VALUES (@nomeProduto, @idCategoria, @quantidade, @preco)
+        `;
+        await executeQuery(database, sql, { nomeProduto, idCategoria, quantidade, preco });
+        res.status(201).send({ message: "Produto cadastrado com sucesso!" });
+    } catch (err) {
+        res.status(500).send({ message: "Erro ao cadastrar produto." });
+    }
+};
 
-export const listaProduto = (req, res) => {
+// Listar produto(s)
+export const listaProduto = async (req, res) => {
     const { database, idProduto } = req.body;
 
     if (!database) {
-        return res.status(400).send("Banco de dados não especificado");
+        return res.status(400).send({ message: "Banco de dados não especificado" });
     }
 
-    const sql = "CALL sp_Produto_Selecionar(?);";
-
-    
-    executeQuery(database, sql, [idProduto], res);
+    try {
+        const sql = 'EXEC sp_Produto_Selecionar @idProduto';
+        const result = await executeQuery(database, sql, { idProduto });
+        res.status(200).send(result);
+    } catch (err) {
+        res.status(500).send({ message: "Erro ao buscar produtos." });
+    }
 };
 
-
-export const productDelete = (req, res) => {
+// Deletar produto
+export const productDelete = async (req, res) => {
     const { idProduto } = req.params;
     const { database } = req.body;
 
-    if (!idProduto) {
-        return res.status(400).send({ message: "ID do produto é obrigatório." });
+    if (!idProduto || !database) {
+        return res.status(400).send({ message: "ID do produto e database são obrigatórios." });
     }
 
-    const sql = "DELETE FROM Produto WHERE idProduto = ?";
+    try {
+        const sql = 'DELETE FROM Produto WHERE idProduto = @idProduto';
+        const result = await executeQuery(database, sql, { idProduto });
 
-    executeQuery(database, sql, [idProduto], (err, result) => {
-        if (err) {
-            return res.status(500).send({ message: "Erro ao tentar excluir a categoria." });
+        if (result.length === 0) { // SQL Server não retorna affectedRows da mesma forma
+            return res.status(404).send({ message: "Produto não encontrado." });
         }
 
-        // Verifica se alguma linha foi afetada
-        if (result.affectedRows === 0) {
-            return res.status(404).send({ message: "Categoria não encontrada." });
-        }
-        res.status(200).send({ message: "Categoria excluída com sucesso!" });
-    });
+        res.status(200).send({ message: "Produto excluído com sucesso!" });
+    } catch (err) {
+        res.status(500).send({ message: "Erro ao tentar excluir o produto." });
+    }
 };
-
-
-

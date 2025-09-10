@@ -24,7 +24,7 @@ export default function EditarPedido(){
 
 
     function atualizaEdicao(){
-        Axios.post("http://localhost:3001/orderGroup/orderGroupEdit",{
+        Axios.post("https://f8d3a9035cb7.ngrok-free.app/orderGroup/orderGroupEdit",{
             idGrupoPedido: idGrupoPedido,
             database: database
           }        
@@ -41,7 +41,7 @@ export default function EditarPedido(){
     }
 
     useEffect(() => {
-        Axios.post("http://localhost:3001/category/getCategory"), {
+        Axios.post("https://f8d3a9035cb7.ngrok-free.app/category/getCategory"), {
             database: database
         }
           .then((response) => {
@@ -77,7 +77,7 @@ export default function EditarPedido(){
         setIsProcessing(true);              
         if (idGrupoPedido > 0){
             const novaQuantidade = (quantidades[idProduto] || 0) + 1;
-            Axios.post("http://localhost:3001/requested/requestInsert", {                
+            Axios.post("https://f8d3a9035cb7.ngrok-free.app/requested/requestInsert", {                
                 idGrupoPedido: idGrupoPedido,
                 idProduto: idProduto,   
                 quantidade: quantidade,             
@@ -100,7 +100,7 @@ export default function EditarPedido(){
         if (idGrupoPedido > 0){
             const novaQuantidade = (quantidades[idProduto] || 0) - 1;            
             if (novaQuantidade >= 0) {
-                Axios.post("http://localhost:3001/requested/requestDelete", {                
+                Axios.post("https://f8d3a9035cb7.ngrok-free.app/requested/requestDelete", {                
                     idGrupoPedido: idGrupoPedido,
                     idProduto: idProduto,
                     database: database         
@@ -119,7 +119,7 @@ export default function EditarPedido(){
 
     function salvarGrupoPedido(){                         
         if (idGrupoPedido > 0){
-            Axios.post("http://localhost:3001/orderGroup/orderGroupSave", {                
+            Axios.post("https://f8d3a9035cb7.ngrok-free.app/orderGroup/orderGroupSave", {                
                 idGrupoPedido: idGrupoPedido,
                 nomeGrupoPedido: nomeGrupoPedido,
                 database: database          
@@ -162,7 +162,7 @@ export default function EditarPedido(){
 
     function filterByCategory(idCategory){                  
         if(idGrupoPedido > 0){            
-            Axios.post("http://localhost:3001/category/filterByCategory", {
+            Axios.post("https://f8d3a9035cb7.ngrok-free.app/category/filterByCategory", {
                 idCategory: idCategory, 
                 idGrupoPedido: idGrupoPedido,
                 database: database                

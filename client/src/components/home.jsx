@@ -102,7 +102,7 @@ export default function Home() {
   function listarProdutos(idGrupoPedido){
     if (idGrupoPedido > 0) { 
       setRemoveLoading(false);   
-        Axios.post("http://localhost:3001/orderGroup/orderGroupListProduct", {
+        Axios.post("https://f8d3a9035cb7.ngrok-free.app/orderGroup/orderGroupListProduct", {
           idGrupoPedido: idGrupoPedido,
           database: database
         }).then((response) => {

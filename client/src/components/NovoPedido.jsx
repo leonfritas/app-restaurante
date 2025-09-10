@@ -26,7 +26,7 @@ export default function NovoPedido() {
 
 
     useEffect(() => {
-        Axios.post("http://localhost:3001/products/listProduct", {
+        Axios.post("https://f8d3a9035cb7.ngrok-free.app/products/listProduct", {
             database: database
         })
             .then((response) => {                
@@ -39,7 +39,7 @@ export default function NovoPedido() {
     }, []);    
 
     useEffect(() => {
-        Axios.post("http://localhost:3001/category/getCategory", {
+        Axios.post("https://f8d3a9035cb7.ngrok-free.app/category/getCategory", {
             database: database
         })
           .then((response) => {
@@ -67,7 +67,7 @@ export default function NovoPedido() {
     }, []);
 
     useEffect(() => {
-        Axios.post("http://localhost:3001/table/getTable", {
+        Axios.post("https://f8d3a9035cb7.ngrok-free.app/table/getTable", {
             database: database
         })
             .then((response) => {
@@ -93,7 +93,7 @@ export default function NovoPedido() {
     function pedidoInserir(idProduto, preco, quantidade) {
         setIsProcessing(true);
         if (idGrupoPedido > 0) {
-            Axios.post("http://localhost:3001/requested/requestInsert", {
+            Axios.post("https://f8d3a9035cb7.ngrok-free.app/requested/requestInsert", {
                 idGrupoPedido: idGrupoPedido,
                 idProduto: idProduto,
                 quantidade: quantidade,
@@ -119,7 +119,7 @@ export default function NovoPedido() {
     
     function pedidoExcluir(idProduto) {
         if (idGrupoPedido > 0) {
-            Axios.post("http://localhost:3001/requested/requestDelete", {
+            Axios.post("https://f8d3a9035cb7.ngrok-free.app/requested/requestDelete", {
                 idGrupoPedido: idGrupoPedido,
                 idProduto: idProduto,
                 database: database
@@ -153,7 +153,7 @@ export default function NovoPedido() {
             if (idMesa === undefined) setIdMesa(0);
             if (idMesa !== undefined) {
                 setMostrarListaMesa(false);
-                Axios.post("http://localhost:3001/orderGroup/orderGroupSave", {
+                Axios.post("https://f8d3a9035cb7.ngrok-free.app/orderGroup/orderGroupSave", {
                     idGrupoPedido: idGrupoPedido,
                     nomeGrupoPedido: nomeGrupoPedido,
                     idMesa: idMesa,                
@@ -175,7 +175,7 @@ export default function NovoPedido() {
     
     function cancelarGrupoPedido() {
         if (idGrupoPedido > 0) {
-            Axios.post("http://localhost:3001/orderGroup/orderGroupCancel", {
+            Axios.post("https://f8d3a9035cb7.ngrok-free.app/orderGroup/orderGroupCancel", {
                 idGrupoPedido: idGrupoPedido,
                 database: database
             })
@@ -202,7 +202,7 @@ export default function NovoPedido() {
 
     function filterByCategory(idCategory){              
         if(idGrupoPedido > 0){            
-            Axios.post("http://localhost:3001/category/filterByCategory", {
+            Axios.post("https://f8d3a9035cb7.ngrok-free.app/category/filterByCategory", {
                 idCategory: idCategory,
                 database: database                
             }).then((response) => {                

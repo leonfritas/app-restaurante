@@ -15,7 +15,7 @@ export default function Tabela() {
   const fetchProducts = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3001/products/listProduct",
+        "https://f8d3a9035cb7.ngrok-free.app/products/listProduct",
         {
           database: sessionStorage.getItem("database"),
         }
@@ -29,7 +29,7 @@ export default function Tabela() {
   const fetchCategories = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3001/category/getCategory",
+        "https://f8d3a9035cb7.ngrok-free.app/category/getCategory",
         {
           database: sessionStorage.getItem("database"),
         }
@@ -57,7 +57,7 @@ export default function Tabela() {
     if (window.confirm("Você tem certeza que deseja excluir este Produto?")) {
       try {
         await axios.delete(
-          `http://localhost:3001/product/productDelete/${idProduto}`,
+          `https://f8d3a9035cb7.ngrok-free.app/product/productDelete/${idProduto}`,
           {
             data: { database: sessionStorage.getItem("database") },
           }
@@ -75,7 +75,7 @@ export default function Tabela() {
     if (window.confirm("Você tem certeza que deseja excluir esta categoria?")) {
       try {
         await axios.delete(
-          `http://localhost:3001/category/categoryDelete/${idCategoria}`,
+          `https://f8d3a9035cb7.ngrok-free.app/category/categoryDelete/${idCategoria}`,
           {
             data: { database: sessionStorage.getItem("database") },
           }

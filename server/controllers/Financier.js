@@ -1,41 +1,54 @@
 import { conectDB } from '../db.js';
 
+// Função genérica para executar queries no SQL Server
+async function executeQuery(database, sql, params = {}) {
+    try {
+        const pool = await conectDB(database); // Conecta ao banco de dados
+        const request = pool.request();
 
-function executeQuery(database, sql, params, res) {
-    const db = conectDB(database);    
-    db.getConnection((err, connection) => {
-        if (err) {
-            console.error('Erro ao obter conexão:', err);
-            res.status(500).send('Erro ao obter a conexão');
-            return;
-        } 
-                
-        connection.query(sql, params, (err, result) => {
-            
-            connection.release();
-            if (err) {
-                console.log(err);
-                res.status(500).send('Erro ao executar a query');
-            } else {
-                res.send(result);
-            }            
-        });
-    })
+        // Adiciona os parâmetros dinamicamente
+        for (const key in params) {
+            request.input(key, params[key]);
+        }
+
+        const result = await request.query(sql);
+        return result.recordset; // Retorna os registros
+    } catch (err) {
+        console.error("Erro ao executar a query:", err);
+        throw err;
+    }
 }
 
-export const realizarBaixa = (req, res) => {
-    const { idGrupoPedido } = req.body;
-    const database = req.body.database;
-    let sql = 'call sp_FinanceiroMovimento_RealizarBaixa(?)';
+// Controller adaptado: realizarBaixa
+export const realizarBaixa = async (req, res) => {
+    const { idGrupoPedido, database } = req.body;
 
-    executeQuery(database, sql, [idGrupoPedido], res);
-    
-}   
+    if (!idGrupoPedido || !database) {
+        return res.status(400).send({ message: "idGrupoPedido e database são obrigatórios." });
+    }
 
-export const movimentoRealizado = (req, res) => {
-        const { movimentoRealizado } = req.body;
-        const database = req.body.database;
-        let sql = 'CALL sp_FinanceiroMovimento_Realizado(?)';
-                
-        executeQuery(database, sql, [movimentoRealizado], res);
-}
+    try {
+        const sql = 'EXEC sp_FinanceiroMovimento_RealizarBaixa @idGrupoPedido';
+        const result = await executeQuery(database, sql, { idGrupoPedido });
+        res.status(200).send(result);
+    } catch (err) {
+        res.status(500).send({ message: "Erro ao realizar baixa." });
+    }
+};
+
+// Controller adaptado: movimentoRealizado
+export const movimentoRealizado = async (req, res) => {
+    const { movimentoRealizado, database } = req.body;
+
+    if (!movimentoRealizado || !database) {
+        return res.status(400).send({ message: "movimentoRealizado e database são obrigatórios." });
+    }
+
+    try {
+        const sql = 'EXEC sp_FinanceiroMovimento_Realizado @movimentoRealizado';
+        const result = await executeQuery(database, sql, { movimentoRealizado });
+        res.status(200).send(result);
+    } catch (err) {
+        res.status(500).send({ message: "Erro ao marcar movimento como realizado." });
+    }
+};
