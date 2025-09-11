@@ -13,8 +13,9 @@ export default function Menu() {
             idFuncionario: idFuncionario,
             database: database
         })
-            .then((response) => {                
-                setIdGrupoPedido(response.data.idGrupoPedido);
+            .then((response) => {     
+                console.log("Novo pedido criado, ID: ", response.data);           
+                setIdGrupoPedido(response.data[0].idGrupoPedido);
             })
             .catch((error) => {
                 console.error("Erro ao criar novo pedido: ", error);

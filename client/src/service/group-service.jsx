@@ -6,7 +6,7 @@ export async function getOrderList(database) {
         dataEntrada: '2024-01-01',
         database: database
         });  
-        return response.data[0];      
+        return response.data;      
     } catch (error) {      
         if (error.response) {
             console.error('Erro na resposta:', error.response);

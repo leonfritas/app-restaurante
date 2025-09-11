@@ -251,7 +251,12 @@ export default function NovoPedido() {
                     <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2 mt-5' onClick={() => salvarGrupoPedido()}>Salvar Pedido</button>
                     <button className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-2 rounded  mt-5' onClick={() => cancelarGrupoPedido()}>Cancelar Pedido</button>
                     </div>
-                    <input className='border rounded px-4 py-2 mb-4 w-80 focus:outline-none' value={`Pedido n°` + idGrupoPedido } type="text"/>
+                    <input
+                        className='border rounded px-4 py-2 mb-4 w-80 focus:outline-none'
+                        value={`Pedido n° ${idGrupoPedido}`}
+                        type="text"
+                        readOnly
+                        />
                     <div className='carousel' ref={carousel}> 
                         
                         {listCategory?.map((value) => (
