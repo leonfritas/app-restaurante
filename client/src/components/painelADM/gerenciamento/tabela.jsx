@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { baseURL } from '../../../service/api';
 
 export default function Tabela() {
   const [listProduct, setListProduct] = useState([]);
@@ -15,7 +16,7 @@ export default function Tabela() {
   const fetchProducts = async () => {
     try {
       const response = await axios.post(
-        "https://f8d3a9035cb7.ngrok-free.app/products/listProduct",
+        `${baseURL}/products/listProduct`,
         {
           database: sessionStorage.getItem("database"),
         }
@@ -29,7 +30,7 @@ export default function Tabela() {
   const fetchCategories = async () => {
     try {
       const response = await axios.post(
-        "https://f8d3a9035cb7.ngrok-free.app/category/getCategory",
+        `${baseURL}/category/getCategory`,
         {
           database: sessionStorage.getItem("database"),
         }
@@ -57,7 +58,7 @@ export default function Tabela() {
     if (window.confirm("Você tem certeza que deseja excluir este Produto?")) {
       try {
         await axios.delete(
-          `https://f8d3a9035cb7.ngrok-free.app/product/productDelete/${idProduto}`,
+          `${baseURL}/product/productDelete/${idProduto}`,
           {
             data: { database: sessionStorage.getItem("database") },
           }
@@ -75,7 +76,7 @@ export default function Tabela() {
     if (window.confirm("Você tem certeza que deseja excluir esta categoria?")) {
       try {
         await axios.delete(
-          `https://f8d3a9035cb7.ngrok-free.app/category/categoryDelete/${idCategoria}`,
+          `${baseURL}/category/categoryDelete/${idCategoria}`,
           {
             data: { database: sessionStorage.getItem("database") },
           }

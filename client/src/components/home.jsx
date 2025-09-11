@@ -13,6 +13,7 @@ import Navbar from "./navbar.jsx";
 import { getTable, joinTable } from "../service/tables-service.jsx";
 import { cancelOrder, getOrderList, saveObsOrder } from "../service/group-service.jsx";
 import { productList } from "../service/product-service.jsx";
+import { baseURL } from "../service/api.jsx";
 
 
 export default function Home() {
@@ -103,7 +104,7 @@ export default function Home() {
   function listarProdutos(idGrupoPedido){
     if (idGrupoPedido > 0) { 
       setRemoveLoading(false);   
-        Axios.post("https://f8d3a9035cb7.ngrok-free.app/orderGroup/orderGroupListProduct", {
+        Axios.post(`${baseURL}/orderGroup/orderGroupListProduct`, {
           idGrupoPedido: idGrupoPedido,
           database: database
         }).then((response) => {

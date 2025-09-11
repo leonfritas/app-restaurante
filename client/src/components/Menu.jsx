@@ -4,12 +4,13 @@ import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { LoginContext } from '../context/LoginContext';
 import Axios from "axios";
+import { baseURL } from "../service/api";
 
 export default function Menu() {
     const { setIdGrupoPedido, idFuncionario, database } = useContext(LoginContext);
     
     function CriarNovoPedido() {
-        Axios.post("https://f8d3a9035cb7.ngrok-free.app/orderGroup/orderGroupInsert", {
+        Axios.post(`${baseURL}/orderGroup/orderGroupInsert`, {
             idFuncionario: idFuncionario,
             database: database
         })

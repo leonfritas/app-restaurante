@@ -5,6 +5,7 @@ import Axios from "axios";
 import Loading from "../components/Loading.jsx";
 import './css/login.css'
 import  logoHest  from '../assets/logoHest.png'
+import { baseURL } from '../service/api.jsx';
 
 
 export default function Login() {
@@ -18,7 +19,7 @@ export default function Login() {
     
 
     function getCompany(idEmpresa){
-        Axios.post("https://f8d3a9035cb7.ngrok-free.app/company/getCompany", {
+        Axios.post(`${baseURL}/company/getCompany`, {
                 idEmpresa: idEmpresa,            
                 database: database
         }).then((response) => {    
@@ -40,7 +41,7 @@ export default function Login() {
         setSenha('123');
         if (usuario !== '' && senha !== '' ) {
             setRemoveLoading(false);                        
-            Axios.post("https://f8d3a9035cb7.ngrok-free.app/users/login", {
+            Axios.post(`${baseURL}/users/login`, {
                 name: usuario,
                 senha: senha,
                 database: sessionStorage.getItem("database")

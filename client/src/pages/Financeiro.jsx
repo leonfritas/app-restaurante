@@ -6,6 +6,7 @@ import financeiroPDF from "../components/Pdf.jsx";
 import { LoginContext } from "../context/LoginContext.jsx";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-solid-svg-icons'; 
+import { baseURL } from '../service/api.jsx';
 
 export default function FinanceiroPage() {
 
@@ -18,7 +19,7 @@ export default function FinanceiroPage() {
 
   const listaFinanceiro = async () => {
     try {
-      const response = await Axios.post('https://f8d3a9035cb7.ngrok-free.app/financier/movimentoRealizado', {
+      const response = await Axios.post(`${baseURL}/financier/movimentoRealizado`, {
         dataEntrada: '2024-01-01',
         database: database       
       });      

@@ -6,6 +6,7 @@ import Loading from './Loading.jsx';
 import './css/novoPedido.css';
 import seta from '../assets/setaCarousel.png';
 import { MsgModal } from '../geral.jsx'
+import { baseURL } from '../service/api.jsx';
 
 export default function NovoPedido() {
     const { idGrupoPedido, nomeGrupoPedido, setNomeGrupoPedido, msgModal, setMsgModal, database } = useContext(LoginContext);
@@ -22,11 +23,12 @@ export default function NovoPedido() {
     const [isProcessing, setIsProcessing] = useState(false);
     const [textModal, setTextModal ] = useState(); 
     const [link, setLink] = useState();
-    const [imgPrincipal, setImgPrincipal] = useState();    
+    const [imgPrincipal, setImgPrincipal] = useState();   
+
 
 
     useEffect(() => {
-        Axios.post("https://f8d3a9035cb7.ngrok-free.app/products/listProduct", {
+        Axios.post(`${baseURL}/products/listProduct`, {
             database: database
         })
             .then((response) => {                
@@ -39,7 +41,7 @@ export default function NovoPedido() {
     }, []);    
 
     useEffect(() => {
-        Axios.post("https://f8d3a9035cb7.ngrok-free.app/category/getCategory", {
+        Axios.post(`${baseURL}/category/getCategory`, {
             database: database
         })
           .then((response) => {
@@ -67,7 +69,7 @@ export default function NovoPedido() {
     }, []);
 
     useEffect(() => {
-        Axios.post("https://f8d3a9035cb7.ngrok-free.app/table/getTable", {
+        Axios.post(`${baseURL}/table/getTable`, {
             database: database
         })
             .then((response) => {                
@@ -91,7 +93,7 @@ export default function NovoPedido() {
     function pedidoInserir(idProduto, preco, quantidade) {
         setIsProcessing(true);
         if (idGrupoPedido > 0) {
-            Axios.post("https://f8d3a9035cb7.ngrok-free.app/requested/requestInsert", {
+            Axios.post(`${baseURL}/requested/requestInsert`, {
                 idGrupoPedido: idGrupoPedido,
                 idProduto: idProduto,
                 quantidade: quantidade,
@@ -117,7 +119,7 @@ export default function NovoPedido() {
     
     function pedidoExcluir(idProduto) {
         if (idGrupoPedido > 0) {
-            Axios.post("https://f8d3a9035cb7.ngrok-free.app/requested/requestDelete", {
+            Axios.post(`${baseURL}/requested/requestDelete`, {
                 idGrupoPedido: idGrupoPedido,
                 idProduto: idProduto,
                 database: database
@@ -151,7 +153,7 @@ export default function NovoPedido() {
             if (idMesa === undefined) setIdMesa(0);
             if (idMesa !== undefined) {
                 setMostrarListaMesa(false);
-                Axios.post("https://f8d3a9035cb7.ngrok-free.app/orderGroup/orderGroupSave", {
+                Axios.post(`${baseURL}/orderGroup/orderGroupSave`, {
                     idGrupoPedido: idGrupoPedido,
                     nomeGrupoPedido: nomeGrupoPedido,
                     idMesa: idMesa,                
@@ -173,7 +175,7 @@ export default function NovoPedido() {
     
     function cancelarGrupoPedido() {
         if (idGrupoPedido > 0) {
-            Axios.post("https://f8d3a9035cb7.ngrok-free.app/orderGroup/orderGroupCancel", {
+            Axios.post(`${baseURL}/orderGroup/orderGroupCancel`, {
                 idGrupoPedido: idGrupoPedido,
                 database: database
             })
@@ -200,7 +202,7 @@ export default function NovoPedido() {
 
     function filterByCategory(idCategory){              
         if(idGrupoPedido > 0){            
-            Axios.post("https://f8d3a9035cb7.ngrok-free.app/category/filterByCategory", {
+            Axios.post(`${baseURL}/category/filterByCategory`, {
                 idCategory: idCategory,
                 database: database                
             }).then((response) => {                

@@ -1,8 +1,9 @@
 import axios from "axios";
+import { baseURL } from '../service/api.jsx';
 
 export async function productList(database, idGrupoPedido) {
   try {   
-    const response = await axios.post("https://f8d3a9035cb7.ngrok-free.app/orderGroup/orderGroupListProduct", {
+    const response = await axios.post(`${baseURL}/orderGroup/orderGroupListProduct`, {
       idGrupoPedido: idGrupoPedido,
       database: database
     });

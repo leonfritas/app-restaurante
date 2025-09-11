@@ -1,8 +1,9 @@
 import Axios from "axios";
+import { baseURL } from '../service/api.jsx';
 
 export async function getOrderList(database) {
     try {      
-        const response = await Axios.post('https://f8d3a9035cb7.ngrok-free.app/orderGroup/orderGroupList', {
+        const response = await Axios.post(`${baseURL}/orderGroup/orderGroupList`, {
         dataEntrada: '2024-01-01',
         database: database
         });  
@@ -18,7 +19,7 @@ export async function getOrderList(database) {
 
 export async function cancelOrder(database, idGrupoPedido) {
     try {      
-        await Axios.post("https://f8d3a9035cb7.ngrok-free.app/orderGroup/orderGroupCancel", {
+        await Axios.post(`${baseURL}/orderGroup/orderGroupCancel`, {
           idGrupoPedido: idGrupoPedido,
           database: database
         });     
@@ -33,7 +34,7 @@ export async function cancelOrder(database, idGrupoPedido) {
 
 export async function saveObsOrder(idGrupoPedido, observacao, database) {
     try {      
-        await Axios.post("https://f8d3a9035cb7.ngrok-free.app/orderGroup/orderGroupSaveObs", {
+        await Axios.post(`${baseURL}/orderGroup/orderGroupSaveObs`, {
             idGrupoPedido: idGrupoPedido,
             observacao: observacao,
             database: database

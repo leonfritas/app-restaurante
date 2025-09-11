@@ -5,6 +5,7 @@ import './css/novoPedido.css';
 import Loading from './Loading.jsx';
 import Modal from 'react-modal'
 import Register from './Register.jsx';
+import { baseURL } from '../service/api.jsx';
 
 Modal.setAppElement('#root')
 
@@ -31,7 +32,7 @@ export default function ListUser() {
     }
 
     const buscarUsers = () => {
-        Axios.post('https://f8d3a9035cb7.ngrok-free.app/users/userList',{
+        Axios.post(`${baseURL}/users/userList`,{
             database: sessionStorage.getItem('database')
         })
             .then((response) => {
@@ -54,7 +55,7 @@ export default function ListUser() {
 
     const deleteUser = (idFuncionario) => {
         if (idFuncionario > 0) {
-                Axios.delete(`https://f8d3a9035cb7.ngrok-free.app/users/deleteUser/${idFuncionario}`)
+                Axios.delete(`${baseURL}/users/deleteUser/${idFuncionario}`)
                     .then(() => {                        
                         buscarUsers(); 
                     })

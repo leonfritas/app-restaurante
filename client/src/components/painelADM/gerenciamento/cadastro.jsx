@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { baseURL } from '../../../service/api';
 
 export default function Cadastro() {
   const [message, setMessage] = useState("");
@@ -20,7 +21,7 @@ export default function Cadastro() {
   const fetchProducts = async () => {
       try {
         const response = await axios.post(
-          "https://f8d3a9035cb7.ngrok-free.app/products/listProduct",
+          `${baseURL}/products/listProduct`,
           {
             database: sessionStorage.getItem("database"),
           }
@@ -35,7 +36,7 @@ export default function Cadastro() {
     const fetchCategories = async () => {
       try {
         const response = await axios.post(
-          "https://f8d3a9035cb7.ngrok-free.app/category/getCategory",
+          `${baseURL}/category/getCategory`,
           {
             database: sessionStorage.getItem("database"),
           }
@@ -76,7 +77,7 @@ export default function Cadastro() {
       }
   
       try {
-        await axios.post("https://f8d3a9035cb7.ngrok-free.app/products/productRegister", {
+        await axios.post("https://c630c4e6c2fd.ngrok-free.app/products/productRegister", {
           nomeProduto: nameProduto,
           quantidade,
           preco,
@@ -100,7 +101,7 @@ export default function Cadastro() {
   
       try {
         const response = await axios.post(
-          "https://f8d3a9035cb7.ngrok-free.app/category/addCategory",
+          "https://c630c4e6c2fd.ngrok-free.app/category/addCategory",
           {
             nomeCategoria: newCategoryName,
             database: sessionStorage.getItem("database"),
@@ -131,7 +132,7 @@ export default function Cadastro() {
       }
   
       try {
-        await axios.put("https://f8d3a9035cb7.ngrok-free.app/products/productUpdate", {
+        await axios.put("https://c630c4e6c2fd.ngrok-free.app/products/productUpdate", {
           idProduto: editingProduct.idProduto,
           nomeProduto: nameProduto,
           quantidade,

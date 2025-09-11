@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import Loading from "../Loading.jsx";
 import logoHest from '../../assets/logoHest.png';
+import { baseURL } from '../../service/api.jsx';
 
 export default function LoginPainel() {
     const { setIsLogged, setAtivoAdm, setIdFuncionario, database, setDataBase } = useContext(LoginContext);
@@ -15,7 +16,7 @@ export default function LoginPainel() {
     const [modalMessage, setModalMessage] = useState("");
 
     const getCompany = (idEmpresa) => {
-        Axios.post("https://f8d3a9035cb7.ngrok-free.app/company/getCompany", {
+        Axios.post(`${baseURL}/company/getCompany`, {
             idEmpresa: idEmpresa,
             database: database
         }).then((response) => {
@@ -32,7 +33,7 @@ export default function LoginPainel() {
     const logar = () => {
         if (usuario !== '' && senha !== '') {
             setRemoveLoading(false);
-            Axios.post("https://f8d3a9035cb7.ngrok-free.app/users/login", {
+            Axios.post(`${baseURL}/users/login`, {
                 name: usuario,
                 senha: senha,
                 database: database

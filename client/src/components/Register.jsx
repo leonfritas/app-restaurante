@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import { LoginContext } from "../context/LoginContext.jsx";
 import { MsgModal } from "../geral.jsx";
+import { baseURL } from '../service/api.jsx';
 
 export default function Register() {
   const [realName, setName] = useState("");
@@ -14,6 +15,7 @@ export default function Register() {
   const navigate = useNavigate();
   const { msgModal, setMsgModal, database} = useContext(LoginContext);
   const [textModal, setTextoModal ] = useState();
+  
 
   function register (){
     const ativoAdminValue = checkAdmin ? 1 : 0;
@@ -22,7 +24,7 @@ export default function Register() {
     const cpfNumerico = cpf.replace(/\D/g, "");
 
     if (realName !== "" && userName !== "" && senha !== "" && cpfNumerico !== "") {
-      Axios.post("https://f8d3a9035cb7.ngrok-free.app/users/register", {
+      Axios.post(`${baseURL}/users/register`, {
         realName: realName,
         cpf: cpfNumerico,
         userName: userName,

@@ -2,6 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import { LoginContext } from "../../../context/LoginContext.jsx";
 import Axios from "axios";
 import Loading from "../../../components/Loading.jsx";
+import { baseURL } from '../../../service/api';
 
 export default function Empresa() {
     const { nomeEmpresa, setNomeEmpresa } = useContext(LoginContext);
@@ -18,7 +19,7 @@ export default function Empresa() {
     const [ modalMessage, setModalMessage ] = useState("");
 
     function getCompany(idEmpresa){
-        Axios.post("https://f8d3a9035cb7.ngrok-free.app/company/getCompany", {
+        Axios.post(`${baseURL}/company/getCompany`, {
                 idEmpresa: idEmpresa,            
                 database: sessionStorage.getItem("database")
         }).then((response) => {    
