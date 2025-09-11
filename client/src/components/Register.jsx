@@ -36,11 +36,11 @@ export default function Register() {
             openModal('msg', "Erro ao tentar cadastrar. Resposta vazia do servidor.");
             return;
           }          
-          if (response.data[0][0].usuarioDuplicado == 0){
-            if (response.data[0][0].idFuncionario > 0) {
+          if (response.data[0].usuarioDuplicado == 0){
+            if (response.data[0].idFuncionario > 0) {
               openModal("msg",
                 "Funcionário: " +
-                  response.data[0][0].nomeFuncionario +
+                  response.data[0].nomeFuncionario +
                   " cadastrado com sucesso."
               );
               navigate("/lista");

@@ -14,7 +14,7 @@ export default function Menu() {
             database: database
         })
             .then((response) => {                
-                setIdGrupoPedido(response.data[0][0].idGrupoPedido);
+                setIdGrupoPedido(response.data.idGrupoPedido);
             })
             .catch((error) => {
                 console.error("Erro ao criar novo pedido: ", error);

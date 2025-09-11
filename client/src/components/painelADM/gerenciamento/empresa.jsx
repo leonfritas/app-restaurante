@@ -22,15 +22,14 @@ export default function Empresa() {
                 idEmpresa: idEmpresa,            
                 database: sessionStorage.getItem("database")
         }).then((response) => {    
-            if (response.data[0][0]) {
-                console.log(response.data[0][0]);
-                setNomeEmpresa(response.data[0][0].nomeEmpresa); 
-                setRazaoSocial(response.data[0][0].razaoSocial);  
-                setCnpj(response.data[0][0].numeroCNPJ);  
-                setEndereco(response.data[0][0].nomeEndereco);  
-                setTelefone(response.data[0][0].numeroTelefone);                   
-                setEmail(response.data[0][0].email);  
-                setSite(response.data[0][0].site);                  
+            if (response.data[0]) {                
+                setNomeEmpresa(response.data[0].nomeEmpresa); 
+                setRazaoSocial(response.data[0].razaoSocial);  
+                setCnpj(response.data[0].numeroCNPJ);  
+                setEndereco(response.data[0].nomeEndereco);  
+                setTelefone(response.data[0].numeroTelefone);                   
+                setEmail(response.data[0].email);  
+                setSite(response.data[0].site);                  
             }
         }).catch((error) => {
             console.error('Erro ao fazer login:', error);

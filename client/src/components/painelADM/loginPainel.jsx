@@ -19,7 +19,7 @@ export default function LoginPainel() {
             idEmpresa: idEmpresa,
             database: database
         }).then((response) => {
-            console.log(response.data[0][0].nomeEmpresa);
+            console.log(response.data[0].nomeEmpresa);
         }).catch((error) => {
             console.error('Erro ao buscar dados da empresa:', error);
             setModalMessage(error.response?.data?.message || 'Erro ao buscar dados da empresa.');
@@ -37,8 +37,8 @@ export default function LoginPainel() {
                 senha: senha,
                 database: database
             }).then((response) => {
-                if (response.data && response.data[0] && response.data[0][0]) {
-                    let user = response.data[0][0];
+                if (response.data && response.data[0] && response.data[0]) {
+                    let user = response.data[0];
                     let ativoFuncionario = user.ativoFuncionario;
 
                     if (ativoFuncionario) {

@@ -29,7 +29,7 @@ export default function EditarPedido(){
             database: database
           }        
           ).then((response) => {
-            const produtos = response.data[0];
+            const produtos = response.data;
             setListProdutoEditar(produtos);
             const quantidadesIniciais = {};
             produtos.forEach(produto => {
@@ -167,7 +167,7 @@ export default function EditarPedido(){
                 idGrupoPedido: idGrupoPedido,
                 database: database                
             }).then((response) => {                
-                setListProduto(response.data[0]);                                                      
+                setListProduto(response.data);                                                      
             })
         }else{            
             openModal('msg', 'Número de pedido não encontrado',);

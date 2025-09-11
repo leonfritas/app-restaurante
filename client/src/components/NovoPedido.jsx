@@ -30,7 +30,7 @@ export default function NovoPedido() {
             database: database
         })
             .then((response) => {                
-                setListProduto(response.data[0]);
+                setListProduto(response.data);
                 setRemoveLoading(true);
             })
             .catch((error) => {
@@ -70,10 +70,8 @@ export default function NovoPedido() {
         Axios.post("https://f8d3a9035cb7.ngrok-free.app/table/getTable", {
             database: database
         })
-            .then((response) => {
-                setTable(response.data[0]);
-                console.log(response.data[0])
-                console.log(database)
+            .then((response) => {                
+                setTable(response.data);        
             })
             .catch((error) => {
                 console.error("Error fetching tables:", error);
@@ -206,9 +204,9 @@ export default function NovoPedido() {
                 idCategory: idCategory,
                 database: database                
             }).then((response) => {                
-                setListProduto(response.data[0]);
+                setListProduto(response.data);
                 
-                    let imgCategoria = response.data[0].imgCategoria
+                    let imgCategoria = response.data.imgCategoria
 
                     
                     if (imgCategoria && imgCategoria.data) {

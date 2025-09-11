@@ -106,7 +106,7 @@ export default function Home() {
           idGrupoPedido: idGrupoPedido,
           database: database
         }).then((response) => {
-          setListaProduto(response.data[0]);                        
+          setListaProduto(response.data);                        
         })      
         atualizarLista();
       }
