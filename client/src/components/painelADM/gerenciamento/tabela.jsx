@@ -20,7 +20,7 @@ export default function Tabela() {
           database: sessionStorage.getItem("database"),
         }
       );
-      setListProduct(response.data[0]);
+      setListProduct(response.data);
     } catch (error) {
       console.error("Error fetching products:", error);
     }

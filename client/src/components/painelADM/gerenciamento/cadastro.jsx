@@ -25,7 +25,8 @@ export default function Cadastro() {
             database: sessionStorage.getItem("database"),
           }
         );
-        setListProduct(response.data[0]);
+        console.log("Produtos buscados: ", response.data);
+        setListProduct(response.data);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
