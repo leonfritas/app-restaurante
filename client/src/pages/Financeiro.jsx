@@ -1,12 +1,14 @@
 import { useContext, useState, useEffect } from "react";
 import Axios from "axios";
 import Navbar from "../components/navbar.jsx"
-import Loading from "../components/Loading.jsx";
-import financeiroPDF from "../components/Pdf.jsx";
+
+
 import { LoginContext } from "../context/LoginContext.jsx";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-solid-svg-icons'; 
 import { baseURL } from '../service/api.jsx';
+import Loading from "../components/Loading.jsx";
+import financeiroPDF from "../components/Pdf.jsx";
 
 export default function FinanceiroPage() {
 
