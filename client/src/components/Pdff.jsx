@@ -1,8 +1,10 @@
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfMake/build/vfs_fonts';
+import pdfMake from "pdfmake/build/pdfmake.js";
+import pdfFonts from "pdfmake/build/vfs_fonts.js";
+
 
 export default function financeiroPDF(financeiro) {
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
 
     const reportTitle = {
         text: 'Financeiro',
