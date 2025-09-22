@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Loading from "../Loading";
+import Loading from "../Loadingg.jsx";
 
 export default function Painel() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);

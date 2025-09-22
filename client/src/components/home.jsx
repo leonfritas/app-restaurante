@@ -8,7 +8,7 @@ import { faEllipsisVertical, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { ConfirmModal } from '../geral.jsx'
 import { MsgModal } from '../geral.jsx'
 import Menu from "./Menu.jsx";
-import Loading from "./Loading.jsx";
+import Loading from "./Loadingg.jsx";
 import Navbar from "./navbar.jsx";
 import { getTable, joinTable } from "../service/tables-service.jsx";
 import { cancelOrder, getOrderList, saveObsOrder } from "../service/group-service.jsx";

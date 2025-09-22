@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { LoginContext } from '../context/LoginContext.jsx';
 import Axios from 'axios';
 import './css/novoPedido.css';
-import Loading from './Loading.jsx';
+import Loading from './Loadingg.jsx';
 import Modal from 'react-modal'
 import Register from './Register.jsx';
 import { baseURL } from '../service/api.jsx';

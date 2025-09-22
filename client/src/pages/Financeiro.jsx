@@ -7,8 +7,8 @@ import { LoginContext } from "../context/LoginContext.jsx";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-solid-svg-icons'; 
 import { baseURL } from '../service/api.jsx';
-import Loading from "../components/Loading.jsx";
-import financeiroPDF from "../components/Pdf.jsx";
+import Loading from "../components/Loadingg.jsx";
+import financeiroPDF from "../components/Pdff.jsx";
 
 export default function FinanceiroPage() {
 
