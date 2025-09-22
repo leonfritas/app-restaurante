@@ -1,7 +1,7 @@
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfMake/build/vfs_fonts';
 
-function financeiroPDF(financeiro) {
+export default function financeiroPDF(financeiro) {
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
     const reportTitle = {
@@ -62,4 +62,4 @@ function financeiroPDF(financeiro) {
     pdfMake.createPdf(docDefinitions).download();
 }
 
-export default financeiroPDF;
+
