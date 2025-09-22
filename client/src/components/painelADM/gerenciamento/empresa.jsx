@@ -1,7 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import { LoginContext } from "../../../context/LoginContext.jsx";
 import Axios from "axios";
-import Loading from "../../../components/Loading.jsx";
 import { baseURL } from '../../../service/api';
 
 export default function Empresa() {
