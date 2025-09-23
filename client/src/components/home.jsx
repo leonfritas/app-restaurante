@@ -12,8 +12,7 @@ import Loading from "./Loadingg.jsx";
 import Navbar from "./navbar.jsx";
 import { getTable, joinTable } from "../service/tables-service.jsx";
 import { cancelOrder, getOrderList, saveObsOrder } from "../service/group-service.jsx";
-import { productList } from "../service/product-service.jsx";
-import { baseURL } from "../service/api.jsx";
+import { baseURL } from '../service/api.jsx';
 
 
 export default function Home() {
@@ -108,6 +107,7 @@ export default function Home() {
           idGrupoPedido: idGrupoPedido,
           database: database
         }).then((response) => {
+          console.log(response.data)
           setListaProduto(response.data);                        
         })      
         atualizarLista();
@@ -266,7 +266,8 @@ export default function Home() {
                             <div key={value.idProduto} className={`${index !== 0 ? 'cardListProduct' : 'cardListProduct'}`}>                                              
                               <p>{value.nomeProduto}</p>                                                                                                                                                                                               
                               <p>{value.quantidade}</p> 
-                              <p>R$ {value.preco.toFixed(2)}</p>                               
+                              <p>R$ {parseFloat(value.preco || 0).toFixed(2)}</p>
+                            
                             </div>             
                           ))}               
                         </div>                      
