@@ -17,7 +17,7 @@ export default function Navbar() {
                         </button>
                     </Link>
                     <div>
-                        <p className="text-white mx-2">  {nomeEmpresa != null? nomeEmpresa : 'Não existe empresa cadastrada'}  | {nomeFuncionario !== ''? nomeFuncionario : ''}</p>    
+                        <p className="text-white mx-2">  {nomeEmpresa != null? nomeEmpresa : 'L.A Soft Solutions'}  | {nomeFuncionario !== ''? nomeFuncionario : ''}</p>    
                     </div>
                     
                 </div>
