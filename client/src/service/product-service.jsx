@@ -6,8 +6,7 @@ export async function productList(database, idGrupoPedido) {
     const response = await axios.post(`${baseURL}/orderGroup/orderGroupListProduct`, {
       idGrupoPedido: idGrupoPedido,
       database: database
-    });    
-    console.log(response.data)
+    });        
     return response.data; // não force [0], deixe a API decidir
   } catch (error) {      
     if (error.response) {

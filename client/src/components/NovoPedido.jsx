@@ -40,33 +40,18 @@ export default function NovoPedido() {
             });
     }, []);    
 
-    useEffect(() => {
-        Axios.post(`${baseURL}/category/getCategory`, {
-            database: database
-        })
-          .then((response) => {
-            // Mapeia os dados para incluir URLs das imagens
-            const categoriesWithImages = response.data.map((item) => {
-              if (item.imgCategoria && item.imgCategoria.data) {
-                // Cria um Blob a partir dos dados binários
-                const imageBlob = new Blob([new Uint8Array(item.imgCategoria.data)], { type: 'image/jpeg' });
-                // Cria uma URL de objeto para a imagem
-                const imageUrl = URL.createObjectURL(imageBlob);
-                return {
-                  ...item,
-                  imageUrl, // Adiciona a URL da imagem ao objeto do item
-                };
-              }
-              return item; // Retorna o item sem alterações se não houver imagem
-            });
-    
-            setListCategory(categoriesWithImages);
-            setRemoveLoading(true);
-          })
-          .catch((error) => {
-            console.error("Error fetching categories:", error);
-          });
-    }, []);
+useEffect(() => {
+  Axios.post(`https://api.leonardoribeirodev.com/category/getCategory`, { database: database })
+    .then((response) => {
+      setListCategory(response.data); // já vem com imgPath
+      setRemoveLoading(true);
+    })
+    .catch((error) => {
+      console.error("Error fetching categories:", error);
+    });
+}, []);
+
+
 
     useEffect(() => {
         Axios.post(`${baseURL}/table/getTable`, {
@@ -200,34 +185,30 @@ export default function NovoPedido() {
         carousel.current.scrollLeft += carousel.current.offsetWidth;
     }
 
-    function filterByCategory(idCategory){              
-        if(idGrupoPedido > 0){            
-            Axios.post(`${baseURL}/category/filterByCategory`, {
-                idCategory: idCategory,
-                database: database                
-            }).then((response) => {                
-                setListProduto(response.data);
-                
-                    let imgCategoria = response.data.imgCategoria
+    function filterByCategory(idCategory) {              
+  if (idGrupoPedido > 0) {            
+    Axios.post(`${baseURL}/category/filterByCategory`, {
+      idCategory,
+      database                
+    })
+    .then((response) => {                
+      setListProduto(response.data);
 
-                    
-                    if (imgCategoria && imgCategoria.data) {
-                      // Cria um Blob a partir dos dados binários
-                      const imageBlob = new Blob([new Uint8Array(imgCategoria.data)], { type: 'image/jpeg' });
-                      // Cria uma URL de objeto para a imagem
-                      const imageUrl = URL.createObjectURL(imageBlob);
-                      return {
-                        ...imgCategoria,
-                        imageUrl, // Adiciona a URL da imagem ao objeto do item
-                      };
-                    }                    
-                    
-                  setImgPrincipal(imgCategoria)               
-            })
-        }else{            
-            openModal('msg', 'Número de pedido não encontrado',);
-        }
-    }
+      // Se a SP já retorna o campo imgPath da categoria
+      if (response.data.length > 0 && response.data[0].imgPath) {
+        setImgPrincipal(`${baseURL}/${response.data[0].imgPath}`);
+      } else {
+        setImgPrincipal(null);
+      }
+    })
+    .catch((error) => {
+      console.error("Error filtering category:", error);
+    });
+  } else {            
+    openModal('msg', 'Número de pedido não encontrado');
+  }
+}
+
 
     function closeModal(action){        
         if (action === 'msg') {            
@@ -261,18 +242,24 @@ export default function NovoPedido() {
                         />
                     <div className='carousel' ref={carousel}> 
                         
-                        {listCategory?.map((value) => (
-                                <div key={value.idCategoria} className='divCarouselButton'>
-                                    <button className='carouselButton' onClick={() => filterByCategory(value.idCategoria, value.imagemCategoria)} role="button">                                        
-                                        {value.imageUrl ? (
-                                        <img src={value.imageUrl}  />
-                                        ) : (
-                                        <p>No image available</p>
-                                        )}
-                                    </button>
-                                    <p className='nomeCategoriaButton'>{value.nomeCategoria}</p>                                                                                                   
-                                </div>
-                        ))}
+{listCategory?.map((value) => (
+  <div key={value.idCategoria} className='divCarouselButton'>
+    <button 
+      className='carouselButton' 
+      onClick={() => filterByCategory(value.idCategoria)} 
+      role="button"
+    >
+      {value.imgPath ? (
+        <img src={`https://api.leonardoribeirodev.com/images/${value.imgPath}`} alt={value.nomeCategoria} />
+
+      ) : (
+        <p>No image available</p>
+      )}
+    </button>
+    <p className='nomeCategoriaButton'>{value.nomeCategoria}</p>                                                                                                   
+  </div>
+))}
+
                     </div>
                     <div className="selecionarProduto">
                         <h2 className='selecionarTexto'>Selecione os itens do pedido:</h2>

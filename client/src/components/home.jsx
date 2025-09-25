@@ -65,7 +65,6 @@ export default function Home() {
   const atualizarLista = async () => {
     try {
       const lista = await getOrderList(database); 
-      console.log("Lista de pedidos atualizada: ", lista);
       setGrupoPedido(lista); 
       setRemoveLoading(true);
     } catch (error) {
@@ -107,7 +106,6 @@ export default function Home() {
           idGrupoPedido: idGrupoPedido,
           database: database
         }).then((response) => {
-          console.log(response.data)
           setListaProduto(response.data);                        
         })      
         atualizarLista();

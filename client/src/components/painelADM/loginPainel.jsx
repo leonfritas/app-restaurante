@@ -20,7 +20,6 @@ export default function LoginPainel() {
             idEmpresa: idEmpresa,
             database: database
         }).then((response) => {
-            console.log(response.data[0].nomeEmpresa);
         }).catch((error) => {
             console.error('Erro ao buscar dados da empresa:', error);
             setModalMessage(error.response?.data?.message || 'Erro ao buscar dados da empresa.');

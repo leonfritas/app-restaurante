@@ -25,8 +25,7 @@ export default function Cadastro() {
           {
             database: sessionStorage.getItem("database"),
           }
-        );
-        console.log("Produtos buscados: ", response.data);
+        );      
         setListProduct(response.data);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -77,7 +76,7 @@ export default function Cadastro() {
       }
   
       try {
-        await axios.post("https://c630c4e6c2fd.ngrok-free.app/products/productRegister", {
+        await axios.post("https://api.leonardoribeirodev.com/products/productRegister", {
           nomeProduto: nameProduto,
           quantidade,
           preco,
@@ -101,7 +100,7 @@ export default function Cadastro() {
   
       try {
         const response = await axios.post(
-          "https://c630c4e6c2fd.ngrok-free.app/category/addCategory",
+          "https://api.leonardoribeirodev.com/category/addCategory",
           {
             nomeCategoria: newCategoryName,
             database: sessionStorage.getItem("database"),
@@ -132,7 +131,7 @@ export default function Cadastro() {
       }
   
       try {
-        await axios.put("https://c630c4e6c2fd.ngrok-free.app/products/productUpdate", {
+        await axios.put("https://api.leonardoribeirodev.com/products/productUpdate", {
           idProduto: editingProduct.idProduto,
           nomeProduto: nameProduto,
           quantidade,

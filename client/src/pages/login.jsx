@@ -38,16 +38,14 @@ export default function Login() {
     const logar = () => {
         sessionStorage.setItem('database', database);  
         // setUsuario('admin');
-        // setSenha('123');
-        console.log(sessionStorage.getItem("database"))
+        // setSenha('123');        
         if (usuario !== '' && senha !== '' && sessionStorage.getItem("database") !== null) {
             setRemoveLoading(false);                        
             Axios.post(`${baseURL}/users/login`, {
                 name: usuario,
                 senha: senha,
                 database: sessionStorage.getItem("database")
-            }).then((response) => {    
-                console.log(response.data)
+            }).then((response) => {                    
                 if (response.data && response.data[0]) {
                         
                     let user = response.data[0];
