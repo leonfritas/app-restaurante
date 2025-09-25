@@ -17,13 +17,21 @@ export default function Login() {
     const [ modalMessage, setModalMessage ] = useState("");
     const navigate = useNavigate();
     
-    alert(
-    "=== Dados de Acesso ===\n\n" +
-    "Empresa: Hest\n" +
-    "Usuário: admin\n" +
-    "Senha: 123\n\n" +
-    "⚠️ Guarde essas informações com segurança!"
-    );
+    useEffect(() => {
+    const jaMostrou = localStorage.getItem("alertLoginMostrado");
+
+    if (!jaMostrou) {
+        alert(
+        "=== Dados de Acesso ===\n\n" +
+        "Empresa: Hest\n" +
+        "Usuário: admin\n" +
+        "Senha: 123\n\n" +
+        "⚠️ Guarde essas informações com segurança!"
+        );
+
+        localStorage.setItem("alertLoginMostrado", "true");
+    }
+    }, []);
 
 
     function getCompany(idEmpresa){
