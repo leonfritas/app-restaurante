@@ -7,7 +7,7 @@ import logoHest from '../../assets/logoHest.png';
 import { baseURL } from '../../service/api.jsx';
 
 export default function LoginPainel() {
-    const { setIsLogged, setAtivoAdm, setIdFuncionario, database, setDataBase, setNomeEmpresa } = useContext(LoginContext);
+    const { setIsLogged, setAtivoAdm, setIdFuncionario, database, setDataBase, nomeEmpresa, setNomeEmpresa } = useContext(LoginContext);
     const [usuario, setUsuario] = useState("");
     const [senha, setSenha] = useState("");
     const navigate = useNavigate();
@@ -23,7 +23,7 @@ export default function LoginPainel() {
             if (response.data[0].nomeEmpresa) {
                 
                 setNomeEmpresa(response.data[0].nomeEmpresa);   
-                alert(response.data[0].nomeEmpresa);   
+                
             }
         }).catch((error) => {
             console.error('Erro ao fazer login:', error);
@@ -61,7 +61,7 @@ export default function LoginPainel() {
                         setIsLogged(true);
 
                         // Navegue apenas se for admin
-                        if (ativoAdm) {
+                        if (ativoAdm) {                               
                             navigate('/painelAdmin');
                         } else {
                             setModalMessage('Acesso negado: você não é um administrador.');

@@ -12,11 +12,33 @@ import financeiroPDF from "../components/Pdff.jsx";
 
 export default function FinanceiroPage() {
 
-  const { database } = useContext(LoginContext);
+
+
+  const { database, setNomeEmpresa } = useContext(LoginContext);
   const [financeiro, setFinanceiro] = useState([]);
+
+//   function getCompany(idEmpresa){
+//         Axios.post(`${baseURL}/company/getCompany`, {
+//                 idEmpresa: idEmpresa,            
+//                 database: 'hest'
+//         }).then((response) => {                
+//             if (response.data[0].nomeEmpresa) {
+                
+//                 setNomeEmpresa(response.data[0].nomeEmpresa);   
+                
+//             }
+//         }).catch((error) => {
+//             console.error('Erro ao fazer login:', error);
+//             setModalMessage(error.response?.data?.message || 'Erro ao buscar dados da empresa.');
+//             setModalOpen(true);
+//         }).finally(() => {
+//             setRemoveLoading(true);
+//         });
+// }
 
   useEffect(() => {
     listaFinanceiro();
+    // getCompany(1);
   }, []);
 
   const listaFinanceiro = async () => {
