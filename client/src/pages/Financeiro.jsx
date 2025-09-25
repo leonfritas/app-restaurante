@@ -17,28 +17,10 @@ export default function FinanceiroPage() {
   const { database, setNomeEmpresa } = useContext(LoginContext);
   const [financeiro, setFinanceiro] = useState([]);
 
-//   function getCompany(idEmpresa){
-//         Axios.post(`${baseURL}/company/getCompany`, {
-//                 idEmpresa: idEmpresa,            
-//                 database: 'hest'
-//         }).then((response) => {                
-//             if (response.data[0].nomeEmpresa) {
-                
-//                 setNomeEmpresa(response.data[0].nomeEmpresa);   
-                
-//             }
-//         }).catch((error) => {
-//             console.error('Erro ao fazer login:', error);
-//             setModalMessage(error.response?.data?.message || 'Erro ao buscar dados da empresa.');
-//             setModalOpen(true);
-//         }).finally(() => {
-//             setRemoveLoading(true);
-//         });
-// }
 
   useEffect(() => {
     listaFinanceiro();
-    // getCompany(1);
+
   }, []);
 
   const listaFinanceiro = async () => {
@@ -74,7 +56,7 @@ export default function FinanceiroPage() {
   return (
     <>
       <Navbar />
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-6 py-8">
         <h1 className="text-2xl font-bold mb-4 ">Lista de Movimentos Financeiros</h1>
         <button 
           type="button"
