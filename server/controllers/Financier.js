@@ -38,17 +38,18 @@ export const realizarBaixa = async (req, res) => {
 
 // Controller adaptado: movimentoRealizado
 export const movimentoRealizado = async (req, res) => {
-    const { movimentoRealizado, database } = req.body;
+  const { dataMovimento, database } = req.body;
 
-    if (!movimentoRealizado || !database) {
-        return res.status(400).send({ message: "movimentoRealizado e database são obrigatórios." });
-    }
+  if (!dataMovimento || !database) {
+    return res.status(400).send({ message: "dataMovimento e database são obrigatórios." });
+  }
 
-    try {
-        const sql = 'EXEC sp_FinanceiroMovimento_Realizado @movimentoRealizado';
-        const result = await executeQuery(database, sql, { movimentoRealizado });
-        res.status(200).send(result);
-    } catch (err) {
-        res.status(500).send({ message: "Erro ao marcar movimento como realizado." });
-    }
+  try {
+    const sql = 'EXEC sp_FinanceiroMovimento_Realizado @dataMovimento, null, null';
+    const result = await executeQuery(database, sql, { dataMovimento, NULL, NULL });
+    res.status(200).send(result);
+  } catch (err) {
+    res.status(500).send({ message: "Erro ao buscar movimentos realizados." });
+  }
 };
+

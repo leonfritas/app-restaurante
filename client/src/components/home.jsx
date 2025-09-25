@@ -208,7 +208,7 @@ export default function Home() {
       <Navbar />
       <main className="lg:my-20 xl:my-20"> 
         <Menu />       
-        <div className="">
+        <div className="pb-20">
           { mesasOpen === null ?
           <div>
             {grupoPedido && grupoPedido.map((value, index) => (                         

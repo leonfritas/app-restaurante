@@ -7,7 +7,7 @@ import logoHest from '../../assets/logoHest.png';
 import { baseURL } from '../../service/api.jsx';
 
 export default function LoginPainel() {
-    const { setIsLogged, setAtivoAdm, setIdFuncionario, database, setDataBase } = useContext(LoginContext);
+    const { setIsLogged, setAtivoAdm, setIdFuncionario, database, setDataBase, setNomeEmpresa } = useContext(LoginContext);
     const [usuario, setUsuario] = useState("");
     const [senha, setSenha] = useState("");
     const navigate = useNavigate();
@@ -15,21 +15,28 @@ export default function LoginPainel() {
     const [modalOpen, setModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState("");
 
-    const getCompany = (idEmpresa) => {
+    function getCompany(idEmpresa){
         Axios.post(`${baseURL}/company/getCompany`, {
-            idEmpresa: idEmpresa,
-            database: database
-        }).then((response) => {
+                idEmpresa: idEmpresa,            
+                database: 'hest'
+        }).then((response) => {                
+            if (response.data[0].nomeEmpresa) {
+                
+                setNomeEmpresa(response.data[0].nomeEmpresa);   
+                alert(response.data[0].nomeEmpresa);   
+            }
         }).catch((error) => {
-            console.error('Erro ao buscar dados da empresa:', error);
+            console.error('Erro ao fazer login:', error);
             setModalMessage(error.response?.data?.message || 'Erro ao buscar dados da empresa.');
             setModalOpen(true);
         }).finally(() => {
             setRemoveLoading(true);
         });
-    };
+    }
 
     const logar = () => {
+        sessionStorage.setItem('database', 'hest');  
+        
         if (usuario !== '' && senha !== '') {
             setRemoveLoading(false);
             Axios.post(`${baseURL}/users/login`, {
@@ -48,7 +55,7 @@ export default function LoginPainel() {
                         sessionStorage.setItem('isLogged', true);
                         sessionStorage.setItem('idFuncionario', idFuncionario);
                         sessionStorage.setItem('database', database);
-
+                        getCompany(1);
                         setIdFuncionario(idFuncionario);
                         setAtivoAdm(ativoAdm);
                         setIsLogged(true);

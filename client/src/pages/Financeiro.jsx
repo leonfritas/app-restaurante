@@ -21,11 +21,14 @@ export default function FinanceiroPage() {
 
   const listaFinanceiro = async () => {
     try {
+      console.log(database)
       const response = await Axios.post(`${baseURL}/financier/movimentoRealizado`, {
-        dataEntrada: '2024-01-01',
-        database: database       
+        dataMovimento: '09/25/2025',
+        ano: null,
+        mes: null,
+        database: 'hest'       
       });      
-      const financeiroFormatado = response.data[0].map(item => ({
+      const financeiroFormatado = response.data.map(item => ({
         ...item,
         dataPagamento: formatarData(item.dataPagamento)
       }));
