@@ -24,9 +24,10 @@ export default function Login() {
         alert(
         "=== Dados de Acesso ===\n\n" +
         "Empresa: Hest\n" +
-        "Usuário: admin\n" +
+        "Usuário: teste\n" +
         "Senha: 123\n\n" +
-        "⚠️ Guarde essas informações com segurança!"
+        "⚠️ Venha ao stand da Unip para\n" + 
+            "uma experiência completa!"
         );
 
         localStorage.setItem("alertLoginMostrado", "true");
