@@ -25,9 +25,7 @@ export default function Login() {
         "=== Dados de Acesso ===\n\n" +
         "Empresa: Hest\n" +
         "Usuário: teste\n" +
-        "Senha: 123\n\n" +
-        "⚠️ Venha ao stand da Unip para\n" + 
-            "uma experiência completa!"
+        "Senha: 123\n\n"
         );
 
         localStorage.setItem("alertLoginMostrado", "true");
@@ -130,7 +128,7 @@ export default function Login() {
                         <input
                             type="text"
                             name="name"
-                            placeholder="Digite 'hest'"
+                            placeholder="Digite 'Hest'"
                             onChange={(e) => {
                                 setDataBase(e.target.value);
                             }}
