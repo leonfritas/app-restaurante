@@ -129,7 +129,7 @@ export default function Login() {
                         <input
                             type="text"
                             name="name"
-                            placeholder="Empresa"
+                            placeholder="Digite 'hest'"
                             onChange={(e) => {
                                 setDataBase(e.target.value);
                             }}
@@ -141,7 +141,7 @@ export default function Login() {
                         <input
                             type="text"
                             name="name"
-                            placeholder="Usuário"
+                            placeholder="Digite 'teste'"
                             onChange={(e) => {
                                 setUsuario(e.target.value);
                             }}
@@ -153,7 +153,7 @@ export default function Login() {
                         <input
                             type="password"
                             name="senha"
-                            placeholder="Senha"
+                            placeholder="Digite '123"
                             onChange={(e) => {
                                 setSenha(e.target.value);
                             }}
